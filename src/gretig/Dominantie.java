@@ -9,8 +9,10 @@ public class Dominantie {
     public List getDominantList(Graph g){
         Node[] nodes = g.getNodes();
         int nodeAmount = nodes.length;
-        while(nodeAmount>0){
-
+        for(Node n: nodes){
+            //SORT BY AMOUNT OF VERTICES plz
+            System.out.println(n.getVertices().size());
         }
+        return null;
     }
 }

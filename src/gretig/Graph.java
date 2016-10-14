@@ -2,19 +2,20 @@ package gretig;
 
 
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by Jarre on 8/10/2016.
  */
 public class Graph {
-    private Node[] nodes;
+    private PriorityQueue<Node> nodes;
     private Edge[] vertices;
 
     public Graph(int nodes, int edges){
-        this.nodes = new Node[nodes];
-        this.vertices = new Edge[edges  ];
+        this.nodes = new PriorityQueue<Node>(nodes);
+        this.vertices = new Edge[edges];
     }
-
+/*
     public Node[] getNodes(){
         return nodes;
     }
@@ -23,7 +24,7 @@ public class Graph {
         //ArrayList start counting at 0 while nodes start counting at 1, so result -1.
         return nodes[node-1].getVertices();
     }
-
+*/
     public void addVertex(int node, int vertex){
         Node n = getNode(node);
         Edge v = getVertex(vertex);
