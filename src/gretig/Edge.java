@@ -3,11 +3,11 @@ package gretig;
 /**
  * Created by Jarre on 8/10/2016.
  */
-public class Vertex {
+public class Edge {
     int number;
     Node nodes[];
 
-    public Vertex(int number){
+    public Edge(int number){
         this.number = number;
         //Every vertex connects 2 nodes.
         nodes = new Node[2];

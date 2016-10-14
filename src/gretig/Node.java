@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Jarre on 8/10/2016.
  */
 public class Node {
-    private List<Vertex> vertices;
+    private List<Edge> vertices;
     private int number;
 
     public Node(int number){
@@ -15,11 +15,11 @@ public class Node {
         this.number = number;
     }
 
-    public void addVertex(Vertex vertex){
-        vertices.add(vertex);
+    public void addVertex(Edge edge){
+        vertices.add(edge);
     }
 
-    public List<Vertex> getVertices(){
+    public List<Edge> getVertices(){
         return vertices;
     }
 

@@ -8,27 +8,31 @@ import java.util.List;
  */
 public class Graph {
     private Node[] nodes;
-    private Vertex[] vertices;
+    private Edge[] vertices;
 
-    public Graph(int nodes, int vertices){
+    public Graph(int nodes, int edges){
         this.nodes = new Node[nodes];
-        this.vertices = new Vertex[vertices];
+        this.vertices = new Edge[edges  ];
     }
 
-    public List<Vertex> getVerticesFromNode(int node){
+    public Node[] getNodes(){
+        return nodes;
+    }
+
+    public List<Edge> getVerticesFromNode(int node){
         //ArrayList start counting at 0 while nodes start counting at 1, so result -1.
         return nodes[node-1].getVertices();
     }
 
     public void addVertex(int node, int vertex){
         Node n = getNode(node);
-        Vertex v = getVertex(vertex);
+        Edge v = getVertex(vertex);
         if(n==null) {
             n = new Node(node);
             setNode(node, n);
         }
         if(v==null){
-            v = new Vertex(vertex);
+            v = new Edge(vertex);
             setVertex(vertex, v);
         }
         n.addVertex(v);
@@ -42,13 +46,13 @@ public class Graph {
     }
 
     public void printVertices(){
-        for(Vertex vertex: vertices){
-            System.out.println(vertex);
+        for(Edge edge : vertices){
+            System.out.println(edge);
         }
     }
 
-    private Vertex getVertex(int number){ return vertices[number-1]; }
+    private Edge getVertex(int number){ return vertices[number-1]; }
     private Node getNode(int number){ return nodes[number-1]; }
-    private void setVertex(int index, Vertex v){ vertices[index-1] =  v; }
+    private void setVertex(int index, Edge v){ vertices[index-1] =  v; }
     private void setNode(int index, Node node){ nodes[index-1] = node; }
 }
