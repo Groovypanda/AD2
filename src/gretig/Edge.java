@@ -28,6 +28,6 @@ public class Edge {
     }
 
     public String toString(){
-        return Integer.toString(number) + " ( " + nodes[0] + " <-> " + nodes[1] + " ) ";
+        return "Edge " + Integer.toString(number) + " (" + Integer.toString(nodes[0].getNumber()) + "," + Integer.toString(nodes[1].getNumber()) + ")";
     }
 }

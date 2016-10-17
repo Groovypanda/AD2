@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Jarre on 8/10/2016.
  */
-public class BinaryFileReader {
+public class BinaryFileReader_old {
 
     //Maybe read byte per byte is more efficient?
     public byte[] readBinaryFile(String filename){
@@ -25,7 +25,7 @@ public class BinaryFileReader {
     }
 
     public List<Graph> readByteArray(byte[] bytes){
-        //printBytes(bytes);
+        printBytes(bytes);
         //First 7 numbers are the header + 1 byte for number byte length.
         assert(bytes.length>=8);
         int i;
@@ -36,34 +36,25 @@ public class BinaryFileReader {
         //Header must be >>SEC<<
         assert(header.equals(">>SEC<<"));
         List<Graph> graphs = new ArrayList<Graph>();
-        printBytes(bytes);
 
         while(i<bytes.length) {
             //Read a single graph.
             int numberLength = (int) bytes[i++];
+            System.out.println(numberLength);
             //Amount of nodes
             int nodeAmount = readNumber(bytes, i, numberLength);
             //Amount of vertices
-            int totalVertices = readNumber(bytes, i + numberLength, numberLength);
-            Graph graph = new Graph(nodeAmount, totalVertices);
-            int nodeIndex = 0;
-            Node[] nodes = new Node[nodeAmount];
-            nodes[0] = new Node(1);
-            int verticesAmount = 0;
+            int vertAmount = readNumber(bytes, i + numberLength, numberLength);
+            Graph graph = new Graph(nodeAmount, vertAmount);
+            int node = 1;
             i += 2 * numberLength;
-            for (; i < bytes.length && nodeIndex < nodeAmount; i += numberLength) {
+            for (; i < bytes.length && node <= nodeAmount; i += numberLength) {
                 int number = readNumber(bytes, i, numberLength);
                 if (number == 0) {
-                    nodes[nodeIndex].setEdgesAmount(verticesAmount);
-                    verticesAmount = 0;
-                    graph.addNode(nodes[nodeIndex]);
-                    nodeIndex++;
-                    if(nodeIndex!=nodeAmount){
-                        nodes[nodeIndex] = new Node(nodeIndex+1);
-                    }
+                    node++;
                 } else {
-                    verticesAmount++;
-                    graph.addVertex(nodes[nodeIndex], number);
+                    //Vertices will be added in a clockwise order.
+                    graph.addVertex(node, number);
                 }
             }
             graphs.add(graph);
