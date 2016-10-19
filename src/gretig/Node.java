@@ -33,6 +33,10 @@ public class Node implements Comparable{
         return edges;
     }
 
+    public int getEdgesAmount() {
+        return edgesAmount;
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Node ");

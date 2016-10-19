@@ -45,4 +45,8 @@ public class Graph {
 
     private Edge getVertex(int number){ return edges[number-1]; }
     private void setVertex(int index, Edge v){ edges[index-1] =  v; }
+
+    public boolean empty() {
+        return false;
+    }
 }
