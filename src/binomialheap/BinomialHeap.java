@@ -4,16 +4,56 @@ package binomialheap;
 
 import gretig.Node;
 
+
 //Algorithms based on http://www.cse.yorku.ca/~aaw/Sotirios/BinomialHeapAlgorithm.html
 
 public class BinomialHeap {
 
     BinomialNode head;
+    private int size;
+    private int currentSize;
+
+    public BinomialHeap(int size){
+        currentSize = 0;
+        this.size = size;
+    }
+
+    public BinomialHeap(){
+        head = null;
+    }
 
     public void insert(Node key){
+        assert(currentSize < size);
         BinomialHeap newHeap = new BinomialHeap();
         newHeap.setHead(new BinomialNode(key));
         head = union(newHeap);
+        currentSize++;
+    }
+
+    //Returns an approximation of a sorted list of the BinomialNode in linear time.
+    public Node[] getNodes(){
+        currentSize=0;
+        Node[] nodes = new Node[size];
+        addNode(nodes, head);
+        return nodes;
+    }
+
+    public void addNode(Node[] nodes, BinomialNode node){
+        while (node != null) {
+            node.getKey().setIndex(currentSize);
+            nodes[currentSize++] = node.getKey();
+            if (node.getChild() != null) {
+                addNode(nodes, node.getChild());
+            }
+            node = node.getSibling();
+        }
+    }
+
+    public void print() {
+        System.out.println("Binomial heap:");
+        if (head != null) {
+            head.print(0);
+        }
     }
 
     private BinomialNode union(BinomialHeap other){
@@ -32,7 +72,7 @@ public class BinomialHeap {
             }
             else {
                 //Currentnode.key <= nextNode.key
-                if(currentNode.getKey().compareTo(nextNode.getKey()) >= 0){
+                if(currentNode.getKey().compareTo(nextNode.getKey()) < 0){
                     currentNode.setSibling(nextNode.getSibling());
                     //Link nextNode en currentNode
                     link(nextNode, currentNode);
@@ -61,8 +101,9 @@ public class BinomialHeap {
     }
 
     private BinomialNode merge(BinomialHeap other){
-        BinomialNode h1 = other.getHead();
-        BinomialNode h2 = head;
+        BinomialNode h;
+        BinomialNode h1 = head;
+        BinomialNode h2 = other.getHead();
         if(h1==null){
             return h2;
         }
@@ -70,9 +111,7 @@ public class BinomialHeap {
             return h1;
         }
 
-        BinomialNode h;
-
-        if(h1.getDegree() < h2.getDegree()){
+        if(h1.getDegree() <= h2.getDegree()){
             h = h1;
             h1 = h1.getSibling();
         }
@@ -80,24 +119,26 @@ public class BinomialHeap {
             h = h2;
             h2 = h2.getSibling();
         }
-        while(h1 != null && h2!=null){
+
+        BinomialNode tail = h;
+
+        while(h1 != null && h2 != null){
             if(h1.getDegree() < h2.getDegree()){
-                h.setSibling(h1);
+                tail.setSibling(h1);
                 h1 = h1.getSibling();
             }
             else {
-                h.setSibling(h2);
+                tail.setSibling(h2);
                 h2 = h2.getSibling();
             }
-            //By reference or by value????
-            h= h.getSibling();
+            tail = tail.getSibling();
         }
 
         if(h1!=null){
-            h.setSibling(h1);
+            tail.setSibling(h1);
         }
         else {
-            h.setSibling(h2);
+            tail.setSibling(h2);
         }
         return h;
     }
@@ -160,6 +201,20 @@ public class BinomialHeap {
 
         public void setDegree(int degree) {
             this.degree = degree;
+        }
+
+        public void print(int level) {
+            BinomialNode curr = this;
+            while (curr != null) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Level " + level + ": ");
+                sb.append(curr.key.toString());
+                System.out.println(sb.toString());
+                if (curr.child != null) {
+                    curr.child.print(level + 1);
+                }
+                curr = curr.sibling;
+            }
         }
     }
 }

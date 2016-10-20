@@ -9,7 +9,7 @@ public class Edge {
 
     public Edge(int number){
         this.number = number;
-        //Every vertex connects 2 nodes.
+        //Every vertex connects 2 heap.
         nodes = new Node[2];
     }
 
@@ -22,7 +22,7 @@ public class Edge {
         }
     }
 
-    //Returns the 2 connected nodes by this vertex.
+    //Returns the 2 connected heap by this vertex.
     public Node[] getNodes(){
         return nodes;
     }

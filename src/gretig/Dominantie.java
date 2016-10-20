@@ -15,9 +15,15 @@ public class Dominantie {
             boolean removed = false;
             for(Edge e: v.getEdges()){
                 Node w = e.getNeighbour(v);
-                graph.remove(w);
-                if(v.getEdgesAmount()<w.getEdgesAmount()){
-                    dominantList.add(w);
+                /*
+                TE BEKIJKEN, OFWEL BOOG VERWIJDEREN
+                OFWEL NIET: MAAR DAN DOEN WE DUBBELEN TOPPEN, GEEN LINEAIRE TIJD MEER?
+                 */
+                if(w!=null){
+                    graph.remove(w);
+                    if(v.getEdgesAmount()<w.getEdgesAmount()){
+                        dominantList.add(w);
+                    }
                 }
             }
             if(!removed){

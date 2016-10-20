@@ -1,7 +1,7 @@
 package gretig;
 
 
-import java.util.PriorityQueue;
+import binomialheap.BinomialHeap;
 
 /**
  * Created by Jarre on 8/10/2016.
@@ -9,35 +9,42 @@ import java.util.PriorityQueue;
 public class Graph {
     //Arrays for building the graph efficiently.
     private int size;
-    private int maxSize;
-    private int start = 0;
-    private Edge[] edges;
-    private Node[] nodes;
+    private Edge[] edgeArray;
+    private Node[] nodeArray;
+    BinomialHeap heap;
 
     //Binomial heap with highest elements at back and always pull from back????
 
     public Graph(int nodes, int edges){
-        size = nodes;
-        maxSize = nodes;
-        this.edges = new Edge[edges];
-        this.nodes = new Node[nodes];
+        this.size = nodes;
+        this.edgeArray = new Edge[edges];
+        this.heap = new BinomialHeap(size);
+    }
+
+    public Node[] getNodes(){
+        return nodeArray;
     }
 
     public Node getNode(int index){
-        return nodes[index];
+        return nodeArray[index];
     }
 
-    public void addNode(Node n){
-        //only remove if there hasn't been removed yet.
-        assert(size==maxSize);
-        nodes[n.getIndex()] = n;
+    public Node peek(){
+        return nodeArray[0];
     }
 
     public void remove(Node n){
         int index = n.getIndex();
-        nodes[index] = nodes[size-1];
-        nodes[index].setIndex(index);
+        nodeArray[index] = null;
+        if(index!=size-1){
+            nodeArray[index] = nodeArray[size-1];
+            nodeArray[index].setIndex(index);
+        }
         size--;
+    }
+
+    public void addNode(Node n) {
+        heap.insert(n);
     }
 
     public void addVertex(Node n, int vertex){
@@ -50,18 +57,13 @@ public class Graph {
         v.addNode(n);
     }
 
-    public void printNodes() {
-        for (Node node : nodes) {
-            System.out.println(node);
-        }
+    public void initialiseNodes() {
+        this.nodeArray = heap.getNodes();
     }
 
-    public Node[] getNodes() {
-        return nodes;
-    }
 
-    private Edge getVertex(int number){ return edges[number-1]; }
-    private void setVertex(int index, Edge v){ edges[index-1] =  v; }
+    private Edge getVertex(int number){ return edgeArray[number-1]; }
+    private void setVertex(int index, Edge v){ edgeArray[index-1] =  v; }
 
     public boolean empty() {
         return size==0;
@@ -69,5 +71,9 @@ public class Graph {
 
     public int size(){
         return size;
+    }
+
+    public BinomialHeap getHeap() {
+        return heap;
     }
 }

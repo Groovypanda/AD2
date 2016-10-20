@@ -1,3 +1,4 @@
+import binomialheap.BinomialHeap;
 import gretig.BinaryFileReader;
 import gretig.Dominantie;
 import gretig.Graph;
@@ -10,9 +11,14 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("alle_5.sec");
+        List<Graph> graphs = readGraphs("graaf1.sec");
         Graph g = graphs.get(0);
+        g.initialiseNodes();
         showGraph(g);
+        for(Node n: g.getNodes()){
+            System.out.println(n);
+        }
+        System.out.println("----");
         System.out.println("Dominant List");
         List<Node> dominantList = Dominantie.getDominantList(g);
         System.out.println(dominantList);
@@ -34,6 +40,8 @@ public class Test {
     }
 
     public static void showGraph(Graph graph){
-        graph.printNodes();
+        //graph.printNodes();
+        BinomialHeap heap = graph.getHeap();
+        heap.print();
     }
 }

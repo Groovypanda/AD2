@@ -41,7 +41,7 @@ public class BinaryFileReader {
         while(i<bytes.length) {
             //Read a single graph.
             int numberLength = (int) bytes[i++];
-            //Amount of nodes
+            //Amount of heap
             int nodeAmount = readNumber(bytes, i, numberLength);
             //Amount of vertices
             int totalVertices = readNumber(bytes, i + numberLength, numberLength);
