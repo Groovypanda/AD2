@@ -30,4 +30,11 @@ public class Edge {
     public String toString(){
         return "Edge " + Integer.toString(number) + " (" + Integer.toString(nodes[0].getNumber()) + "," + Integer.toString(nodes[1].getNumber()) + ")";
     }
+
+    public Node getNeighbour(Node v) {
+        if(v.equals(nodes[0])){
+            return nodes[1];
+        }
+        return nodes[0];
+    }
 }

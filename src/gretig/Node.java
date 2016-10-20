@@ -11,10 +11,12 @@ public class Node implements Comparable{
     private List<Edge> edges;
     private int edgesAmount;
     private int number;
+    private int index;
 
     public Node(int number){
         edges = new ArrayList<>();
         this.number = number;
+        index = number-1;
     }
 
     public void setEdgesAmount(int edgesAmount){
@@ -28,6 +30,10 @@ public class Node implements Comparable{
     public int getNumber(){
         return number;
     }
+
+    public int getIndex() { return index; }
+
+    public void setIndex(int index) { this.index = index; }
 
     public List<Edge> getEdges() {
         return edges;
@@ -61,5 +67,9 @@ public class Node implements Comparable{
             return 0;
         }
         return this.edgesAmount > other.edgesAmount ? -1 : 1;
+    }
+
+    public boolean equals(Object o){
+        return o instanceof Node && ((Node) o).getNumber() == this.getNumber();
     }
 }

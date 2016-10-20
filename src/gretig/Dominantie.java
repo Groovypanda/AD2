@@ -1,5 +1,6 @@
 package gretig;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -7,12 +8,23 @@ import java.util.PriorityQueue;
  * Created by Jarre on 8/10/2016.
  */
 public class Dominantie {
-    public List getDominantList(Graph g){
-        PriorityQueue<Node> nodes = g.getNodesQueue(); //0(n) voor het bouwen van een priority queue.
-        while(!nodes.isEmpty()){
-            Node max = nodes.poll();
-            List<Edge> edges = max.getEdges();
+    public static List<Node> getDominantList(Graph graph){
+        List<Node> dominantList = new ArrayList<>();
+        while(!graph.empty()){
+            Node v = graph.getNode(0);
+            boolean removed = false;
+            for(Edge e: v.getEdges()){
+                Node w = e.getNeighbour(v);
+                graph.remove(w);
+                if(v.getEdgesAmount()<w.getEdgesAmount()){
+                    dominantList.add(w);
+                }
+            }
+            if(!removed){
+                dominantList.add(v);
+            }
+            graph.remove(v);
         }
-        return null;
+        return dominantList;
     }
 }
