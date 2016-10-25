@@ -1,11 +1,13 @@
-package gretig;
+package graph;
+
+import graph.Node;
 
 /**
  * Created by Jarre on 8/10/2016.
  */
 public class Edge {
-    int number;
-    Node nodes[];
+    private int number;
+    private Node nodes[];
 
     public Edge(int number){
         this.number = number;
@@ -22,11 +24,6 @@ public class Edge {
         }
     }
 
-    //Returns the 2 connected heap by this vertex.
-    public Node[] getNodes(){
-        return nodes;
-    }
-
     public String toString(){
         return "Edge " + Integer.toString(number) + " (" + Integer.toString(nodes[0].getNumber()) + "," + Integer.toString(nodes[1].getNumber()) + ")";
     }
@@ -36,5 +33,9 @@ public class Edge {
             return nodes[1];
         }
         return nodes[0];
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

@@ -1,7 +1,7 @@
-package gretig;
+package graph;
 
 
-import binomialheap.BinomialHeap;
+import nodearray.BinomialHeap;
 
 /**
  * Created by Jarre on 8/10/2016.
@@ -11,7 +11,7 @@ public class Graph {
     private int size;
     private Edge[] edgeArray;
     private Node[] nodeArray;
-    BinomialHeap heap;
+    private BinomialHeap heap;
 
     //Binomial heap with highest elements at back and always pull from back????
 
@@ -33,13 +33,13 @@ public class Graph {
         return nodeArray[0];
     }
 
-    public void remove(Node n){
+    public void removeNode(Node n){
         int index = n.getIndex();
-        nodeArray[index] = null;
         if(index!=size-1){
             nodeArray[index] = nodeArray[size-1];
             nodeArray[index].setIndex(index);
         }
+        nodeArray[size-1] = null;
         size--;
     }
 
@@ -47,14 +47,14 @@ public class Graph {
         heap.insert(n);
     }
 
-    public void addVertex(Node n, int vertex){
-        Edge v = getVertex(vertex);
-        if(v==null){
-            v = new Edge(vertex);
-            setVertex(vertex, v);
+    public void addVertex(Node n, int edge){
+        Edge e = getEdge(edge);
+        if(e==null){
+            e = new Edge(edge);
+            setEdge(edge, e);
         }
-        n.addEdge(v);
-        v.addNode(n);
+        n.addEdgeNumber(e.getNumber());
+        e.addNode(n);
     }
 
     public void initialiseNodes() {
@@ -62,8 +62,8 @@ public class Graph {
     }
 
 
-    private Edge getVertex(int number){ return edgeArray[number-1]; }
-    private void setVertex(int index, Edge v){ edgeArray[index-1] =  v; }
+    public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
+    private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
 
     public boolean empty() {
         return size==0;
@@ -75,5 +75,13 @@ public class Graph {
 
     public BinomialHeap getHeap() {
         return heap;
+    }
+
+    public void removeEdge(int edgeNumber) {
+        edgeArray[edgeNumber-1] = null;
+    }
+
+    public Edge[] getEdges() {
+        return edgeArray;
     }
 }

@@ -1,8 +1,8 @@
 
-package binomialheap;
+package nodearray;
 
 
-import gretig.Node;
+import graph.Node;
 
 
 //Algorithms based on http://www.cse.yorku.ca/~aaw/Sotirios/BinomialHeapAlgorithm.html

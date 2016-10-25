@@ -1,4 +1,4 @@
-package gretig;
+package graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class Node implements Comparable{
 
-    private List<Edge> edges;
+    private List<Integer> edgeNumbers;
     private int edgesAmount;
     private int number;
     private int index;
 
     public Node(int number){
-        edges = new ArrayList<>();
+        edgeNumbers = new ArrayList<>();
         this.number = number;
         index = number-1;
     }
@@ -23,8 +23,8 @@ public class Node implements Comparable{
         this.edgesAmount = edgesAmount;
     }
 
-    public void addEdge(Edge edge){
-        edges.add(edge);
+    public void addEdgeNumber(int edge){
+        edgeNumbers.add(edge);
     }
 
     public int getNumber(){
@@ -35,8 +35,8 @@ public class Node implements Comparable{
 
     public void setIndex(int index) { this.index = index; }
 
-    public List<Edge> getEdges() {
-        return edges;
+    public List<Integer> getEdgeNumbers() {
+        return edgeNumbers;
     }
 
     public int getEdgesAmount() {
@@ -50,11 +50,11 @@ public class Node implements Comparable{
         sb.append(" (");
         sb.append(edgesAmount);
         sb.append("): [");
-        for(int i=0; i<edges.size()-1; i++){
-            sb.append(edges.get(i));
+        for(int i = 0; i< edgeNumbers.size()-1; i++){
+            sb.append(edgeNumbers.get(i));
             sb.append(", ");
         }
-        sb.append(edges.get(edges.size()-1));
+        sb.append(edgeNumbers.get(edgeNumbers.size()-1));
         sb.append("]");
         return sb.toString();
     }

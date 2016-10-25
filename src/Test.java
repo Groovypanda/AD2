@@ -1,8 +1,8 @@
-import binomialheap.BinomialHeap;
-import gretig.BinaryFileReader;
-import gretig.Dominantie;
-import gretig.Graph;
-import gretig.Node;
+import nodearray.BinomialHeap;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
+import gretig.*;
 
 import java.util.List;
 
@@ -11,17 +11,28 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("graaf1.sec");
-        Graph g = graphs.get(0);
-        g.initialiseNodes();
-        showGraph(g);
-        for(Node n: g.getNodes()){
-            System.out.println(n);
+        List<Graph> graphs = readGraphs("triang_alle_06.sec");
+        for(Graph g: graphs){
+            g.initialiseNodes();
+            showGraph(g);
+            System.out.println("===========");
+            System.out.println("===========");
+            System.out.println("Graph:");
+            for(Edge n: g.getEdges()){
+                System.out.println(n);
+            }
+            System.out.println("===========");
+            System.out.println("===========");
+            System.out.println("Dominant List:");
+            List<Node> dominantList = Dominantie.getDominantList(g);
+            for(Node n: dominantList){
+                System.out.println(n);
+            }
         }
-        System.out.println("----");
-        System.out.println("Dominant List");
-        List<Node> dominantList = Dominantie.getDominantList(g);
-        System.out.println(dominantList);
+        System.out.println("===========");
+        System.out.println("===========");
+        System.out.println("===========");
+        System.out.println("===========");
     }
 
     public static List<Graph> readGraphs(String filename){

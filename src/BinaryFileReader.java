@@ -1,4 +1,5 @@
-package gretig;
+import graph.Graph;
+import graph.Node;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,7 +37,6 @@ public class BinaryFileReader {
         //Header must be >>SEC<<
         assert(header.equals(">>SEC<<"));
         List<Graph> graphs = new ArrayList<Graph>();
-        printBytes(bytes);
 
         while(i<bytes.length) {
             //Read a single graph.
