@@ -8,6 +8,8 @@ import graph.Node;
 public class Edge {
     private int number;
     private Node nodes[];
+    private boolean visited = false;
+    int visitedAmount = 0; //This is purely for checking an edge can't be visited more than twice in the algorithm.
 
     public Edge(int number){
         this.number = number;
@@ -25,7 +27,7 @@ public class Edge {
     }
 
     public String toString(){
-        return "Edge " + Integer.toString(number) + " (" + Integer.toString(nodes[0].getNumber()) + "," + Integer.toString(nodes[1].getNumber()) + ")";
+        return this.hashCode() + "- Edge " + Integer.toString(number) + " (" + Integer.toString(nodes[0].getNumber()) + "," + Integer.toString(nodes[1].getNumber()) + ")";
     }
 
     public Node getNeighbour(Node v) {
@@ -38,4 +40,11 @@ public class Edge {
     public int getNumber() {
         return number;
     }
+
+    public void setVisited(){
+        assert(!visited);
+        visitedAmount++;
+        assert(visitedAmount<=2);
+        visited = true; }
+    public boolean isVisited() { return visited; }
 }

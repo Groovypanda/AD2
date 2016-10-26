@@ -1,7 +1,7 @@
 package graph;
 
 
-import nodearray.BinomialHeap;
+import nodearray.NodeArray;
 
 /**
  * Created by Jarre on 8/10/2016.
@@ -10,41 +10,22 @@ public class Graph {
     //Arrays for building the graph efficiently.
     private int size;
     private Edge[] edgeArray;
-    private Node[] nodeArray;
-    private BinomialHeap heap;
+    private NodeArray nodes;
 
     //Binomial heap with highest elements at back and always pull from back????
 
-    public Graph(int nodes, int edges){
-        this.size = nodes;
-        this.edgeArray = new Edge[edges];
-        this.heap = new BinomialHeap(size);
+    public Graph(int nodeAmount, int edgeAmount){
+        this.size = nodeAmount;
+        this.edgeArray = new Edge[edgeAmount];
+        this.nodes = new NodeArray(size, edgeAmount);
     }
 
-    public Node[] getNodes(){
-        return nodeArray;
-    }
-
-    public Node getNode(int index){
-        return nodeArray[index];
-    }
-
-    public Node peek(){
-        return nodeArray[0];
-    }
-
-    public void removeNode(Node n){
-        int index = n.getIndex();
-        if(index!=size-1){
-            nodeArray[index] = nodeArray[size-1];
-            nodeArray[index].setIndex(index);
-        }
-        nodeArray[size-1] = null;
-        size--;
+    public Node pull(){
+        return nodes.pull();
     }
 
     public void addNode(Node n) {
-        heap.insert(n);
+        nodes.addNode(n);
     }
 
     public void addVertex(Node n, int edge){
@@ -53,35 +34,19 @@ public class Graph {
             e = new Edge(edge);
             setEdge(edge, e);
         }
-        n.addEdgeNumber(e.getNumber());
+        n.addEdge(e);
         e.addNode(n);
     }
 
-    public void initialiseNodes() {
-        this.nodeArray = heap.getNodes();
+    public Node[] getNodes(){
+        return nodes.getNodes();
     }
 
-
+    public void sort(){nodes.sort();}
     public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
     private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
-
-    public boolean empty() {
-        return size==0;
-    }
-
-    public int size(){
-        return size;
-    }
-
-    public BinomialHeap getHeap() {
-        return heap;
-    }
-
+    public int size(){ return size; }
     public void removeEdge(int edgeNumber) {
         edgeArray[edgeNumber-1] = null;
-    }
-
-    public Edge[] getEdges() {
-        return edgeArray;
     }
 }

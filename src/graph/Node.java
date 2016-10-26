@@ -8,24 +8,22 @@ import java.util.List;
  */
 public class Node implements Comparable{
 
-    private List<Integer> edgeNumbers;
-    private int edgesAmount;
+    private List<Edge> edges;
     private int number;
     private int index;
+    private boolean visited = false;
 
     public Node(int number){
-        edgeNumbers = new ArrayList<>();
+        edges = new ArrayList<>();
         this.number = number;
         index = number-1;
     }
 
-    public void setEdgesAmount(int edgesAmount){
-        this.edgesAmount = edgesAmount;
+    public void addEdge(Edge edge){
+        edges.add(edge);
     }
 
-    public void addEdgeNumber(int edge){
-        edgeNumbers.add(edge);
-    }
+    public void visitEdge(Edge edge){ edge.setVisited(); }
 
     public int getNumber(){
         return number;
@@ -35,26 +33,24 @@ public class Node implements Comparable{
 
     public void setIndex(int index) { this.index = index; }
 
-    public List<Integer> getEdgeNumbers() {
-        return edgeNumbers;
+    public List<Edge> getEdges() {
+        return edges;
     }
 
-    public int getEdgesAmount() {
-        return edgesAmount;
-    }
+    public int getEdgesAmount() { return edges.size(); }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Node ");
         sb.append(number);
         sb.append(" (");
-        sb.append(edgesAmount);
+        sb.append(getEdgesAmount());
         sb.append("): [");
-        for(int i = 0; i< edgeNumbers.size()-1; i++){
-            sb.append(edgeNumbers.get(i));
+        for(int i = 0; i< edges.size()-1; i++){
+            sb.append(edges.get(i));
             sb.append(", ");
         }
-        sb.append(edgeNumbers.get(edgeNumbers.size()-1));
+        sb.append(edges.get(edges.size()-1));
         sb.append("]");
         return sb.toString();
     }
@@ -63,13 +59,27 @@ public class Node implements Comparable{
     public int compareTo(Object o) {
         assert(o instanceof Node);
         Node other = (Node)o;
-        if(this.edgesAmount == other.edgesAmount){
+        if(getEdgesAmount() == other.getEdgesAmount()){
             return 0;
         }
-        return this.edgesAmount > other.edgesAmount ? -1 : 1;
+        return getEdgesAmount() > other.getEdgesAmount() ? -1 : 1;
     }
 
     public boolean equals(Object o){
         return o instanceof Node && ((Node) o).getNumber() == this.getNumber();
+    }
+
+    public void visitEdges() {
+        for(Edge edge: edges){
+            visitEdge(edge);
+        }
+    }
+
+    public void visit() {
+        visited = true;
+    }
+
+    public boolean visited() {
+        return visited;
     }
 }

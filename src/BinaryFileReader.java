@@ -37,7 +37,7 @@ public class BinaryFileReader {
         //Header must be >>SEC<<
         assert(header.equals(">>SEC<<"));
         List<Graph> graphs = new ArrayList<Graph>();
-
+        printBytes(bytes);
         while(i<bytes.length) {
             //Read a single graph.
             int numberLength = (int) bytes[i++];
@@ -49,20 +49,16 @@ public class BinaryFileReader {
             int nodeIndex = 0;
             Node[] nodes = new Node[nodeAmount];
             nodes[0] = new Node(1);
-            int verticesAmount = 0;
             i += 2 * numberLength;
             for (; i < bytes.length && nodeIndex < nodeAmount; i += numberLength) {
                 int number = readNumber(bytes, i, numberLength);
                 if (number == 0) {
-                    nodes[nodeIndex].setEdgesAmount(verticesAmount);
-                    verticesAmount = 0;
                     graph.addNode(nodes[nodeIndex]);
                     nodeIndex++;
                     if(nodeIndex!=nodeAmount){
                         nodes[nodeIndex] = new Node(nodeIndex+1);
                     }
                 } else {
-                    verticesAmount++;
                     graph.addVertex(nodes[nodeIndex], number);
                 }
             }
