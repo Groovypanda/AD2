@@ -82,4 +82,5 @@ public class Node implements Comparable{
     public boolean visited() {
         return visited;
     }
+
 }

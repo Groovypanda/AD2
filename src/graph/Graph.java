@@ -44,6 +44,7 @@ public class Graph {
 
     public void sort(){nodes.sort();}
     public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
+    public Edge[] getEdges(){ return edgeArray; }
     private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
     public int size(){ return size; }
     public void removeEdge(int edgeNumber) {
