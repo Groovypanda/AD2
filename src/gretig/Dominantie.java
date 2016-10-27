@@ -24,16 +24,38 @@ public class Dominantie {
         int size = graph.size();
         while(coverage < size){
             Node v = graph.pull();
-            dominantList.add(v);
             if(!v.visited()){
                 v.visit();
                 coverage++;
             }
+            Node maxNode = v;
+            int maxCoverage = v.getCoverage();
+            //Loop trough neighbours to find max.
             for(Edge edge: v.getEdges()){
                 Node w = edge.getNeighbour(v);
-                if(!w.visited()){
-                    w.visit();
+                if(w.getCoverage() > maxCoverage){
+                    maxNode = w;
+                    maxCoverage = w.getCoverage();
+                }
+            }
+            if(v.getCoverage() > maxCoverage ) {
+                maxNode = v;
+            }
+            if(maxCoverage>0){
+                maxNode.clearCoverage();
+                dominantList.add(maxNode);
+                if(!v.visited()){
+                    v.visit();
                     coverage++;
+                }
+                //Other coverage is just an estimation. Calculating the real coverage can't be linear.
+                for(Edge edge: maxNode.getEdges()){
+                    Node w = edge.getNeighbour(maxNode);
+                    w.decrementCoverage();
+                    if(!w.visited()){
+                        w.visit();
+                        coverage++;
+                    }
                 }
             }
         }
@@ -61,13 +83,13 @@ public class Dominantie {
                 int nodesSize = graph.getNodes().length;
                 int dominantlistSize = dominantList.size();
                 System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
-                /*
+                
                 for(Node node: dominantList){
                     System.out.print(node.getNumber());
                     System.out.print(" ");
                 }
                 System.out.println();
-                */
+
             }
         } catch (IOException e) {
             System.err.println("Couldn't read the given input.");

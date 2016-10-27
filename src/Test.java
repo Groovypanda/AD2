@@ -11,17 +11,17 @@ import java.util.List;
 public class Test {
     static int i = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("klein/alle_8.sec");
+        List<Graph> graphs = readGraphs("klein/alle_7.sec");
         for(Graph g: graphs){
             i++;
             List<Node> dominantList = Dominantie.getDominantList(g);
             for(Node node: dominantList){
-                //System.out.println(node);
+                System.out.println(node);
             }
-            //System.out.println(dominantList.size());
-            //System.out.println(g.getNodes().length);
-            //assert(Dominantie.isDominant(g, dominantList));
-            //System.out.println("===========");
+            System.out.println(dominantList.size());
+            System.out.println(g.getNodes().length);
+            assert(Dominantie.isDominant(g, dominantList));
+            System.out.println("===========");
         }
 
     }

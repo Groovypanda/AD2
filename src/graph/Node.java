@@ -12,15 +12,36 @@ public class Node implements Comparable{
     private int number;
     private int index;
     private boolean visited = false;
+    private int coverage;
 
     public Node(int number){
         edges = new ArrayList<>();
         this.number = number;
         index = number-1;
+        coverage = 0;
     }
 
     public void addEdge(Edge edge){
         edges.add(edge);
+        coverage++;
+    }
+
+    public int getCoverage(){
+        return coverage;
+    };
+
+    public void decrementCoverage(){
+        coverage--;
+    }
+
+    public void clearCoverage(){
+        coverage =0;
+    }
+
+    public void updateCoverage(){
+        for(Edge edge: getEdges()){
+            edge.getNeighbour(this).decrementCoverage();
+        }
     }
 
     public void visitEdge(Edge edge){ edge.setVisited(); }
