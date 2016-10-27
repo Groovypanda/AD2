@@ -18,18 +18,40 @@ import java.util.Set;
 public class Dominantie {
     //Algoritme uitvoeren op insertion sorted list instead of nodearray & remove := index = null.
     public static List<Node> getDominantList(Graph graph){
-        graph.sort();
+        //graph.sort();
+        graph.addAll();
+        //graph.sortBackwards();
         List<Node> dominantList = new ArrayList<>();
         int coverage = 0;
+
+        for(Node v: graph.getNodes()){
+            if(v.getCoverage()==1){
+                Edge edge = v.getEdges().get(0);
+                Node w = edge.getNeighbour(v);
+                dominantList.add(w);
+                if(!w.visited()){
+                    coverage++;
+                    w.visit();
+                }
+                for(Edge wEdge: w.getEdges()){
+                    Node x = wEdge.getNeighbour(w);
+                    x.decrementCoverage();
+                    if(!x.visited()){
+                        coverage++;
+                        x.visit();
+                    }
+                }
+                w.clearCoverage();
+                v.clearCoverage();
+            }
+        }
+
         int size = graph.size();
         while(coverage < size){
             Node v = graph.pull();
-            if(!v.visited()){
-                v.visit();
-                coverage++;
-            }
             Node maxNode = v;
             int maxCoverage = v.getCoverage();
+            
             //Loop trough neighbours to find max.
             for(Edge edge: v.getEdges()){
                 Node w = edge.getNeighbour(v);
@@ -38,14 +60,11 @@ public class Dominantie {
                     maxCoverage = w.getCoverage();
                 }
             }
-            if(v.getCoverage() > maxCoverage ) {
-                maxNode = v;
-            }
             if(maxCoverage>0){
                 maxNode.clearCoverage();
                 dominantList.add(maxNode);
-                if(!v.visited()){
-                    v.visit();
+                if(!maxNode.visited()){
+                    maxNode.visit();
                     coverage++;
                 }
                 //Other coverage is just an estimation. Calculating the real coverage can't be linear.
@@ -83,11 +102,13 @@ public class Dominantie {
                 int nodesSize = graph.getNodes().length;
                 int dominantlistSize = dominantList.size();
                 System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
-                
+                /*
                 for(Node node: dominantList){
                     System.out.print(node.getNumber());
                     System.out.print(" ");
                 }
+                */
+                assert(Dominantie.isDominant(graph, dominantList));
                 System.out.println();
 
             }

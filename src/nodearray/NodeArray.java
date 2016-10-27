@@ -66,6 +66,38 @@ public class NodeArray {
                 int index = count[node.getEdgesAmount()];
                 //Reverse order: highest first
                 sortedNodeArray[k-1-index] = node;
+                //sortedNodeArray[index]=node;
+                count[node.getEdgesAmount()]+=1;
+            }
+        }
+    }
+
+    public void addAll(){
+        int i=0;
+        for(Stack<Node> nodeStack: this.nodes){
+            while(!nodeStack.isEmpty()){
+                sortedNodeArray[i++] = nodeStack.pop();
+            }
+        }
+    }
+
+    public void sortBackwards() {
+        //Calculate starting indices
+        int total = 0;
+        for(int i = 0; i< k; i++){
+            int oldCount = count[i];
+            count[i]=total;
+            total+=oldCount;
+        }
+
+        //Sort the nodes
+        for(Stack<Node> nodesStack: this.nodes){
+            while(!nodesStack.isEmpty()){
+                Node node = nodesStack.pop();
+                int index = count[node.getEdgesAmount()];
+                //Reverse order: highest first
+                sortedNodeArray[index] = node;
+                //sortedNodeArray[index]=node;
                 count[node.getEdgesAmount()]+=1;
             }
         }

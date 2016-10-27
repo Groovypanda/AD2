@@ -42,7 +42,9 @@ public class Graph {
         return nodes.getNodes();
     }
 
+    public void sortBackwards(){nodes.sortBackwards();}
     public void sort(){nodes.sort();}
+    public void addAll(){nodes.addAll();}
     public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
     public Edge[] getEdges(){ return edgeArray; }
     private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
