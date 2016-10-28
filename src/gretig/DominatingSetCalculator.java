@@ -183,7 +183,7 @@ public class DominatingSetCalculator {
                      */
 
                     int maxNodeActualCoverage = 0;
-                    if (!maxNode.visited()) {
+                    if (!maxNode.visited()) { //If a node isn't visited yet, it can only contribute to the coverage.
                         maxNodeActualCoverage++;
                     }
 
@@ -196,25 +196,15 @@ public class DominatingSetCalculator {
 
                     //Again if the actual coverage is lower than the minimumNodeCoverage, the node shouldn't be added.
                     if (maxNodeActualCoverage > minimumNodeCoverage) {
-                        maxNode.clearCoverage();
-                        dominantList.add(maxNode);
-                        if (!maxNode.visited()) {
-                            maxNode.visit();
-                        }
-                        totalCoverage += maxNodeActualCoverage;
-                        for (Edge edge : maxNode.getEdges()) {
-                            Node w = edge.getNeighbour(maxNode);
-                            w.decrementCoverage();
-                            if (!w.visited()) {
-                                w.visit();
-                            }
-                        }
+                        //Update the graph
+                        totalCoverage += maxNodeActualCoverage; //the actual amount of coverage can be added to the total.
+                        maxNode.clearCoverage(); //added node should have zero coverage.
+                        dominantList.add(maxNode); //add the node the dominant set.
+                        maxNode.visit(); //visit the node so that it can't contribute anymore to the coverage.
+                        maxNode.visitNeighbours(); //visit it's neighbours so they can't contribute anymore to the coverage.
                     }
                 }
             }
         }
     }
-
-
-
 }
