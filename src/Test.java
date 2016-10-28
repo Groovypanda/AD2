@@ -15,29 +15,25 @@ public class Test {
     static int i = 0;
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
         List<Graph> graphs = readGraphs("testset/graaf1.sec");
-        PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+        //PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
         for(Graph g: graphs){
             i++;
             DominatingSetCalculator setCalculator = new DominatingSetCalculator(g);
             List<Node> dominantList = setCalculator.getDominantList();
+            /*
             for(Node node: dominantList){
                 //System.out.println(node);
-
             }
             for(Node node: g.getNodes()){
                 writer.print(node.getDegree());
                 writer.print(' ');
             }
+            */
             System.out.println(dominantList.size());
             System.out.println(g.getNodes().length);
-            try {
-                assert(Dominantie.isDominant(g, dominantList));
-            } catch (AssertionError e ){
-                System.out.println("The dominating list isn't domating!!!.");
-            }
-            //System.out.println("===========");
+            assert(setCalculator.isDominant(dominantList));
         }
-    writer.close();
+        //writer.close();
     }
 
     public static List<Graph> readGraphs(String filename){

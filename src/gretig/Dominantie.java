@@ -16,23 +16,7 @@ import java.util.Set;
  */
 public class Dominantie {
 
-    public static boolean isDominant(Graph g, List<Node> dominantList){
-        Node[] graphNodes = g.getNodes();
-        Set<Node> coverage = new HashSet<>();
-        for(Node node: dominantList){
-            coverage.add(node);
-        }
-        assert(coverage.size()==dominantList.size());
-        if(coverage.size() != dominantList.size()){
-            return false; //Assert there are no double nodes added.
-        }
-        for(Node node: dominantList){
-            for(Edge edge: node.getEdges()){
-                coverage.add(edge.getNeighbour(node));
-            }
-        }
-        return graphNodes.length == coverage.size();
-    }
+
 
     public static void main(String[] args) {
         BinaryInputReader reader = new BinaryInputReader();
@@ -44,15 +28,11 @@ public class Dominantie {
                 int nodesSize = graph.getNodes().length;
                 int dominantlistSize = dominantList.size();
                 System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
-                /*
                 for(Node node: dominantList){
-                    System.out.print(node.getNumber());
-                    System.out.print(" ");
+                    //System.out.print(node.getNumber());
+                    //System.out.print(" ");
                 }
-                */
-                assert(Dominantie.isDominant(graph, dominantList));
                 System.out.println();
-
             }
         } catch (IOException e) {
             System.err.println("Couldn't read the given input.");

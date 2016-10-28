@@ -1,16 +1,18 @@
 package gretig;
 
-
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <h1>Calculate the dominating set of a graph.</h1>
- * This class consists one method to construct a dominating set of the given graph.
+ * This class consists one method to construct a dominating set of the given graph
+ * and a method to check if a dominating set is correct.
  * A dominating set is a set such that all nodes of the graph are either in the set or
  * the neighbour of a node in this set. The dominating set will be computed in linear time
  * with a greedy algorithm. The set will be an approximation of the minimal dominating set.
@@ -124,12 +126,12 @@ public class DominatingSetCalculator {
      * - all nodes are unvisited.
      *
      * Postcondition:
-     * - an approximation of a minimal dominating set.
+     * - dominating set contains an approximation of a minimal dominating set.
      *
      * coverage = 0
      * while coverage < amount of nodes:
      *    loop trough neighbours and v to find node w with highest coverage
-     *    add maximum to the dominant list
+     *    add maximum to the dominant set
      *    for every neighbour of maximum:
      *      if neighbour is unvisited:
      *          visit neighbour
@@ -206,5 +208,28 @@ public class DominatingSetCalculator {
                 }
             }
         }
+    }
+
+    /**
+     * The method checks if the given list is a dominant set in the current graph and contains no doubles.
+     * In other words, it checks if the algorithm works properly.
+     * This method isn't linear and should only be used for testing purposes, not for the final algorithm!
+     * @param dominantList The list which has the be checked.
+     * @return Returns true if the list is dominant and contains no doubles.
+     */
+    public boolean isDominant(List<Node> dominantList){
+        Node[] graphNodes = graph.getNodes();
+        Set<Node> coverage = new HashSet<>();
+        coverage.addAll(dominantList); //Adding all elements to set to remove doubles.
+        if(coverage.size() != dominantList.size()){  //If the size isn't equal the list contains doubles.
+            return false;
+        }
+        for(Node node: dominantList){
+            for(Edge edge: node.getEdges()){ //adds all neighbours of the dominant list to the coverage set.
+                coverage.add(edge.getNeighbour(node));
+            }
+        }
+        //if coverage contains the same amount of nodes as the graph, the dominantlist is dominant.
+        return graphNodes.length == coverage.size();
     }
 }
