@@ -5,14 +5,14 @@ import graph.Node;
 import java.util.Stack;
 
 //Based on wikipedia algorithm
-public class NodeArray {
+public class SortedNodeArray {
     private int n;
     private int k;
     private int[] count;
     private Stack<Node>[] nodes;
     private Node[] sortedNodeArray;
 
-    public NodeArray(int nodeAmount, int verticesAmount) {
+    public SortedNodeArray(int nodeAmount, int verticesAmount) {
         k = nodeAmount;
         n = 2*verticesAmount;
         count = new int[k];
