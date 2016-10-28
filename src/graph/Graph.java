@@ -44,4 +44,7 @@ public class Graph {
     public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
     private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
 
+    public void addAll() {
+        nodeArray.addAll();
+    }
 }

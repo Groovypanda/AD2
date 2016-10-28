@@ -44,10 +44,28 @@ public class Node {
         return edges;
     }
 
-    public int getEdgesAmount() { return edges.size(); }
+    public int getDegree() { return edges.size(); }
 
-    public void visit() {
-        visited = true;
+    /**
+     * Visits a node if it hasn't been visited before.
+     * @return Returns 1 if node has been visited.
+     */
+    public int visit() {
+        if(!visited()){
+            visited = true;
+            return 1;
+        }
+        return 0;
+    }
+
+    public int visitNeighbours(){
+        int coverage = 0;
+        for (Edge edge : getEdges()) {
+            Node neighbour = edge.getNeighbour(this);
+            neighbour.decrementCoverage();
+            coverage+=neighbour.visit();
+        }
+        return coverage;
     }
 
     public boolean visited() {
@@ -59,7 +77,7 @@ public class Node {
         sb.append("Node ");
         sb.append(number);
         sb.append(" (");
-        sb.append(getEdgesAmount());
+        sb.append(getDegree());
         sb.append("): [");
         for(int i = 0; i< edges.size()-1; i++){
             sb.append(edges.get(i));

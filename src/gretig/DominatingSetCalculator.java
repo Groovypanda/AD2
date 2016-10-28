@@ -61,8 +61,8 @@ public class DominatingSetCalculator {
     public List<Node> getDominantList(){
         /**
          * Sort the nodes by their amount of edges with counting sort. O(n+k).
-         * The algorithm works better if the nodes are sorted by the edges, as it will find the best nodes to add
-         * to the dominant list first. True indicates the nodes with the highest degree should have a lower index
+         * The algorithm works better if the nodes are sorted by the edges.
+         * True indicates the nodes with the lowest degree should have a lower index
          * than nodes with a lower degree.
          */
         graph.sort(true); //O(n+k)
@@ -75,6 +75,8 @@ public class DominatingSetCalculator {
          *  If the optimization level is 6, the approximation of the minimal dominanting set will be the best possible
          *  (in comparison with other optimization levels).
          *  The method adds nodes to the set which have a degree higher than 'i'.
+         *  By ensuring nodes with actual degree i are added before nodes with degree lower than i the dominant set
+         *  will cover the whole graph faster with less nodes.
          */
         for(int i=optimization; i>=0; i--){
             buildDominantList(i); //O(n)
@@ -82,40 +84,85 @@ public class DominatingSetCalculator {
         return dominantList;
     }
 
+    /**
+     * This method prepares the dominant list by adding all the necessary nodes.
+     * Nodes are necessary in the dominant set if only they can reach a certain other node.
+     * This is the case if a node has degree one, the other endpoint of the only edge of this node is necessary,
+     * and thus has to be added to the dominant set. This is an optimization method and isn't necessary for the
+     * algorithm to work, however for certain graphs (with a lot of nodes with degree 1). The algorithm will give
+     * a much better result in this case.
+     */
     private void prepareDominantList() {
-        for(Node v: graph.getNodes()) {
-            if (v.getEdges().size() == 1) { //Optimalisatie 1
-                Edge edge = v.getEdges().get(0);
-                Node w = edge.getNeighbour(v);
-                if (w.getCoverage() > 0) {
-                    dominantList.add(w);
-                    if (!w.visited()) {
-                        totalCoverage++;
-                        w.visit();
-                    }
-                    for (Edge wEdge : w.getEdges()) {
-                        Node x = wEdge.getNeighbour(w);
-                        x.decrementCoverage();
-                        if (!x.visited()) {
-                            totalCoverage++;
-                            x.visit();
-                        }
-                    }
-                    w.clearCoverage();
-                }
-                v.clearCoverage();
+        /**
+         * This method when using a sorted array (by degree) with nodes because the nodes with degree one will have the
+         * highest index. Once we reach a node with degree > 1, the loop may end.
+         */
+        Node[] nodes = graph.getSortedNodes();
+        int index = 0; //Starting at the lowest index. (This node has the lowest degree.)
+        Node v = nodes[index];
+        while(v.getDegree()==1){ //Loop trough nodes with degree 1.
+            Edge edge = v.getEdges().get(0); //Get the only edge of the node. (degree 1 => 1 edge)
+            Node w = edge.getNeighbour(v);
+            //If coverage==0, adding the node wouldn't be logic as it wouldn't increase the reach of the dominant set.
+            if (w.getCoverage() > 0) {
+                dominantList.add(w); //This node can safely be added to the dominant set.
+                totalCoverage += w.visit(); //Visits a node and if it could be visited increment the totalCoverage.
+                totalCoverage += w.visitNeighbours(); //Adds total coverage which can be added by visiting the neighbours.
+                w.clearCoverage(); //Clear the coverage as w is added and can't increase the totalCoverage anymore.
             }
+            v.clearCoverage(); //v only had one neighbour, so its safe to clear the coverage of v aswell.
+            v = nodes[index++];
         }
     }
 
+    /**
+     * This method implements the actual greedy linear algorithm for building an approximation of the optimal minimal
+     * dominant set. The basic algorithm is the following, (a more formal algorithm is written in the report):
+     *
+     * Precondition:
+     * - all nodes are initialized with their degree as coverage.
+     * - all nodes are unvisited.
+     *
+     * Postcondition:
+     * - an approximation of a minimal dominating set.
+     *
+     * coverage = 0
+     * while coverage < amount of nodes:
+     *    loop trough neighbours and v to find node w with highest coverage
+     *    add maximum to the dominant list
+     *    for every neighbour of maximum:
+     *      if neighbour is unvisited:
+     *          visit neighbour
+     *          coverage++
+     *      decrement coverage of neighbour
+     *
+     * The optimalizations used are adressed in the report and in the notes of the code in the method.
+     *
+     *
+     * @param minimumNodeCoverage if minimumNodeCoverage is 0 all nodes can be added, this will ensure the dominant list
+     *                            is dominant after running the method with parameter 0. A higher minimumNodeCoverage
+     *                            will only add nodes to the dominant set with 'minimumNodeCoverage' amount of edges.
+     */
     private void buildDominantList(int minimumNodeCoverage) {
-        Node[] nodes = graph.getSortedNodes();
+        Node[] nodes = graph.getSortedNodes(); //The algorithm works best with a sorted array by degree (lowest degree first).
+        /**
+         * A loop over the nodes, this loop will end prematurely if the whole graph is covered, this is always the case
+         * with minimumNodeCoverage 0.
+         */
         for(int i=0; i<nodes.length && totalCoverage < nodes.length; i++){
             Node v = nodes[i];
-            Node maxNode = v;
-            //Loop trough neighbours to find max.
-            if (v.getCoverage() != 0) { //Optimalisatie 3
-                int maxCoverage = v.getCoverage();
+            /**
+             * The following statement is an optimization.
+             * If the coverage of a node is 0, it's better to just move on to the next node.
+             * Important: the coverage property of a node is an upper bound for the actual coverage!
+             */
+            if (v.getCoverage() != 0) {
+                /**
+                 * Local search for the node with the highest coverage.
+                 * In a greedy algorithm this is the best node to add to the dominant set.
+                 */
+                Node maxNode = v;
+                int maxCoverage = maxNode.getCoverage();
                 for (Edge edge : v.getEdges()) {
                     Node w = edge.getNeighbour(v);
                     if (w.getCoverage() > maxCoverage) {
@@ -123,23 +170,32 @@ public class DominatingSetCalculator {
                         maxCoverage = w.getCoverage();
                     }
                 }
+                /**
+                 *  If the maxCoverage (upper bound for the real added coverage of the node) won't add more than
+                 *  the minimumNodeCoverage, the node won't be added.
+                 */
+
                 if (maxCoverage > minimumNodeCoverage) {
+                    /**
+                     *  The maxCoverage is an upperbound for the actual added coverage of a node.
+                     *  Calculating the real totalCoverage for every node wouldn't be linear, thus we need an
+                     *  approximation. Once we have found a node which looks optimal, we check its actual coverage.
+                     */
+
                     int maxNodeActualCoverage = 0;
                     if (!maxNode.visited()) {
                         maxNodeActualCoverage++;
                     }
 
-                    //Other totalCoverage is just an estimation. Calculating the real totalCoverage can't be linear.
                     for (Edge edge : maxNode.getEdges()) {
                         Node w = edge.getNeighbour(maxNode);
                         if (!w.visited()) {
                             maxNodeActualCoverage++;
                         }
                     }
+
+                    //Again if the actual coverage is lower than the minimumNodeCoverage, the node shouldn't be added.
                     if (maxNodeActualCoverage > minimumNodeCoverage) {
-                        //Optimalisatie 2, eventueel > getal meegeven als parameter en controleren voor verschillende parameters
-                        //Je kan eventueel doen: als alle toppen overlopen zijn, het zachte algoritme gebruiken die met minder strenge voorwaarden
-                        //toppen toevoegt?
                         maxNode.clearCoverage();
                         dominantList.add(maxNode);
                         if (!maxNode.visited()) {

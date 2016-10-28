@@ -30,8 +30,8 @@ public class NodeArray {
 
     //Add node with edgesAmount configured.
     public void addNode(Node node){
-        nodes[node.getEdgesAmount()].push(node);
-        count[node.getEdgesAmount()]++;
+        nodes[node.getDegree()].push(node);
+        count[node.getDegree()]++;
     }
 
     public void sort(boolean backwards){
@@ -47,7 +47,7 @@ public class NodeArray {
         for(Stack<Node> nodesStack: this.nodes){
             while(!nodesStack.isEmpty()){
                 Node node = nodesStack.pop();
-                int index = count[node.getEdgesAmount()];
+                int index = count[node.getDegree()];
                 //Reverse order: highest first
                 if(backwards){
                     //Lowest first.
@@ -56,8 +56,12 @@ public class NodeArray {
                 else {
                     sortedNodeArray[k-1-index] = node;
                 }
-                count[node.getEdgesAmount()]+=1;
+                count[node.getDegree()]+=1;
             }
         }
+    }
+
+    public void addAll() {
+        //doSomething
     }
 }

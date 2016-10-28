@@ -4,14 +4,8 @@ import gretig.*;
 import input.BinaryFileReader;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +14,7 @@ import java.util.List;
 public class Test {
     static int i = 0;
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        List<Graph> graphs = readGraphs("testset/graaf6.sec");
+        List<Graph> graphs = readGraphs("testset/graaf1.sec");
         PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
         for(Graph g: graphs){
             i++;
@@ -31,7 +25,7 @@ public class Test {
 
             }
             for(Node node: g.getNodes()){
-                writer.print(node.getEdgesAmount());
+                writer.print(node.getDegree());
                 writer.print(' ');
             }
             System.out.println(dominantList.size());
