@@ -2,15 +2,11 @@ package nodearray;
 
 import graph.Node;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 //Based on wikipedia algorithm
 public class NodeArray {
     private int n;
-    private int start = 0;
-    private int currentIndex = 0;
     private int k;
     private int[] count;
     private Stack<Node>[] nodes;
@@ -28,29 +24,17 @@ public class NodeArray {
         sortedNodeArray = new Node[k];
     }
 
-    public Node pull(){
-        Node n = sortedNodeArray[start];
-        sortedNodeArray[start] = null;
-        start++;
-        return n;
-    }
-
-    public void remove(Node node){
-        sortedNodeArray[node.getIndex()] = null;
-    }
-
-    public Node[] getNodes(){
+    public Node[] getSortedNodes(){
         return sortedNodeArray;
     }
 
     //Add node with edgesAmount configured.
     public void addNode(Node node){
-        //node.setIndex(node.getNumber()-1);
         nodes[node.getEdgesAmount()].push(node);
         count[node.getEdgesAmount()]++;
     }
 
-    public void sort(){
+    public void sort(boolean backwards){
         //Calculate starting indices
         int total = 0;
         for(int i = 0; i< k; i++){
@@ -65,39 +49,13 @@ public class NodeArray {
                 Node node = nodesStack.pop();
                 int index = count[node.getEdgesAmount()];
                 //Reverse order: highest first
-                sortedNodeArray[k-1-index] = node;
-                //sortedNodeArray[index]=node;
-                count[node.getEdgesAmount()]+=1;
-            }
-        }
-    }
-
-    public void addAll(){
-        int i=0;
-        for(Stack<Node> nodeStack: this.nodes){
-            while(!nodeStack.isEmpty()){
-                sortedNodeArray[i++] = nodeStack.pop();
-            }
-        }
-    }
-
-    public void sortBackwards() {
-        //Calculate starting indices
-        int total = 0;
-        for(int i = 0; i< k; i++){
-            int oldCount = count[i];
-            count[i]=total;
-            total+=oldCount;
-        }
-
-        //Sort the nodes
-        for(Stack<Node> nodesStack: this.nodes){
-            while(!nodesStack.isEmpty()){
-                Node node = nodesStack.pop();
-                int index = count[node.getEdgesAmount()];
-                //Reverse order: highest first
-                sortedNodeArray[index] = node;
-                //sortedNodeArray[index]=node;
+                if(backwards){
+                    //Lowest first.
+                    sortedNodeArray[index] = node;
+                }
+                else {
+                    sortedNodeArray[k-1-index] = node;
+                }
                 count[node.getEdgesAmount()]+=1;
             }
         }

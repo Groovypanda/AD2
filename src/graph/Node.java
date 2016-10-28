@@ -6,19 +6,17 @@ import java.util.List;
 /**
  * Created by Jarre on 8/10/2016.
  */
-public class Node implements Comparable{
+public class Node {
 
     private List<Edge> edges;
     private int number;
-    private int index;
     private boolean visited = false;
     private int coverage;
 
     public Node(int number){
         edges = new ArrayList<>();
         this.number = number;
-        index = number-1;
-        coverage = 0;
+        coverage = 1; //Every node covers itself.
     }
 
     public void addEdge(Edge edge){
@@ -35,30 +33,26 @@ public class Node implements Comparable{
     }
 
     public void clearCoverage(){
-        coverage =0;
+        coverage = 0;
     }
-
-    public void updateCoverage(){
-        for(Edge edge: getEdges()){
-            edge.getNeighbour(this).decrementCoverage();
-        }
-    }
-
-    public void visitEdge(Edge edge){ edge.setVisited(); }
 
     public int getNumber(){
         return number;
     }
-
-    public int getIndex() { return index; }
-
-    public void setIndex(int index) { this.index = index; }
 
     public List<Edge> getEdges() {
         return edges;
     }
 
     public int getEdgesAmount() { return edges.size(); }
+
+    public void visit() {
+        visited = true;
+    }
+
+    public boolean visited() {
+        return visited;
+    }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -76,32 +70,8 @@ public class Node implements Comparable{
         return sb.toString();
     }
 
-    @Override
-    public int compareTo(Object o) {
-        assert(o instanceof Node);
-        Node other = (Node)o;
-        if(getEdgesAmount() == other.getEdgesAmount()){
-            return 0;
-        }
-        return getEdgesAmount() > other.getEdgesAmount() ? -1 : 1;
-    }
-
     public boolean equals(Object o){
         return o instanceof Node && ((Node) o).getNumber() == this.getNumber();
-    }
-
-    public void visitEdges() {
-        for(Edge edge: edges){
-            visitEdge(edge);
-        }
-    }
-
-    public void visit() {
-        visited = true;
-    }
-
-    public boolean visited() {
-        return visited;
     }
 
 }

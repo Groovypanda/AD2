@@ -36,15 +36,4 @@ public class Edge {
         }
         return nodes[0];
     }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setVisited(){
-        assert(!visited);
-        visitedAmount++;
-        assert(visitedAmount<=2);
-        visited = true; }
-    public boolean isVisited() { return visited; }
 }

@@ -7,25 +7,21 @@ import nodearray.NodeArray;
  * Created by Jarre on 8/10/2016.
  */
 public class Graph {
-    //Arrays for building the graph efficiently.
-    private int size;
     private Edge[] edgeArray;
-    private NodeArray nodes;
+    private Node[] nodes;
+    private NodeArray nodeArray;
 
     //Binomial heap with highest elements at back and always pull from back????
 
     public Graph(int nodeAmount, int edgeAmount){
-        this.size = nodeAmount;
         this.edgeArray = new Edge[edgeAmount];
-        this.nodes = new NodeArray(size, edgeAmount);
-    }
-
-    public Node pull(){
-        return nodes.pull();
+        this.nodes = new Node[nodeAmount];
+        nodeArray = new NodeArray(nodeAmount, edgeAmount);
     }
 
     public void addNode(Node n) {
-        nodes.addNode(n);
+        nodeArray.addNode(n);
+        nodes[n.getNumber()-1] = n;
     }
 
     public void addVertex(Node n, int edge){
@@ -39,17 +35,13 @@ public class Graph {
     }
 
     public Node[] getNodes(){
-        return nodes.getNodes();
+        return nodes;
     }
 
-    public void sortBackwards(){nodes.sortBackwards();}
-    public void sort(){nodes.sort();}
-    public void addAll(){nodes.addAll();}
+    public void sort(boolean backwards){ nodeArray.sort(backwards);}
+    public Node[] getSortedNodes(){return nodeArray.getSortedNodes();}
+
     public Edge getEdge(int edgeNumber){ return edgeArray[edgeNumber-1]; }
-    public Edge[] getEdges(){ return edgeArray; }
     private void setEdge(int index, Edge e){ edgeArray[index-1] =  e; }
-    public int size(){ return size; }
-    public void removeEdge(int edgeNumber) {
-        edgeArray[edgeNumber-1] = null;
-    }
+
 }
