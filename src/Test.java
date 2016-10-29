@@ -9,7 +9,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
- * Created by Jarre on 8/10/2016.
+ * A class purely used for testing purposes.
+ * It basically contains a main function and a few help methods.
+ * @author Jarre Knockaert
  */
 public class Test {
     static int i = 0;

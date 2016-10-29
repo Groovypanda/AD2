@@ -27,7 +27,7 @@ public class Graph {
          * The sortedNodeArray can't be accessed until the sort method is called. The sort method should be called
          * once all nodes are added to the sortedNodeArray.
          */
-        sortedNodeArray = new SortedNodeArray(nodeAmount, edgeAmount);
+        sortedNodeArray = new SortedNodeArray(nodeAmount);
     }
 
     /**
