@@ -26,13 +26,13 @@ public class BinaryFileReader {
      * @param filename The name of the file to be read.
      * @return A byte array containing the contents of the given file. Returns null if the file couldn't be read.
      */
-    public byte[] readBinaryFile(String filename){
+    public byte[] readBinaryFile(String filename) throws IOException {
         try {
             Path path = Paths.get(System.getProperty("user.dir"), "data", filename);
             return Files.readAllBytes(path);
         } catch (IOException e) {
             System.err.println("Failed to read the given binary file: " + filename);
-            return null;
+            throw e;
         }
     }
 

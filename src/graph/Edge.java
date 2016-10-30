@@ -18,6 +18,18 @@ public class Edge {
     }
 
     /**
+     * A constructor for an edge with the given endpoints.
+     * @param number A unique number to identify the edge.
+     * @param endpoint1 The first endpoint of the edge.
+     * @param endpoint2 The second endpoint of the edge.
+     */
+    public Edge(int number, Node endpoint1, Node endpoint2){
+        this(number);
+        addNode(endpoint1);
+        addNode(endpoint2);
+    }
+
+    /**
      * This method adds the given node (endpoint) to this edge.
      * @param node An endpoint of the edge
      * @throws IndexOutOfBoundsException If more than 2 nodes are added.

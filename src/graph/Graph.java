@@ -33,8 +33,12 @@ public class Graph {
     /**
      * Adds a node to the graph.
      * @param node The node which has to be added
+     * @throws IndexOutOfBoundsException The nodeNumber exceeds the size of the graph or the nodeNumber is 0 or negative.
      */
     public void addNode(Node node) {
+        if(nodeArray[node.getNumber()-1]!=null){
+            throw new IllegalArgumentException(String.format("The graph already contains a node with number %s.", node.getNumber()));
+        }
         sortedNodeArray.addNode(node);
         nodeArray[node.getNumber()-1] = node; //node numbers run from 1->n. this has to map on 0->n-1.
     }
@@ -46,6 +50,7 @@ public class Graph {
      * @param node An endpoint of the given edge. The endpoint will be added to the edge and the edge will be added
      *             to the neighbouring edges of the node.
      * @param edgeNumber The number of an edge. The edge will be created an added to the graph if it didn't exist yet.
+     * @throws IndexOutOfBoundsException The edgeNumber exceeds the edgeAmount.
      */
     public void addEdge(Node node, int edgeNumber){
         Edge e = getEdge(edgeNumber);
@@ -87,6 +92,13 @@ public class Graph {
             sortedNodeArray.sort(lowestFirst);
             hasSorted = true;
         }
+    }
+
+    /**
+     * @return An array of edges in the graph.
+     */
+    public Edge[] getEdges(){
+        return edgeArray;
     }
 
     /**

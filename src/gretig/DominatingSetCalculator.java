@@ -158,7 +158,7 @@ public class DominatingSetCalculator {
              * If the coverage of a node is 0, it's better to just move on to the next node.
              * Important: the coverage property of a node is an upper bound for the actual coverage!
              */
-            if (v.getCoverage() != 0) {
+            if (v.getCoverage() > 0) {
                 /**
                  * Local search for the node with the highest coverage.
                  * In a greedy algorithm this is the best node to add to the dominant set.

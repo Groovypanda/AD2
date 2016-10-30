@@ -30,12 +30,12 @@ public class Dominantie {
                 DominatingSetCalculator setCalculator = new DominatingSetCalculator(graph);
                 //Computes an approximation of the dominant list of the given graph.
                 List<Node> dominantList = setCalculator.getDominantList();
-                int nodesSize = graph.getNodes().length;
-                int dominantlistSize = dominantList.size();
-                System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
+                //int nodesSize = graph.getNodes().length;
+                //int dominantlistSize = dominantList.size();
+                //System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
                 for(Node node: dominantList){ //Print nodes to stdout
-                    //System.out.print(node.getNumber());
-                    //System.out.print(" ");
+                    System.out.print(node.getNumber());
+                    System.out.print(" ");
                 }
                 System.out.println();
             }
@@ -43,5 +43,6 @@ public class Dominantie {
             System.err.println("Couldn't read the given input.");
         }
     }
+
 }
 
