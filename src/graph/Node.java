@@ -51,6 +51,24 @@ public class Node {
     };
 
     /**
+     * Returns the actual coverage for a certain node.
+     * @return
+     */
+    public int getActualCoverage(){
+        int coverage = 0;
+        for(Edge edge: edges){
+            Node w = edge.getNeighbour(this);
+            if(!w.visited()){
+                coverage++;
+            }
+        }
+        if(!visited){
+            coverage++;
+        }
+        return coverage;
+    }
+
+    /**
      * Decrement the coverage with one. This method should be called when a neighbour was added to the dominating set.
      */
     public void decrementCoverage(){
@@ -145,4 +163,11 @@ public class Node {
         return o instanceof Node && ((Node) o).getNumber() == this.getNumber();
     }
 
+    /**
+     * Resets a node to initialconditions.
+     */
+    public void reset(){
+        visited = false;
+        coverage = edges.size()+1;
+    }
 }

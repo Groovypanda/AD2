@@ -37,9 +37,16 @@ public class SortedNodeArray {
         sortedNodeArray = new Node[k];
     }
 
+    public SortedNodeArray(Node[] nodes) {
+        this(nodes.length);
+        for(Node node: nodes){
+            addNode(node);
+        }
+    }
+
     /**
      * This method should only be performed after adding and sorting the nodes.
-     * @return an array with sorted nodes. If the sort method hasn't been executed, it will return null.
+     * @return an array with sorted nodes. If the sort method hasn't been executed, it will return an empty array.
      */
     public Node[] getSortedNodes(){
         return sortedNodeArray;

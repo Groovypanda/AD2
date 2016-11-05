@@ -17,7 +17,7 @@ import java.util.List;
 public class Main {
     static int i = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("testset/graaf1.sec");
+        List<Graph> graphs = readGraphs("testset/graaf5.sec");
         //PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
         for(Graph g: graphs){
             i++;

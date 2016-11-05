@@ -45,7 +45,7 @@ public class TestDominatingSetCalculator {
         for(Graph graph: graphs){
             DominatingSetCalculator calculator = new DominatingSetCalculator(graph);
             List<Node> dominantList = calculator.getDominantList();
-            System.out.println(String.format("(%d/%d): %.1f%% coverage", dominantList.size(), graph.getNodes().length, ((double)dominantList.size()/(double)graph.getNodes().length)*100));
+            System.out.println(String.format("%d/%d (%.2f%%)", dominantList.size(), graph.getNodes().length, ((double)dominantList.size()/(double)graph.getNodes().length)*100));
             assertTrue(calculator.isDominant(dominantList));
         }
     }
