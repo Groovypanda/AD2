@@ -17,12 +17,13 @@ import java.util.List;
 public class Main {
     static int i = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("testset/graaf5.sec");
+        List<Graph> graphs = readGraphs("klein/triang_nonham_1.sec");
         //PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
         for(Graph g: graphs){
+            showGraph(g);
             i++;
-            DominatingSetCalculator setCalculator = new DominatingSetCalculator(g);
-            List<Node> dominantList = setCalculator.getDominantList();
+            //DominatingSetCalculator setCalculator = new DominatingSetCalculator(g);
+            //List<Node> dominantList = setCalculator.getDominantList();
             /*
             for(Node node: dominantList){
                 //System.out.println(node);
@@ -32,9 +33,9 @@ public class Main {
                 writer.print(' ');
             }
             */
-            System.out.println(dominantList.size());
-            System.out.println(g.getNodes().length);
-            assert(setCalculator.isDominant(dominantList));
+            //System.out.println(dominantList.size());
+            //System.out.println(g.getNodes().length);
+            //assert(setCalculator.isDominant(dominantList));
         }
         //writer.close();
     }
