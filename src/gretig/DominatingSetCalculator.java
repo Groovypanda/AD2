@@ -20,14 +20,14 @@ import java.util.Set;
  */
 public class DominatingSetCalculator {
     //The graph of which we want to calculate a minimal dominating set.
-    private Graph graph;
-    private int optimization;
+    protected Graph graph;
+    protected int optimization;
     //The amount of coverage the dominant list gives. If this equals the amount of nodes in the graphs,
     // it covers the whole graph, in other words the amount of unique nodes with their neighbours equals the size of all nodes.
-    private int totalCoverage;
+    protected int totalCoverage;
     //I use a list as internal data structure because a set doesn't offer constant time for adding items to the set.
     //Arrays would have to much overhead (a lot of null gaps (~75%)). List is useful because add has a constant amortized time.
-    private List<Node> dominantList;
+    protected List<Node> dominantList;
 
 
     /**
@@ -92,7 +92,7 @@ public class DominatingSetCalculator {
      * algorithm to work, however for certain graphs (with a lot of nodes with degree 1). The algorithm will give
      * a much better result in this case.
      */
-    private void prepareDominantList() {
+    protected void prepareDominantList() {
         /**
          * This method when using a sorted array (by degree) with nodes because the nodes with degree one will have the
          * highest index. Once we reach a node with degree > 1, the loop may end.
@@ -143,7 +143,7 @@ public class DominatingSetCalculator {
      *                            is dominant after running the method with parameter 0. A higher minimumNodeCoverage
      *                            will only add nodes to the dominant set with 'minimumNodeCoverage' amount of edges.
      */
-    private void buildDominantList(int minimumNodeCoverage) {
+    protected void buildDominantList(int minimumNodeCoverage) {
         Node[] nodes = graph.getSortedNodes(); //The algorithm works best with a sorted array by degree (lowest degree first).
         /**
          * A loop over the nodes, this loop will end prematurely if the whole graph is covered, this is always the case
@@ -230,4 +230,9 @@ public class DominatingSetCalculator {
         //if coverage contains the same amount of nodes as the graph, the dominantlist is dominant.
         return graphNodes.length == coverage.size();
     }
+
+    public Graph getGraph(){
+        return graph;
+    }
+
 }

@@ -31,6 +31,17 @@ public class Graph {
     }
 
     /**
+     * Sets the graph back to starting condition. (Before sort has been called.)
+     */
+    public void reset(){
+        this.sortedNodeArray = new SortedNodeArray(nodeArray);
+        this.hasSorted = false;
+        for(Node node: nodeArray){
+            node.reset();
+        }
+    }
+
+    /**
      * Adds a node to the graph.
      * @param node The node which has to be added
      * @throws IndexOutOfBoundsException The nodeNumber exceeds the size of the graph or the nodeNumber is 0 or negative.
@@ -69,14 +80,14 @@ public class Graph {
 
     /**
      * This method should be called after the sort method has been executed.
-     * @return A sorted array of nodes. Returns null if the sort method hasn't been executed.
+     * @return A sorted array of nodes. Returns an unsorted array if the nodes haven't been sorted.
      */
     public Node[] getSortedNodes(){
         if(hasSorted){
             return sortedNodeArray.getSortedNodes();
         }
         else {
-            return null;
+            return nodeArray;
         }
     }
 
@@ -114,5 +125,7 @@ public class Graph {
      * @param edge The edge object
      */
     private void setEdge(int edgeNumber, Edge edge){ edgeArray[edgeNumber-1] =  edge; }
+
+
 
 }
