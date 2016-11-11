@@ -1,12 +1,11 @@
+import graph.Cycle;
+import graph.Edge;
 import graph.Graph;
 import graph.Node;
-import gretig.*;
+import gretig.HamiltonianCycleCalculator;
 import input.BinaryFileReader;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -17,26 +16,17 @@ import java.util.List;
 public class Main {
     static int i = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("testset/graaf5.sec");
-        //PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+        List<Graph> graphs = readGraphs("klein/triang_alle_07.sec");
         for(Graph g: graphs){
-            i++;
-            DominatingSetCalculator setCalculator = new DominatingSetCalculator(g);
-            List<Node> dominantList = setCalculator.getDominantList();
-            /*
-            for(Node node: dominantList){
-                //System.out.println(node);
+            HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+            System.out.println("===========");
+            showGraph(g);
+            System.out.println("===========");
+            Cycle cycle = calculator.getCycle();
+            for(Edge edge: cycle.getEdges()){
+                System.out.println(edge);
             }
-            for(Node node: g.getNodes()){
-                writer.print(node.getDegree());
-                writer.print(' ');
-            }
-            */
-            System.out.println(dominantList.size());
-            System.out.println(g.getNodes().length);
-            assert(setCalculator.isDominant(dominantList));
         }
-        //writer.close();
     }
 
     public static List<Graph> readGraphs(String filename) {

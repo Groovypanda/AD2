@@ -40,6 +40,7 @@ public class Node {
      */
     public void addEdge(Edge edge){
         edges.add(edge);
+        edge.setEdgeIndex(this, edges.size()-1);
         coverage++; //Every adjacent edge indicates a neighbour and thus a higher coverage.
     }
 
