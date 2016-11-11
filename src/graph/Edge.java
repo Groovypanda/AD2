@@ -111,6 +111,9 @@ public class Edge {
 
     public void visit() {
         visited = true;
+        for(Node node: nodes){
+            node.setVisited(true);
+        }
     }
 
     public Node[] getNodes() {

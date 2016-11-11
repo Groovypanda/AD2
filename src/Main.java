@@ -16,16 +16,21 @@ import java.util.List;
 public class Main {
     static int i = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("klein/triang_alle_07.sec");
+        List<Graph> graphs = readGraphs("testset/triang5.sec");
         for(Graph g: graphs){
             HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
-            System.out.println("===========");
-            showGraph(g);
-            System.out.println("===========");
+            //System.out.println("===========");
+            //showGraph(g);
+            //System.out.println("===========");
             Cycle cycle = calculator.getCycle();
+            int i =0;
             for(Edge edge: cycle.getEdges()){
-                System.out.println(edge);
+                i++;
+                //System.out.println(edge);
             }
+            System.out.println("------------");
+            System.out.println("Size: " + i);
+            System.out.println("Graph size: " + g.getNodes().length);
         }
     }
 

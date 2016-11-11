@@ -171,4 +171,8 @@ public class Node {
         visited = false;
         coverage = edges.size()+1;
     }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
 }
