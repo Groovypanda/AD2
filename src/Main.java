@@ -1,12 +1,11 @@
+import graph.Cycle;
+import graph.Edge;
 import graph.Graph;
 import graph.Node;
-import gretig.*;
+import gretig.HamiltonianCycleCalculator;
 import input.BinaryFileReader;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -15,29 +14,25 @@ import java.util.List;
  * @author Jarre Knockaert
  */
 public class Main {
-    static int i = 0;
+    static int graphNumber = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("klein/triang_nonham_1.sec");
-        //PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+        List<Graph> graphs = readGraphs("klein/triang_alle_08.sec");
         for(Graph g: graphs){
+            System.out.println("Graph " + ++graphNumber);
+            HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+            //System.out.println("===========");
             showGraph(g);
-            i++;
-            //DominatingSetCalculator setCalculator = new DominatingSetCalculator(g);
-            //List<Node> dominantList = setCalculator.getDominantList();
-            /*
-            for(Node node: dominantList){
-                //System.out.println(node);
+            //System.out.println("===========");
+            Cycle cycle = calculator.getCycle();
+            int i =0;
+            for(Edge edge: cycle.getEdges()){
+                i++;
+                //System.out.println(edge);
             }
-            for(Node node: g.getNodes()){
-                writer.print(node.getDegree());
-                writer.print(' ');
-            }
-            */
-            //System.out.println(dominantList.size());
-            //System.out.println(g.getNodes().length);
-            //assert(setCalculator.isDominant(dominantList));
+            System.out.println("------------");
+            System.out.println("Size: " + i);
+            System.out.println("Graph size: " + g.getNodes().length);
         }
-        //writer.close();
     }
 
     public static List<Graph> readGraphs(String filename) {

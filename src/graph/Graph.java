@@ -69,8 +69,8 @@ public class Graph {
             e = new Edge(edgeNumber);
             setEdge(edgeNumber, e);
         }
-        node.addEdge(e); //Add the edge to the node
         e.addNode(node); //Add the endpoint to the edge
+        node.addEdge(e); //Add the edge to the node
     }
 
     /**

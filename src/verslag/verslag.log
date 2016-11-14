@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  5 NOV 2016 10:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  14 NOV 2016 09:33
 entering extended mode
 **./verslag.tex
 (verslag.tex
@@ -634,39 +634,41 @@ Library (tcolorbox): 'tcbskins.code.tex' version '3.95'
 Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '3.95'
 )))
 \c@opgave=\count135
+\c@definitie=\count136
+\c@opmerking=\count137
  (verslag.aux)
 \openout1 = `verslag.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 31.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 35.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    ... okay on input line 35.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count136
+\scratchcounter=\count138
 \scratchdimen=\dimen163
 \scratchbox=\box51
-\nofMPsegments=\count137
-\nofMParguments=\count138
+\nofMPsegments=\count139
+\nofMParguments=\count140
 \everyMPshowfont=\toks48
-\MPscratchCnt=\count139
+\MPscratchCnt=\count141
 \MPscratchDim=\dimen164
-\MPnumerator=\count140
-\makeMPintoPDFobject=\count141
+\MPnumerator=\count142
+\makeMPintoPDFobject=\count143
 \everyMPtoPDFconversion=\toks49
 ) ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
 Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
@@ -715,32 +717,32 @@ G,.JBIG2,.JB2,.eps]
 )
 ABD: EveryShipout initializing macros [1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [1]
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] [2]
 
-LaTeX Warning: Float too large for page by 4.75243pt on input line 140.
+LaTeX Warning: Float too large for page by 4.75243pt on input line 173.
 
-[2] [3]
+[3] [4]
 
-LaTeX Warning: Reference `neighbourloop1' on page 4 undefined on input line 161
+LaTeX Warning: Reference `neighbourloop1' on page 5 undefined on input line 194
 .
 
-[4] [5] [6] [7] [8] [9]
+[5] [6] [7] [8] [9]
 
-LaTeX Warning: Reference `tabel:ordening' on page 10 undefined on input line 26
-3.
+LaTeX Warning: Reference `tabel:ordening' on page 10 undefined on input line 29
+6.
 
 [10]
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 299--314
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 332--347
  [][] 
  []
 
 
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 320--335
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 353--368
  [][] 
  []
 
 [11] [12] [13]
-\c@x=\count142
+\c@x=\count144
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -805,8 +807,8 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-\c@y=\count143
-\c@z=\count144
+\c@y=\count145
+\c@z=\count146
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -975,8 +977,8 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-\c@a=\count145
-\c@b=\count146
+\c@a=\count147
+\c@b=\count148
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1069,19 +1071,19 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
- [14] [15] [16] (verslag.aux)
+ [14] [15] (verslag.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 17275 strings out of 493334
- 347028 string characters out of 3136671
- 523696 words of memory out of 3000000
- 20495 multiletter control sequences out of 15000+200000
+ 17287 strings out of 493334
+ 347162 string characters out of 3136671
+ 522185 words of memory out of 3000000
+ 20507 multiletter control sequences out of 15000+200000
  10349 words of font info for 37 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,11n,87p,1556b,933s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 55i,11n,87p,1556b,935s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Jarre\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
 tcrm1095.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
 mbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmb
@@ -1093,9 +1095,9 @@ fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb>
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on verslag.pdf (17 pages, 179287 bytes).
+Output written on verslag.pdf (16 pages, 182696 bytes).
 PDF statistics:
- 105 PDF objects out of 1000 (max. 8388607)
+ 102 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

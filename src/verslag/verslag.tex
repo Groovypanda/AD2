@@ -27,6 +27,10 @@
 
 \theoremstyle{definition}
 \newtheorem{opgave}{Opgave}
+\theoremstyle{definition}
+\newtheorem{definitie}{Definitie}
+\theoremstyle{definition}
+\newtheorem{opmerking}{Opmerking}
 
 \begin{document}
 	\title{Project Gretige Algoritmen}
@@ -37,9 +41,38 @@
 \newpage
 \pagenumbering{arabic}
 
+\section{Definities}
+Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
+\begin{definitie}
+	Een \textbf{dominante verzameling} van een graaf G is een deelverzameling D(G) van V(G) zodat elke top uit V(G) ofwel element is van D(G) ofwel adjecent is met een top uit D(G). 
+	\begin{equation}
+	D(G) = \{v \in V(G) \mid v \in D(G) \vee (w \in D(G) \land vw \in E(G)\}
+	\end{equation}
+\end{definitie}
+\begin{definitie}
+	Een top v wordt gemarkeerd met \textbf{bezocht} als v element is van de dominante verzameling.
+\end{definitie}
+\begin{definitie}
+	Een top v is een \textbf{buur} van een top w als de toppen adjecent zijn, m.a.w. $v \in N_G(w)$
+\end{definitie}
+\begin{definitie}
+	De \textbf{coverage} of \textbf{bedekking} van een top v stelt een bovengrens voor van de bijdrage van top aan de dominante verzameling. Deze bijdrage is het maximale aantal toppen die toegevoegd worden aan de dominante lijst door het toevoegen van v aan D(G). 
+	\begin{equation}
+	coverage(v) \geq \vert \{w \in V(G) \mid w \in \{v \cup N_G(v)\} \land w \not\in D(G) \}\vert
+	\end{equation}
+\end{definitie}
+\begin{definitie}
+	De \textbf{actual coverage} of \textbf{werkelijke bedekking} van een top v stelt de eigenlijke bijdrage van top aan de dominante verzameling. Deze bijdrage is het exacte aantal toppen die toegevoegd worden aan de dominante lijst door het toevoegen van v aan D(G).
+	\begin{equation}
+	actualCoverage(v) = \vert \{w \in V(G) \mid w \in \{v \cup N_G(v)\} \land w \not\in D(G) \}\vert
+	\end{equation} 
+\end{definitie}
+\begin{opmerking}
+	De werkelijke coverage of werkelijke bedekking van een verzameling is de totale werkelijke coverage of totale werkelijke bedekking van elke top uit die verzameling. Hierbij moet rekening gehouden worden dat door het toevoegen van de ene top aan de dominante verzameling, de werkelijke bedekking kan wijzigen van de andere top. Met andere woorden is het dus het aantal toegevoegde element aan de dominante verzameling na het toevoegen van elke top uit de verzameling. 
+\end{opmerking}
 \section{Theoretische vragen}
 \begin{opgave}
-	Indien er 2 naburige toppen v en w een grote bedekking leveren, zal de top v met de hoogste graad worden toegevoegd aan de dominante verzameling en de buren zullen worden verwijderd. Het zou echter beter zijn om zowel v en w toe te voegen aan de dominante verzameling, want w leidt ook tot een hoge toename van de bedekking van de dominante verzameling. 
+	Indien er 2 naburige toppen v en w een grote bedekking leveren, zal de top v met de hoogste graad worden toegevoegd aan de dominante verzameling en de buren zullen worden verwijderd. Het zou echter beter zijn om zowel v en w toe te voegen aan de dominante verzameling, want w zorgt ook voor een hoge toename van de bedekking van de dominante verzameling. 
 	Een voorbeeld van dergelijk geval, een graaf waarbij het algoritme zeer slecht presteert, zie je op figuur \ref{fig:worstcase}. Als we het algoritme uitvoeren op de graaf gebeurt het volgende:
 	\begin{itemize}
 		\item Neem top v = $4k+1$ met hoogste graad: $2k-1$. (Dit kon evengoed top $4k+2$ zijn, aangezien zijn graad gelijk is.)
@@ -96,15 +129,15 @@
 				\Ensure Een dominante verzameling D
 				\State $totalCoverage \gets 0$
 				\State Count-sort V(G) op basis van de graad van de toppen\label{sortoperation}
-				\ForAll{$v\ |\ v \in V(G) \land deg(v)=1$}\Comment{Optimalisatie 1}\label{startoptimalizationloop1}
-					\State Neem $w\ |\ wv \in E(G)$\Comment{v heeft \'{e}\'{e}n buur}
+				\ForAll{$v \in V(G) \mid deg(v)=1$}\Comment{Optimalisatie 1}\label{startoptimalizationloop1}
+					\State Neem $w \mid wv \in E(G)$\Comment{v heeft \'{e}\'{e}n buur}
 					\If{w nog niet bezocht $\land\ coverage(w) > 0$}
 						\State $D \gets D \cup \{w\}$
 						\State bezoek w 
 						\State $totalCoverage \gets totalCoverage+1$
 						\State $coverage(w) \gets 0$
 					\EndIf 
-					\ForAll {$u\ |\ u \in V(G) \land uw \in E(G)$}
+					\ForAll {$u \in V(G) \mid uw \in E(G)$}
 						\State $coverage(u) \gets coverage(u) - 1$
 						\If{u niet bezocht}
 							\State bezoek u
@@ -120,9 +153,9 @@
 					\While{$totalCoverage < |V(G)| \land i<|V(G)|$}\label{startactualalgorithmloop}
 					\State $v \gets v_i \in V(G)$
 						\If{$coverage(v) > 0$}
-							\State Neem $max\ |\ (\forall u \in \{v\} \cup N_G(v)) \land (max \ne u) \Rightarrow coverage(max)>coverage(u))$
+							\State Neem $max \mid (\forall u \in \{v\} \cup N_G(v)) \land (max \ne u) \Rightarrow coverage(max)>coverage(u))$
 							\If{$coverage(max) > minimum$}
-								\State actualCoverage $\gets \{w\ |\ w \in N_G(max) \land w\ niet \  bezocht\}|$\label{neighbourloop2}
+								\State actualCoverage $\gets \vert\{w \in N_G(max) \mid w\ niet \  bezocht\}\vert $ \label{neighbourloop2}
 								\If{$actualCoverage > minimum$}
 									\State $totalCoverage \gets totalCoverage + actualCoverage$
 									\State $coverage(max)  \gets 0$

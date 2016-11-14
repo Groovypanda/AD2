@@ -36,8 +36,6 @@ public class DominatingSetCalculator {
      * @param graph This is the graph of which the dominating set should be computed.
      * @param optimization The optimization level, This should range from 0-6, optimization level 0 will offer the
      *                     worst results and optimization level 6 will offer the best results.
-     *                     Higher optimization levels are allowed but won't offer better results!
-     *                     The higher the optimization the slower the dominating set will compute, but the complexity remains linear!
      */
     public DominatingSetCalculator(Graph graph, int optimization){
         this.graph = graph;
