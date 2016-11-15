@@ -4,19 +4,23 @@ package graph;
  * Created by Jarre on 11/11/2016.
  */
 public class CycleEdge {
-    private CycleEdge next;
     private Edge current;
-    private CycleEdge previous;
+    private CycleEdge realPrevious;
+    private CycleEdge realNext;
+    private CycleEdge visibleNext;
+    private CycleEdge visiblePrevious;
+    private CycleEdge tmpVisibleNext;
+    private CycleEdge tmpVisiblePrevious;
 
     public CycleEdge(Edge edge){
         edge.visit();
-        this.next = null;
+        this.realNext = null;
         current = edge;
     }
 
-    public CycleEdge(Edge edge, CycleEdge previous){
+    public CycleEdge(Edge edge, CycleEdge realPrevious){
         this(edge);
-        previous.connectNextEdge(this);
+        realPrevious.connectNextEdge(this);
     }
 
     public Edge getEdge() {
@@ -24,19 +28,19 @@ public class CycleEdge {
     }
 
     public void setNextEdge(CycleEdge edge){
-        this.next = edge;
+        this.realNext = edge;
     }
 
-    public CycleEdge getNext(){
-        return next;
+    public CycleEdge getRealNext(){
+        return realNext;
     }
 
     public void setPreviousEdge(CycleEdge previous) {
-        this.previous = previous;
+        this.realPrevious = previous;
     }
 
-    public CycleEdge getPrevious() {
-        return previous;
+    public CycleEdge getRealPrevious() {
+        return realPrevious;
     }
 
     public void addNextCycleEdge(CycleEdge newCycleEdge){
@@ -64,15 +68,15 @@ public class CycleEdge {
         newCycleEdge.getEdge().visit();
     }
 
-    //1 means other edge is the next edge, -1 means it's the previous edge
+    //1 means other edge is the realNext edge, -1 means it's the realPrevious edge
     private void connectEdges(CycleEdge other, int direction){
         if(direction==1){
             setNextEdge(other);
-            getNext().setPreviousEdge(this);
+            getRealNext().setPreviousEdge(this);
         }
         else {
             setPreviousEdge(other);
-            getPrevious().setNextEdge(this);
+            getRealPrevious().setNextEdge(this);
         }
     }
 
@@ -80,4 +84,35 @@ public class CycleEdge {
         return current.toString();
     }
 
+    public CycleEdge getVisibleNext() {
+        return visibleNext;
+    }
+
+    public void setVisibleNext(CycleEdge visibleNext){
+        this.visibleNext = visibleNext;
+    }
+
+    public CycleEdge getVisiblePrevious() {
+        return visiblePrevious;
+    }
+
+    public void setVisiblePrevious(CycleEdge visiblePrevious) {
+        this.visiblePrevious = visiblePrevious;
+    }
+
+    public CycleEdge getTmpVisibleNext() {
+        return tmpVisibleNext;
+    }
+
+    public void setTmpVisibleNext(CycleEdge tmpVisibleNext) {
+        this.tmpVisibleNext = tmpVisibleNext;
+    }
+
+    public CycleEdge getTmpVisiblePrevious() {
+        return tmpVisiblePrevious;
+    }
+
+    public void setTmpVisiblePrevious(CycleEdge tmpVisiblePrevious) {
+        this.tmpVisiblePrevious = tmpVisiblePrevious;
+    }
 }

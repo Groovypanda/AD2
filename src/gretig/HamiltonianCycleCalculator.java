@@ -30,29 +30,51 @@ public class HamiltonianCycleCalculator {
     }
 
     public Cycle getCycle(){
-        Cycle realCycle = new Cycle(graph.getNodes().length);
-        Cycle visitableCycle = new Cycle(graph.getNodes().length);
-        Edge start = graph.getEdges()[0];
-        initiateCycles(realCycle, visitableCycle, start);
+        Cycle cycle = new Cycle(graph.getNodes().length);
+        initiateCycle(cycle, graph.getEdges()[0]);
         List<CycleEdge> addedCycleEdges = new ArrayList<>();
-        while(!realCycle.isComplete() && !visitableCycle.empty()){
-            CycleEdge visitableCurrent = visitableCycle.next();
-            while(visitableCycle.hasNext()  && !realCycle.isComplete()){
-                Edge[] plane = getAdjacentPlane(visitableCurrent.getEdge());
-                if(!plane[1].getCommonNode(plane[2]).visited() && !plane[1].isVisited() && !plane[2].isVisited() && realCycle.getSize() < graph.getNodes().length){
-                    realCycle.add(visitableCurrent.getPrevious(), new CycleEdge(plane[1]), new CycleEdge(plane[2]), visitableCurrent.getNext());
-                    addedCycleEdges.add(new CycleEdge(plane[1], visitableCurrent.getPrevious()));
-                    //visitableCycle.add(visitableCurrent.getPrevious(), new CycleEdge(plane[1]), new CycleEdge(plane[2]), visitableCurrent.getNext());
+        List<CycleEdge> removedCycleEdges = new ArrayList<>();
+        while(!cycle.isComplete() && !cycle.empty()){
+            while(cycle.hasVisibleNext()  && !cycle.isComplete()){
+                CycleEdge visibleCurrent = cycle.visibleNext();
+                Edge[] plane = getAdjacentPlane(visibleCurrent.getEdge());
+                if(!plane[1].getCommonNode(plane[2]).visited() && !plane[1].isVisited() && !plane[2].isVisited() && cycle.getSize() < graph.getNodes().length){
+                    CycleEdge current1 = new CycleEdge(plane[1]);
+                    CycleEdge current2 = new CycleEdge(plane[2]);
+                    cycle.add(visibleCurrent.getRealPrevious(), current1, current2, visibleCurrent.getRealNext());
+                    current1.setTmpVisiblePrevious(visibleCurrent);
+                    current1.setTmpVisibleNext(current2);
+                    current2.setTmpVisiblePrevious(current1);
+                    current2.setTmpVisibleNext(visibleCurrent.getVisibleNext());
+                    addedCycleEdges.add(current1);
+                    addedCycleEdges.add(current2);
                 }
                 else {
-                    visitableCycle.remove();
+                    removedCycleEdges.add(visibleCurrent);
                 }
-                visitableCurrent = visitableCycle.next();
+            }
+            //Samen evenveel iteraties als vorige while loop.
+            for(CycleEdge addedCycleEdge: addedCycleEdges){
+                //NULLPOINTER
+                addedCycleEdge.setVisiblePrevious(addedCycleEdge.getTmpVisiblePrevious());
+                addedCycleEdge.setVisibleNext(addedCycleEdge.getTmpVisibleNext());
+            }
+            for(CycleEdge removedCycleEdge: removedCycleEdges){
+                removedCycleEdge.getVisiblePrevious().setVisibleNext(removedCycleEdge.getVisibleNext());
+                if(removedCycleEdge.equals(cycle.getVisibleHead())){
+                    cycle.setVisibleHead(removedCycleEdge.getVisiblePrevious());
+                    cycle.setVisibleTail(removedCycleEdge.getVisibleNext());
+                }
+                if(removedCycleEdge.equals(cycle.getVisibleTail())){
+                    cycle.setVisibleHead(removedCycleEdge.getVisibleNext());
+                    cycle.setVisibleTail(removedCycleEdge.getVisiblePrevious());
+                }
             }
             addedCycleEdges.clear();
+            removedCycleEdges.clear();
         }
 
-        return realCycle;
+        return cycle;
     }
 
     public Edge[] getAdjacentPlane(Edge edge){
@@ -64,24 +86,18 @@ public class HamiltonianCycleCalculator {
     }
 
 
-    /**
-     * Initiates a new cycle with 3 edges of a graph.
-     * @return A list of the edges of the cycle
-     */
-    public void initiateCycles(Cycle realCycle, Cycle visitableCycle, Edge start){
-        //VisitableCycleEdges is a copy of the realCycle, but doesn't need to be doubly linked.
+    public void initiateCycle(Cycle cycle, Edge start){
         CycleEdge[] cycleEdges = new CycleEdge[3];
         cycleEdges[0] = new CycleEdge(start);
         cycleEdges[1] = new CycleEdge(start.getNextEdge(start.getNodes()[1]));
         cycleEdges[2] = new CycleEdge(start.getPreviousEdge(start.getNodes()[0]));
-        realCycle.add(cycleEdges[0], cycleEdges[1], cycleEdges[2]);
-        CycleEdge[] visitableCycleEdges = new CycleEdge[3];
-        visitableCycleEdges[0] = new CycleEdge(start);
-        visitableCycleEdges[1] = new CycleEdge(start.getNextEdge(start.getNodes()[1]));
-        visitableCycleEdges[2] = new CycleEdge(start.getPreviousEdge(start.getNodes()[0]));
-        visitableCycle.add(cycleEdges[0]);
-        visitableCycle.add(cycleEdges[0], cycleEdges[1]);
-        visitableCycle.add(cycleEdges[1], cycleEdges[2]);
+        cycle.add(cycleEdges[0], cycleEdges[1], cycleEdges[2]);
+        for(CycleEdge cycleEdge: cycleEdges){
+            cycleEdge.setVisiblePrevious(cycleEdge.getRealPrevious());
+            cycleEdge.setVisibleNext(cycleEdge.getRealNext());
+        }
+        cycle.setVisibleHead(cycleEdges[0]);
+        cycle.setVisibleTail(cycleEdges[2]);
     }
 
     //Recursive algorithm, always check other node in plane. If this hasn't been added, redirect cycle, and check first cycleEdge again
@@ -90,8 +106,8 @@ public class HamiltonianCycleCalculator {
         Edge[] plane = new Edge[3];
         CycleEdge[] cycleEdges = new CycleEdge[3];
         //The neighbours are used for appending the new CycleEdges, the given cycleEdge will be removed if more nodes can be added.
-        CycleEdge neighbour1 = cycleEdge.getNext();
-        CycleEdge neighbour2 = cycleEdge.getPrevious();
+        CycleEdge neighbour1 = cycleEdge.getRealNext();
+        CycleEdge neighbour2 = cycleEdge.getRealPrevious();
 
         //Calculate the plane which has to be checked.
         plane[0] = cycleEdge.getEdge();
@@ -107,7 +123,7 @@ public class HamiltonianCycleCalculator {
             neighbour2.addNextCycleEdge(cycleEdges[1]);
             cycleEdges[1].addNextCycleEdge(cycleEdges[2]);
             cycleEdges[2].addNextCycleEdge(neighbour1);
-            cycle.setFirst(cycleEdges[1]);
+            cycle.setHead(cycleEdges[1]);
             cycle.printCycle();
             size++;
             addEdges2(cycleEdges[1]);
@@ -129,7 +145,7 @@ public class HamiltonianCycleCalculator {
         cycleEdges[0] = new CycleEdge(edges[0]);
         cycleEdges[1] = new CycleEdge(current.getNextEdge(current.getNodes()[1]));
         cycleEdges[2] = new CycleEdge(current.getPreviousEdge(current.getNodes()[0]));
-        cycle.setFirst(cycleEdges[0]);
+        cycle.setHead(cycleEdges[0]);
         cycleEdges[0].addNextCycleEdge(cycleEdges[1]);
         cycleEdges[1].addNextCycleEdge(cycleEdges[2]);
         cycleEdges[2].addNextCycleEdge(cycleEdges[0]);

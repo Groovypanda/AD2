@@ -11,56 +11,60 @@ public class Cycle implements Iterator<CycleEdge> {
 
     private final int maxSize;
     private int size;
-    private CycleEdge first;
+    private CycleEdge head;
     private CycleEdge current;
-    private boolean visitedFirst = false;
-    int cycleEdgeIndex;
+    private CycleEdge tail;
+
+    private boolean visitedHead = false;
+
+    private CycleEdge visibleHead;
+    private CycleEdge visibleCurrent;
+    private CycleEdge visibleTail;
 
     public Cycle(int amount){
-        first = null;
+        head = null;
         size = 0;
-        cycleEdgeIndex = 0;
         maxSize = amount;
     }
 
-    public void setFirst(CycleEdge cycleEdge){
-        first = cycleEdge;
+    public void setHead(CycleEdge cycleEdge){
+        head = cycleEdge;
     }
 
     @Override
     public boolean hasNext() {
-        return !visitedFirst || !current.equals(first);
+        return !current.equals(tail);
     }
 
     @Override
     public CycleEdge next() {
         if(current==null){
-            visitedFirst = false;
-            current = first;
+            current = head;
             return current;
         }
-        current = current.getNext();
-        if(first.equals(current)){
-            visitedFirst = true;
+        current = current.getRealNext();
+        if(head.equals(current)){
         }
         return current;
     }
 
+    /*
     @Override
     public void remove(){
         if(current == null){
-            current = first;
+            current = head;
         }
-        CycleEdge previous = current.getPrevious();
-        CycleEdge next = current.getNext();
+        CycleEdge previous = current.getRealPrevious();
+        CycleEdge next = current.getRealNext();
         if(previous!=null){
             previous.connectNextEdge(next);
         }
-        if(first.equals(current)){
-            first = next;
+        if(head.equals(current)){
+            head = next;
         }
         size--;
     }
+    */
 
     public boolean isComplete(){
         return size == maxSize;
@@ -68,12 +72,12 @@ public class Cycle implements Iterator<CycleEdge> {
 
 
     public List<Edge> getEdges(){
-        CycleEdge current = first.getNext();
+        CycleEdge current = head.getRealNext();
         List<Edge> edges = new ArrayList<>();
-        edges.add(first.getEdge());
-        while(!current.getEdge().equals(first.getEdge())){
+        edges.add(head.getEdge());
+        while(!current.getEdge().equals(head.getEdge())){
             edges.add(current.getEdge());
-            current = current.getNext();
+            current = current.getRealNext();
 
         }
         return edges;
@@ -82,14 +86,14 @@ public class Cycle implements Iterator<CycleEdge> {
     public void printCycle() {
         System.out.println("====== Cykel ======");
         CycleEdge current = next();
-        Node second = current.getNext().getEdge().getCommonNode(current.getEdge());
+        Node second = current.getRealNext().getEdge().getCommonNode(current.getEdge());
         Node first = current.getEdge().getNeighbour(second);
         System.out.print(first.getNumber() + " ");
         System.out.print(second.getNumber() + " ");
         while(hasNext()){
             current = next();
             Edge currentEdge = current.getEdge();
-            Edge nextEdge = current.getNext().getEdge();
+            Edge nextEdge = current.getRealNext().getEdge();
             Node currentNode = currentEdge.getCommonNode(nextEdge);
             System.out.print(currentNode.getNumber() + " ");
         }
@@ -101,17 +105,20 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public void add(CycleEdge current) {
-        first = current;
+        head = current;
+        tail = current;
         size++;
     }
 
     public void add(CycleEdge previous, CycleEdge current) {
+        //SET HEAD AND TAIL?
         previous.connectNextEdge(current);
         size++;
     }
 
     public void add(CycleEdge previous, CycleEdge current, CycleEdge next){
-        first = previous;
+        head = previous;
+        tail = previous.getRealPrevious();
         previous.addNextCycleEdge(current);
         current.addNextCycleEdge(next);
         next.addNextCycleEdge(previous);
@@ -119,7 +126,8 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public void add(CycleEdge previous, CycleEdge current1, CycleEdge current2, CycleEdge next){
-        first = previous;
+        head = previous;
+        tail = previous.getRealPrevious();
         previous.addNextCycleEdge(current1);
         current1.addNextCycleEdge(current2);
         current2.addNextCycleEdge(next);
@@ -127,10 +135,45 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public boolean empty(){
-        return first == null;
+        return head == null;
     }
 
     public int getSize() {
         return size;
+    }
+
+    public boolean hasVisibleNext() {
+        if(current == null){
+            current = visibleHead;
+        }
+        boolean hasNext =  !visitedHead || !current.equals(visibleHead);
+        if(!hasNext){
+            visitedHead = false;
+        }
+        return hasNext;
+    }
+
+    public CycleEdge visibleNext() {
+        current = current.getVisibleNext();
+        if(current.equals(visibleHead)){
+            visitedHead = true;
+        }
+        return current;
+    }
+
+    public CycleEdge getVisibleHead() {
+        return visibleHead;
+    }
+
+    public void setVisibleHead(CycleEdge visibleHead) {
+        this.visibleHead = visibleHead;
+    }
+
+    public CycleEdge getVisibleTail() {
+        return visibleTail;
+    }
+
+    public void setVisibleTail(CycleEdge visibleTail) {
+        this.visibleTail = visibleTail;
     }
 }
