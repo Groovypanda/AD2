@@ -14,6 +14,11 @@ public class CycleEdge {
         current = edge;
     }
 
+    public CycleEdge(Edge edge, CycleEdge previous){
+        this(edge);
+        previous.connectNextEdge(this);
+    }
+
     public Edge getEdge() {
         return current;
     }
@@ -38,11 +43,7 @@ public class CycleEdge {
         addCycleEdge(newCycleEdge, 1);
     }
 
-    public void addPreviousCycleEdge(CycleEdge newCycleEdge){
-        addCycleEdge(newCycleEdge, -1);
-    }
-
-
+    public void addPreviousCycleEdge(CycleEdge newCycleEdge){ addCycleEdge(newCycleEdge, -1); }
 
     public void connectNextEdge(CycleEdge other){
         connectEdges(other, 1);
@@ -78,4 +79,5 @@ public class CycleEdge {
     public String toString(){
         return current.toString();
     }
+
 }
