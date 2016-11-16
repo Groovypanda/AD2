@@ -1,5 +1,6 @@
 package graph;
 
+import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +16,18 @@ public class Cycle implements Iterator<CycleEdge> {
     private CycleEdge current;
     private CycleEdge tail;
 
-    private boolean visitedHead = false;
+    private boolean visitedRealHead = false;
+    private boolean visitedVisibleTail = false;
+    private boolean visitedRealTail = false;
+    private boolean visitedVisibleHead = false;
 
     private CycleEdge visibleHead;
     private CycleEdge visibleCurrent;
     private CycleEdge visibleTail;
+    private CycleEdge tmpRealHead;
+    private CycleEdge tmpRealTail;
+    private CycleEdge tmpVisibleHead;
+    private CycleEdge tmpVisibleTail;
 
     public Cycle(int amount){
         head = null;
@@ -31,40 +39,30 @@ public class Cycle implements Iterator<CycleEdge> {
         head = cycleEdge;
     }
 
-    @Override
     public boolean hasNext() {
-        return !current.equals(tail);
+        return !visitedRealTail;
     }
 
-    @Override
     public CycleEdge next() {
-        if(current==null){
+        if(!visitedRealHead){
             current = head;
-            return current;
+            visitedRealHead = true;
         }
-        current = current.getRealNext();
-        if(head.equals(current)){
+        else {
+            current = current.getRealNext();
+        }
+        if(current.equals(tail)){
+            if(visitedRealTail){
+                current = head;
+                visitedRealTail = false;
+                visitedRealHead = false;
+            }
+            else {
+                visitedRealTail = true;
+            }
         }
         return current;
     }
-
-    /*
-    @Override
-    public void remove(){
-        if(current == null){
-            current = head;
-        }
-        CycleEdge previous = current.getRealPrevious();
-        CycleEdge next = current.getRealNext();
-        if(previous!=null){
-            previous.connectNextEdge(next);
-        }
-        if(head.equals(current)){
-            head = next;
-        }
-        size--;
-    }
-    */
 
     public boolean isComplete(){
         return size == maxSize;
@@ -83,24 +81,43 @@ public class Cycle implements Iterator<CycleEdge> {
         return edges;
     }
 
-    public void printCycle() {
-        System.out.println("====== Cykel ======");
-        CycleEdge current = next();
-        Node second = current.getRealNext().getEdge().getCommonNode(current.getEdge());
-        Node first = current.getEdge().getNeighbour(second);
+    public void printVisibleCycle(){
+        CycleEdge current = visibleHead.getVisibleNext();
+        System.out.println("====== Visible edges: ======");
+        System.out.println(visibleHead.getEdge());
+        while(!current.getEdge().equals(visibleHead.getEdge())){
+            System.out.println(current);
+            current = current.getVisibleNext();
+
+        }
+    }
+
+    public void printCycle(boolean extended) {
+        System.out.println("====== Nodes ======");
+        List<Edge> edges = getEdges();
+        Edge edge = edges.get(0);
+        Edge nextEdge = edges.get(1);
+        Node second = edge.getCommonNode(nextEdge);
+        Node first = edge.getNeighbour(second);
         System.out.print(first.getNumber() + " ");
         System.out.print(second.getNumber() + " ");
-        while(hasNext()){
-            current = next();
-            Edge currentEdge = current.getEdge();
-            Edge nextEdge = current.getRealNext().getEdge();
-            Node currentNode = currentEdge.getCommonNode(nextEdge);
+        for(int i=1; i<edges.size();i++){
+            edge = edges.get(i);
+            if(i+1==edges.size()){
+                nextEdge = edges.get(0);
+            }
+            else {
+                nextEdge = edges.get(i+1);
+            }
+            Node currentNode = edge.getCommonNode(nextEdge);
             System.out.print(currentNode.getNumber() + " ");
         }
         System.out.println();
-        System.out.println("====== Edges ======");
-        for(Edge edge: getEdges()){
-            System.out.println(edge);
+        if(extended) {
+            System.out.println("====== Edges ======");
+            for (Edge edge1 : edges) {
+                System.out.println(edge1);
+            }
         }
     }
 
@@ -111,14 +128,11 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public void add(CycleEdge previous, CycleEdge current) {
-        //SET HEAD AND TAIL?
         previous.connectNextEdge(current);
         size++;
     }
 
     public void add(CycleEdge previous, CycleEdge current, CycleEdge next){
-        head = previous;
-        tail = previous.getRealPrevious();
         previous.addNextCycleEdge(current);
         current.addNextCycleEdge(next);
         next.addNextCycleEdge(previous);
@@ -126,8 +140,6 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public void add(CycleEdge previous, CycleEdge current1, CycleEdge current2, CycleEdge next){
-        head = previous;
-        tail = previous.getRealPrevious();
         previous.addNextCycleEdge(current1);
         current1.addNextCycleEdge(current2);
         current2.addNextCycleEdge(next);
@@ -143,37 +155,79 @@ public class Cycle implements Iterator<CycleEdge> {
     }
 
     public boolean hasVisibleNext() {
-        if(current == null){
-            current = visibleHead;
-        }
-        boolean hasNext =  !visitedHead || !current.equals(visibleHead);
-        if(!hasNext){
-            visitedHead = false;
-        }
-        return hasNext;
+        return !visitedVisibleTail;
     }
 
     public CycleEdge visibleNext() {
-        current = current.getVisibleNext();
-        if(current.equals(visibleHead)){
-            visitedHead = true;
+        if(!visitedVisibleHead){
+            visibleCurrent = visibleHead;
+            visitedVisibleHead = true;
         }
-        return current;
+        else {
+            visibleCurrent = visibleCurrent.getVisibleNext();
+        }
+        if(visibleCurrent.equals(visibleTail)){
+            visitedVisibleTail = true;
+        }
+        return visibleCurrent;
     }
 
-    public CycleEdge getVisibleHead() {
-        return visibleHead;
+    public CycleEdge getVisibleHead() { return visibleHead; }
+
+    public void setVisibleHead(CycleEdge visibleHead) { this.visibleHead = visibleHead; }
+
+    public void setVisibleTail(CycleEdge visibleTail) { this.visibleTail = visibleTail; }
+
+    public CycleEdge getRealHead() { return head; }
+
+    public void setTmpRealHead(CycleEdge tmpRealHead) { this.tmpRealHead = tmpRealHead; }
+
+    public void setTmpRealTail(CycleEdge tmpRealTail) { this.tmpRealTail = tmpRealTail; }
+
+    public void setTmpVisibleHead(CycleEdge tmpVisibleHead) { this.tmpVisibleHead = tmpVisibleHead; }
+
+    public void setTmpVisibleTail(CycleEdge tmpVisibleTail) { this.tmpVisibleTail = tmpVisibleTail; }
+
+    public void update() {
+        if(tmpRealHead!=null) {
+            head = tmpRealHead;
+            tail = tmpRealTail;
+        }
+        if(tmpVisibleHead!=null) {
+            visibleHead = tmpVisibleHead;
+            visibleTail = tmpVisibleTail;
+        }
+        current = head;
+        visibleCurrent = visibleHead;
+        visitedVisibleTail = false;
+        visitedVisibleHead = false;
     }
 
-    public void setVisibleHead(CycleEdge visibleHead) {
-        this.visibleHead = visibleHead;
+    public void setTail(CycleEdge tail) {
+        this.tail = tail;
+    }
+
+    public CycleEdge getTmpVisibleHead() {
+        return tmpVisibleHead;
+    }
+
+    public CycleEdge getTmpRealHead() {
+        return tmpRealHead;
+    }
+
+    public CycleEdge getRealTail() {
+        return tail;
+    }
+
+    public CycleEdge getTmpRealTail() {
+        return tmpRealTail;
+    }
+
+    public CycleEdge getTmpVisibleTail() {
+        return tmpVisibleTail;
     }
 
     public CycleEdge getVisibleTail() {
         return visibleTail;
-    }
-
-    public void setVisibleTail(CycleEdge visibleTail) {
-        this.visibleTail = visibleTail;
     }
 }

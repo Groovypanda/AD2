@@ -31,23 +31,17 @@ public class CycleEdge {
         this.realNext = edge;
     }
 
-    public CycleEdge getRealNext(){
-        return realNext;
-    }
+    public CycleEdge getRealNext(){ return realNext; }
 
     public void setPreviousEdge(CycleEdge previous) {
         this.realPrevious = previous;
     }
 
-    public CycleEdge getRealPrevious() {
-        return realPrevious;
-    }
+    public CycleEdge getRealPrevious() { return realPrevious; }
 
     public void addNextCycleEdge(CycleEdge newCycleEdge){
         addCycleEdge(newCycleEdge, 1);
     }
-
-    public void addPreviousCycleEdge(CycleEdge newCycleEdge){ addCycleEdge(newCycleEdge, -1); }
 
     public void connectNextEdge(CycleEdge other){
         connectEdges(other, 1);
@@ -92,10 +86,6 @@ public class CycleEdge {
         this.visibleNext = visibleNext;
     }
 
-    public CycleEdge getVisiblePrevious() {
-        return visiblePrevious;
-    }
-
     public void setVisiblePrevious(CycleEdge visiblePrevious) {
         this.visiblePrevious = visiblePrevious;
     }
@@ -114,5 +104,14 @@ public class CycleEdge {
 
     public void setTmpVisiblePrevious(CycleEdge tmpVisiblePrevious) {
         this.tmpVisiblePrevious = tmpVisiblePrevious;
+    }
+
+    public void update() {
+        CycleEdge previous = getTmpVisiblePrevious();
+        CycleEdge next = getTmpVisibleNext();
+        setVisiblePrevious(previous);
+        setVisibleNext(next);
+        next.setVisiblePrevious(this);
+        previous.setVisibleNext(this);
     }
 }
