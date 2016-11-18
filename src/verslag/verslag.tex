@@ -120,10 +120,11 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 \begin{opgave}
 \end{opgave}
 \begin{opgave}
-		Hier volgt een uitvoerige bespreking van de algoritmes. 
+		Hier volgt een uitvoerige analyse van de complexiteit van beide algoritmes. 
 		\begin{tcolorbox}[blanker,float=tbp, grow to left by=2cm,grow to right by=2cm]
 		\begin{algoritme}
 			\caption{Dominante verzameling van vlakke grafen (met optimalisaties)}
+			\label{alg:dominance}
 			\begin{algorithmic}[1]
 				\Require Een planaire graaf G(V(G),E(G))
 				\Ensure Een dominante verzameling D
@@ -153,7 +154,7 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 					\While{$totalCoverage < |V(G)| \land i<|V(G)|$}\label{startactualalgorithmloop}
 					\State $v \gets v_i \in V(G)$
 						\If{$coverage(v) > 0$}
-							\State Neem $max \mid (\forall u \in \{v\} \cup N_G(v)) \land (max \ne u) \Rightarrow coverage(max)>coverage(u))$
+							\State Neem $max \mid (\forall u \in \{v\} \cup N_G(v)) \land (max \ne u) \Rightarrow coverage(max)>coverage(u))$ \label{neighbourloop1}
 							\If{$coverage(max) > minimum$}
 								\State actualCoverage $\gets \vert\{w \in N_G(max) \mid w\ niet \  bezocht\}\vert $ \label{neighbourloop2}
 								\If{$actualCoverage > minimum$}
@@ -172,42 +173,43 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 		\end{algoritme}
 		\end{tcolorbox}
 
-		Enkele belangrijke vermeldingen bij algoritme 1. 
+		De pseudocode van het algoritme met betrekking tot dominante verzamelingen in vlakke grafen vindt je in algoritme \ref{alg:dominance}. Het algoritme loopt in lineaire tijd, dit zal ik verklaren door het overlopen van de verschillende delen van het algoritme. Indien een bepaald onderdeel niet besproken wordt betekent het dat dit deel triviaal is en constante tijd heeft. Indien een bepaalde stap lineair is met het aantal bogen, is het bijgevolg ook lineair met het aantal bogen begrensd is door het aantal toppen. Er zijn hoogstens 3n-6 bogen in een planaire graaf. 
 		\begin{itemize}
-		\item Een buur is bezocht indien de top element is van de dominante verzameling of indien een buur van deze top element is van de dominante verzameling.
-		\item De bedekking/coverage van een top is de bovengrens van het aantal onbezochte buren.
-		\item De werkelijke bedekking/coverage van een top is gelijk aan het aantal onbezochte buren. 
-		\item De coverage van een verzameling van toppen is een som van de coverage van alle buren.
-		\item De totalCoverage is de de som van de coverage van alle buren. Indien de coverage gelijk is aan |V(G)|, dan is de dominante verzameling klaar. 
-		\item De variabele, minimum, stelt een ondergrens voor van de werkelijke bedekking die een top moet bieden aan de graaf voor de top kan toegevoegd worden aan de dominante verzameling.
-		\end{itemize}
-		
-		Algoritme 1 loopt in lineaire tijd. Ik zal de verschillende delen van het algoritme bespreken om de complexiteit te verklaren. Beschouw bij deze analyse n als het aantal toppen. De lijnen die niet besproken worden zijn triviaal en hebben constante tijd $\Theta(1)$.
-		\begin{itemize}
-			 \item Lijn \ref{sortoperation}: Hier wordt counting sort toegepast op de toppenverzameling om deze te ordenen op basis van hun graad. De complexiteit van counting sort is O(n+k). Hier is k (de graad) begrensd door n-1. De totale complexiteit is hier $O(2n-1)$.
-			 \item Lijn \ref{startoptimalizationloop1} $\rightarrow$ \ref{endoptimalizationloop1}: Er wordt ge\"{i}tereerd over de toppen met graad 1. Dit zijn er hoogstens n-1. Stel v de top met graad 1 en w de enige buur van deze top. 
-			 Er wordt ge\"{i}tereerd over alle aanliggende bogen van w. Elke boog wordt hoogstens 2 keer bekeken. De reden hiervan is dat de top w maar \'{e}\'{e}n keer wordt genomen als naburige top van top v met graad 1. Er wordt eenmalig ge\"{i}tereerd over al zijn aanliggende bogen. De aanliggende bogen kunnen echter nog maar \'{e}\'{e}n keer bekeken worden bij het itereren over de bogen van een buur van een andere top met graad 1. 
-			 Elke boog kan dus hoogstens 2 keer bekeken worden bij het itereren over de bogen van toppen die een buur zijn van een top met graad 1. De boog van een top met graad 1 wordt ook maar twee keer bekeken, eens om zijn buur te bepalen, nogmaals tijdens het itereren over de bogen van zijn buur. In het geheel wordt dus elke boog hoogstens 2 keer bekeken. 
-			 In een planaire graaf zijn er hoogstens $3n-6$ bogen. De volledige lus is dus lineair in het aantal toppen. De totale complexiteit is hier $O(2*(3n-6)) = O(6n-12)$
+			 \item Lijn \ref{sortoperation}: Hier wordt counting sort toegepast op de toppenverzameling om deze te ordenen op basis van hun graad. De complexiteit van counting sort is O(n+k). Hier is k (de graad) begrensd door n-1. De totale complexiteit is hier $O(2n-1)=O(n)$.
+			 \item Lijn \ref{startoptimalizationloop1} $\rightarrow$ \ref{endoptimalizationloop1}: Er wordt ge\"{i}tereerd over de toppen met graad 1. Dit zijn er hoogstens n-1. 
+			 Stel v een willekeurige top met graad 1 en w de enige buur van v.
+			 Er wordt ge\"{i}tereerd over alle aanliggende bogen van w. Elke boog wordt hoogstens 2 keer bekeken:
+			 \begin{itemize}
+			 	\item Bij het itereren over de bogen van w. Vervolgens wordt de coverage van w op 0 geplaatst zodat nooit meer over zijn bogen ge\"{i}tereerd wordt. 
+			 	\item Bij het itereren over de bogen vanuit een buur van w, als deze op zijn beurt een buur van een zekere top met graad 1, of (exclusief) bij het bekijken van de boog vw. 
+			 \end{itemize}
+			 De complexiteit van deze stap is dus $O(2*(3n-6)) = O(6n-12) = O(n)$
 			\item Lijn \ref{startoptimalizationloop2}: De for lus wordt precies 7 keer uitgevoerd. De totale complexiteit is hier 
-			$O(7*(complexiteit\ van\ elke\ iteratie))$
-			\item Lijn \ref{startactualalgorithmloop} $\rightarrow$ \ref{endactualalgorithmloop} : De complexiteitsanalyse van deze lus is gelijkaardig aan de complexiteitsanalyse van lijn \ref{startoptimalizationloop1} $\rightarrow$ \ref{endoptimalizationloop1}. De buitenste lus gebeurt hoogstens n keer. (i stelt de index voor van de huidige top.) Eerst wordt lokaal gezocht naar het maximum via de aanliggende bogen van top v. Elke aanliggende boog wordt nu hoogstens \'{e}\'{e}n keer bekeken op lijn \ref{neighbourloop1}. Dit wordt hoogstens 1 keer uitgevoerd bij elke top, een boog heeft 2 eindpunten, dus wordt hoogstens 2 keer vanuit elk eindpunt bekeken. Vervolgens op lijn \ref{neighbourloop2} wordt opnieuw ge\"{i}tereerd over de bogen van de node max. Een node kan hoogstens \'{e}\'{e}n keer als max genomen worden. $n-2$ nodes kunnen als maximum gekozen worden. Elke boog kan op deze lijn opnieuw hoogstens 2 keer overlopen worden, 1 keer vanuit zijn beide eindpunten, indien beide eindpunten eens de max node zijn. Als laatste wordt ook op lijn \ref{neighbourloop3} nogmaals over dezelfde bogen als op lijn \ref{neighbourloop2} ge\"{i}tereerd. Elke boog wordt op deze lijn dus ook hoogstens 2 keer bekeken. In totaal wordt deze boog dus hoogstens 4 keer bekeken. Nu kan dus elke boog hoogstens 6 keer bekeken worden in de volledige while-lus. In een planaire graaf zijn er hoogstens $3n-6$ bogen. De volledige lus is dus lineair in het aantal toppen. De totale complexiteit is hier $(O(6*(3n-6)))=O(18n-36)$.
-		
-		
-		De volledige complexiteit is nu: 
-		\[(2n-1)+(6n-12)+(7*(18n-36))=134n-256\ (=O(n))\]
-		
-			Het algoritme is gretig aangezien we itereren over de toppen en telkens lokaal zoeken naar de best toe te voegen top. De top die het beste lijkt wordt vervolgens toegevoegd aan de lijst en zo wordt (het grootste deel van de) verzameling opgebouwd. Het algoritme is nu dus per definitie gretig aangezien het bij elk stadium naar het lokale optimum zoekt.
-			Het gretig algoritme heeft 5 onderdelen: (De 5 onderdelen van een gretig algoritme volgens wikipedia.)
+			$O(7*(complexiteit\ van\ elke\ iteratie)) = O(complexiteit \ iteratie)$
+			\item Lijn \ref{startactualalgorithmloop} $\rightarrow$ \ref{endactualalgorithmloop} : De buitenste lus gebeurt hoogstens n keer omdat de index telkens met 1 verhoogt en deze kleiner moet zijn dan n. Het volgende gebeurt elke iteratie: 
 			\begin{itemize}
-				\item Een kandidaatverzameling: de verzameling D
-				\item Een selectie functie: het lokaal zoeken naar de optimale top
-				\item Een haalbaarheidsfunctie het vergelijken van de eigenlijke bedekking van een top met 0. 
-				\item Een objectieve functie: het toevoegen van het maximum aan de verzameling D
-				\item Een oplossing functie: het vergelijken van de actualCoverage met |V(G)|
-			\end{itemize} 
-			 Vooraf worden ook toppen toegevoegd die buur zijn van een top met graad 1. Hier wordt niet gekeken naar de bedekking van de top. Het is een optimalisatie en wordt voorafgaand aan het werkelijk gretig algoritme uitgevoerd. 
-		\end{itemize}
+				\item Op lijn \ref{neighbourloop1} wordt lokaal gezocht naar het maximum via de aanliggende bogen van top v. Elke aanliggende boog wordt nu hoogstens \'{e}\'{e}n keer bekeken. Dit wordt hoogstens 1 keer per top gedaan. Aangezien een boog juist 2 eindpunten heeft, zal elke boog hoogstens 2 keer bekeken worden met deze lijn. 
+				\item Op lijn \ref{neighbourloop2} wordt de eigenlijke bedekking van het maximum bepaald door het itereren over de adjecente bogen van het maximum. Aangezien elke top hoogstens eenmaal als maximum gekozen wordt en elke boog hoogstens vanuit zijn 2 eindpunten kan bekeken worden, zal ook op deze lijn hoogstens elke boog 2 keer bekeken worden. 
+				\item Op lijn \ref{neighbourloop3} wordt nog een laatste keer over de bogen van het maximum ge\"itereerd om de coverage van de buren van het maximum te decrementeren. 
+				Ook hier zal elke boog hoogstens 2 keer bekeken worden om dezelfde reden als lijn \ref{neighbourloop2}.
+			\end{itemize}
+			
+			 Nu kan dus elke boog hoogstens 6 keer bekeken worden in de volledige while-lus. Er zijn n iteraties over waarin elke boog hoogstens 6 keer bezocht kan worden. De gemiddelde complexiteit hier per iteratie van de while-lus is $O(6*(3n-6)/n)=O(1)$. Aangezien er hoogstens n iteraties zijn heeft de while-lus als complexiteit $O(n)$. 
+	\end{itemize}
+		Aangezien elke stap lineair is, is het volledige algoritme bijgevolg ook lineair. 
+		\vspace{0.1cm}
+		\newline
+		Het algoritme is gretig aangezien we itereren over de toppen en telkens lokaal zoeken naar de best toe te voegen top. De top die het beste lijkt wordt vervolgens toegevoegd aan de lijst en zo wordt (het grootste deel van de) verzameling opgebouwd. Het algoritme is nu dus per definitie gretig aangezien het bij elk stadium naar het lokale optimum zoekt.
+		Het gretig algoritme heeft 5 onderdelen: (De 5 onderdelen van een gretig algoritme volgens wikipedia.)
+		\begin{itemize}
+			\item Een kandidaatverzameling: de verzameling D
+			\item Een selectie functie: het lokaal zoeken naar de optimale top
+			\item Een haalbaarheidsfunctie het vergelijken van de eigenlijke bedekking van een top met 0. 
+			\item Een objectieve functie: het toevoegen van het maximum aan de verzameling D
+			\item Een oplossing functie: het vergelijken van de actualCoverage met |V(G)|
+		\end{itemize} 
+	 Vooraf worden ook toppen toegevoegd die buur zijn van een top met graad 1. Hier wordt niet gekeken naar de bedekking van de top. Het is een optimalisatie en wordt voorafgaand aan het werkelijk gretig algoritme uitgevoerd. 
+
 \end{opgave}
 \section{Implementatie}
 \subsection{Dominantie in vlakke grafen}

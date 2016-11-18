@@ -14,15 +14,20 @@ import java.util.List;
 public class Main {
     static int graphNumber = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("klein/triang_alle_08.sec");
+        //Weird result if starting with edge 0?
+        List<Graph> graphs = readGraphs("testset/triang10.sec");
         boolean extended = false;
         for(Graph g: graphs){
             //System.out.println("================ GRAPH " + ++graphNumber + " ================");
             HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
-           // if(++graphNumber==5){
+            //if(++graphNumber==4){
                 Cycle cycle = calculator.getCycle();
                 System.out.println("Size: " + cycle.getSize() + "/" + g.getNodes().length + " nodes");
+                if(cycle.getSize()!=g.getNodes().length){
+                    System.out.println("==== Incorrect ====");
+                }
             //}
+
             //showGraph(g);
             //System.out.println("===========");
             //cycle.printCycle(extended);

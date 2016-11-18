@@ -17,13 +17,15 @@ public class HamiltonianCycleCalculator {
 
     public Cycle getCycle(){
         Cycle cycle = new Cycle(graph.getNodes().length);
-        initiateCycle(cycle, graph.getEdges()[0]);
+        initiateCycle(cycle, graph.getEdges()[3]);
         //cycle.printCycle(false);
         List<CycleEdge> addedCycleEdges = new ArrayList<>();
         List<CycleEdge> removedCycleEdges = new ArrayList<>();
         while(!cycle.isComplete()){
+            //System.out.println("==== Iteration =====");
             while(cycle.hasVisibleNext()){
                 CycleEdge visibleCurrent = cycle.visibleNext();
+                //System.out.println(visibleCurrent);
                 Edge[] plane = getAdjacentPlane(visibleCurrent.getEdge());
                 boolean isAddable = !plane[1].getCommonNode(plane[2]).visited() && !plane[1].isVisited()
                         && !plane[2].isVisited() && cycle.getSize() < graph.getNodes().length;
@@ -69,13 +71,17 @@ public class HamiltonianCycleCalculator {
     }
 
     private void addCycleEdges(Cycle cycle, CycleEdge toRemove, CycleEdge toAdd1, CycleEdge toAdd2) {
+        //Add the cycleEdge to the cycle.
         cycle.add(toRemove.getRealPrevious(), toAdd1, toAdd2, toRemove.getRealNext());
+        //Update the temporary visible values. These values will be used as visible cycleEdges after looping over the current
+        //visible values.
         toAdd1.setTmpVisiblePrevious(toRemove.getTmpVisiblePrevious());
         toAdd1.setTmpVisibleNext(toAdd2);
         toAdd2.setTmpVisiblePrevious(toAdd1);
         toAdd2.setTmpVisibleNext(toRemove.getTmpVisibleNext());
         toRemove.getTmpVisiblePrevious().setTmpVisibleNext(toAdd1);
         toRemove.getTmpVisibleNext().setTmpVisiblePrevious(toAdd2);
+        //Check if any head or tail isn't in the cycle anymore.
         checkCycleHeadAndTail(cycle, toRemove, toAdd1);
         checkVisibleCycleHeadAndTail(cycle, toRemove, toAdd1);
     }

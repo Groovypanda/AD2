@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  14 NOV 2016 09:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  17 NOV 2016 00:32
 entering extended mode
 **./verslag.tex
 (verslag.tex
@@ -719,29 +719,32 @@ ABD: EveryShipout initializing macros [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] [2]
 
-LaTeX Warning: Float too large for page by 4.75243pt on input line 173.
+LaTeX Warning: Float too large for page by 4.75243pt on input line 174.
 
-[3] [4]
 
-LaTeX Warning: Reference `neighbourloop1' on page 5 undefined on input line 194
+Overfull \hbox (27.16228pt too wide) in paragraph at lines 187--189
+\OT1/cmr/m/n/10.95 teit is hier $\OML/cmm/m/it/10.95 O\OT1/cmr/m/n/10.95 (7 \OM
+S/cmsy/m/n/10.95  \OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 complexiteit van elk
+e iteratie\OT1/cmr/m/n/10.95 )) = \OML/cmm/m/it/10.95 O\OT1/cmr/m/n/10.95 (\OML
+/cmm/m/it/10.95 complexiteit iteratie\OT1/cmr/m/n/10.95 )$ 
+ []
+
+[3] [4] [5] [6] [7] [8]
+
+LaTeX Warning: Reference `tabel:ordening' on page 9 undefined on input line 298
 .
 
-[5] [6] [7] [8] [9]
-
-LaTeX Warning: Reference `tabel:ordening' on page 10 undefined on input line 29
-6.
-
-[10]
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 332--347
+[9]
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 334--349
  [][] 
  []
 
 
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 353--368
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 355--370
  [][] 
  []
 
-[11] [12] [13]
+[10] [11] [12] [13]
 \c@x=\count144
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1077,13 +1080,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 17287 strings out of 493334
- 347162 string characters out of 3136671
- 522185 words of memory out of 3000000
- 20507 multiletter control sequences out of 15000+200000
+ 17288 strings out of 493334
+ 347177 string characters out of 3136671
+ 518747 words of memory out of 3000000
+ 20508 multiletter control sequences out of 15000+200000
  10349 words of font info for 37 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,11n,87p,1556b,935s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 55i,11n,87p,1357b,935s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Jarre\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
 tcrm1095.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
 mbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmb
@@ -1095,7 +1098,7 @@ fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb>
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Fi
 les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on verslag.pdf (16 pages, 182696 bytes).
+Output written on verslag.pdf (16 pages, 182572 bytes).
 PDF statistics:
  102 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
