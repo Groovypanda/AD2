@@ -1,14 +1,14 @@
 package experiment.specialgraphs;
 
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 
 /**
- * A graph used as counterexample for many optimistic predictions.
+ * A elements used as counterexample for many optimistic predictions.
  */
 public class PetersonGraph extends Graph {
     /**
-     * Constructor for a graph. It initiates the internal data structures.
+     * Constructor for a elements. It initiates the internal data structures.
      */
     public PetersonGraph() {
         super(10, 15);
@@ -16,7 +16,7 @@ public class PetersonGraph extends Graph {
         for(int i =0; i < nodes.length; i++){
             nodes[i] = new Node(i+1);
         }
-        //first create the graph.
+        //first create the elements.
         for(int i=0; i < 5; i++){
             /**
              * 1, 4, 6

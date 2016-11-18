@@ -1,6 +1,6 @@
-package nodearray;
+package datastructures;
 
-import graph.Node;
+import elements.Node;
 
 import java.util.Stack;
 
@@ -20,13 +20,13 @@ public class SortedNodeArray {
 
     /**
      * The constructor for a sorted node array. It creates an SortedNodeArray object to which nodes can be added.
-     * @param nodeAmount The total amount of nodes which will be added. The size of the SortedNodeArray.
+     * @param nodeAmount The total amount of nodes which will be added. The planeAmount of the SortedNodeArray.
      */
     public SortedNodeArray(int nodeAmount) {
         k = nodeAmount;
         /**
          * Degree can go from 1->nodeAmount-1. (Example: if there are 5 nodes, the degree could go up to 4
-         * of a certain node.) We need an array of size maximum degree + 1, this is exactly the nodeAmount.
+         * of a certain node.) We need an array of planeAmount maximum degree + 1, this is exactly the nodeAmount.
          */
         n = nodeAmount;
         count = new int[k];

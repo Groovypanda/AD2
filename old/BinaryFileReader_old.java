@@ -38,7 +38,7 @@ public class BinaryFileReader_old {
         List<Graph> graphs = new ArrayList<Graph>();
 
         while(i<bytes.length) {
-            //Read a single graph.
+            //Read a single elements.
             int numberLength = (int) bytes[i++];
             System.out.println(numberLength);
             //Amount of nodes

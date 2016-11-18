@@ -1,9 +1,8 @@
 package experiment.experiments;
 
 import experiment.ExperimentDominatingSetCalculator;
-import experiment.experiments.Experiment;
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 
 import java.util.ArrayList;
 import java.util.List;

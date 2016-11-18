@@ -1,4 +1,4 @@
-package graph;
+package elements;
 /**
  * The class is a simple blueprint for all edges.
  * It contains some simple methods for representing an edge, getting the neighbour of a node and adding nodes.
@@ -9,6 +9,7 @@ public class Edge {
     private Node[] nodes; //An array of the endpoints of the edge. Every edge has 2 endpoints.
     private int[] edgeIndex; //Displays for each node the index of this edge in the edgeList of that node.
     private boolean visited; //Tells if a node has been visited.
+    private Plane[] adjacentPlanes;
 
     /**
      * A constructor for an edge. It creates an empty array of 2 nodes, the endpoints of the edge.
@@ -18,6 +19,7 @@ public class Edge {
         this.number = number;
         nodes = new Node[2];
         edgeIndex = new int[2];
+        adjacentPlanes = new Plane[2];
     }
 
     /**
@@ -133,5 +135,29 @@ public class Edge {
             }
         }
         return null;
+    }
+
+    /**
+     * Adds an adjacent plane if a plane can be added.
+     * @param plane The plane to be added.
+     */
+    public void addPlane(Plane plane){
+        if(adjacentPlanes[0]==null){
+            adjacentPlanes[0] = plane;
+        }
+        else {
+            adjacentPlanes[1] = plane;
+        }
+    }
+
+    /**
+     * @return If a plane can be added to the adjacentplanes.
+     */
+    public boolean isFull(){
+        return adjacentPlanes[1] != null;
+    }
+
+    public Plane[] getAdjacentPlanes() {
+        return adjacentPlanes;
     }
 }

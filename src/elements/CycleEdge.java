@@ -1,4 +1,4 @@
-package graph;
+package elements;
 
 /**
  * Created by Jarre on 11/11/2016.

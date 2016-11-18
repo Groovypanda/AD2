@@ -2,8 +2,7 @@ package experiment;
 
 import experiment.experiments.BetterExperiment;
 import experiment.experiments.Experiment;
-import experiment.specialgraphs.CheckmateGraph;
-import graph.Node;
+import elements.Node;
 import gretig.DominatingSetCalculator;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package test;
 
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
+import elements.Edge;
+import datastructures.Graph;
+import elements.Node;
 import input.BinaryFileReader;
 
 import org.junit.After;
@@ -17,7 +17,7 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A JUnit test for all methods in the graph class.
+ * A JUnit test for all methods in the elements class.
  * Note: In this test the SortedNodeArray, Edge and Node are tested because Graph uses all functionality these classes offer!
  */
 public class TestGraph {
@@ -39,7 +39,7 @@ public class TestGraph {
     }
 
     /**
-     * Testing method for the sorting the nodes of the graph by lowest degree first.
+     * Testing method for the sorting the nodes of the elements by lowest degree first.
      */
     @Test
     public void testSortBackward(){

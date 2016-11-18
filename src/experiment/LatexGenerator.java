@@ -1,8 +1,8 @@
 package experiment;
 
 import experiment.experiments.Experiment;
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 import input.BinaryFileReader;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class LatexGenerator {
         try(Stream<Path> paths = Files.walk(Paths.get(System.getProperty("user.dir"), "data", "testset"))) {
             paths.forEach(filePath -> {
                 if (Files.isRegularFile(filePath)) try {
-                    Graph graph = reader.readByteArray(Files.readAllBytes(filePath)).get(0); //There's only 1 graph in the testset graphs.
+                    Graph graph = reader.readByteArray(Files.readAllBytes(filePath)).get(0); //There's only 1 elements in the testset graphs.
                     List<List<Node>> dominantLists = experiment.run(graph);
                     int i = 0;
                     for(List<Node> dominantList: dominantLists){
@@ -45,7 +45,7 @@ public class LatexGenerator {
         int i = 0;
         for(int[] statistic: resume){
             System.out.print(i + " & ");
-            System.out.print(String.format("%.4f", ((double)statistic[0]/(double)statistic[1])*100)); //Prints the size of the dominant list in proportion with |V(G)|
+            System.out.print(String.format("%.4f", ((double)statistic[0]/(double)statistic[1])*100)); //Prints the planeAmount of the dominant list in proportion with |V(G)|
             System.out.println("\\% \\\\ \\hline");
             i++;
         }
@@ -62,7 +62,7 @@ public class LatexGenerator {
         try(Stream<Path> paths = Files.walk(Paths.get(System.getProperty("user.dir"), "data", "testset"))) {
             paths.forEach(filePath -> {
                 if (Files.isRegularFile(filePath)) try {
-                    Graph graph = reader.readByteArray(Files.readAllBytes(filePath)).get(0); //There's only 1 graph in the testset graphs.
+                    Graph graph = reader.readByteArray(Files.readAllBytes(filePath)).get(0); //There's only 1 elements in the testset graphs.
                     latexString[0] += buildLatexRow(filePath.getFileName().toString(), graph, experiment.run(graph));
                 } catch (IOException e) {
                     e.printStackTrace();

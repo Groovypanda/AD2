@@ -1,8 +1,8 @@
 package experiment;
 
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
+import elements.Edge;
+import datastructures.Graph;
+import elements.Node;
 
 /**
  * This is a DominatingSetCalculator used for making better minimal domating set approximations.
@@ -50,7 +50,7 @@ public class BetterDominatingSetCalculator extends ExperimentDominatingSetCalcul
                     }
                 }
                 if (maxCoverage > minimumNodeCoverage) {
-                    //Update the graph
+                    //Update the elements
                     totalCoverage += maxCoverage;
                     dominantList.add(maxNode);
                     maxNode.visit();

@@ -1,10 +1,9 @@
 package experiment.experiments;
 
 import experiment.ExperimentDominatingSetCalculator;
-import experiment.experiments.Experiment;
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
+import elements.Edge;
+import datastructures.Graph;
+import elements.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class SortExperiment extends Experiment {
                 buildDominantList(i); //O(n)
             }
             List<Node> list = new ArrayList<>(dominantList);
-            reset(); //Return to initial conditions. In order to use this calculator again for the same graph.
+            reset(); //Return to initial conditions. In order to use this calculator again for the same elements.
             return list;
         }
 

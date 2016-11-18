@@ -1,6 +1,5 @@
-package graph;
+package elements;
 
-import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

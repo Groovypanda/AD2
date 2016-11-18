@@ -1,7 +1,7 @@
 package input;
 
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -56,11 +56,11 @@ public class BinaryFileReader {
         List<Graph> graphs = new ArrayList<Graph>();
         //Loop trough bytes and and create graphs.
         while(i<bytes.length) {
-            //Read a single graph.
+            //Read a single elements.
             int numberLength = (int) bytes[i++];
-            //Amount of nodes in the graph.
+            //Amount of nodes in the elements.
             int nodeAmount = readNumber(bytes, i, numberLength);
-            //Amount of edges in the graph.
+            //Amount of edges in the elements.
             int edgeAmount = readNumber(bytes, i + numberLength, numberLength);
             Graph graph = new Graph(nodeAmount, edgeAmount);
             int nodeIndex = 0;
@@ -74,7 +74,7 @@ public class BinaryFileReader {
                 if (number == 0) { //If the number is zero a new node can be made.
                     graph.addNode(nodes[nodeIndex]); //Add the previous node, which is now configured with its edges.
                     nodeIndex++;
-                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the graph.
+                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the elements.
                         nodes[nodeIndex] = new Node(nodeIndex+1);
                     }
                 } else { //If the number isn't zero, the number is an edgeNumber.

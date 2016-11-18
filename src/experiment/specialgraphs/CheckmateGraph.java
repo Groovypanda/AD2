@@ -1,10 +1,10 @@
 package experiment.specialgraphs;
 
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 
 /**
- * A checkmate graph is a graph which has the form of a checkmate, and every node is a tile.
+ * A checkmate elements is a elements which has the form of a checkmate, and every node is a tile.
  * The nodes of 2 neighbouring tiles are connected by an edge.
  */
 public class CheckmateGraph extends Graph{

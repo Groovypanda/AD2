@@ -1,8 +1,8 @@
 package gretig;
 
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
+import elements.Edge;
+import datastructures.Graph;
+import elements.Node;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <h1>Calculate the dominating set of a graph.</h1>
- * This class consists one method to construct a dominating set of the given graph
+ * <h1>Calculate the dominating set of a elements.</h1>
+ * This class consists one method to construct a dominating set of the given elements
  * and a method to check if a dominating set is correct.
- * A dominating set is a set such that all nodes of the graph are either in the set or
+ * A dominating set is a set such that all nodes of the elements are either in the set or
  * the neighbour of a node in this set. The dominating set will be computed in linear time
  * with a greedy algorithm. The set will be an approximation of the minimal dominating set.
  * @author Jarre Knockaert
  */
 public class DominatingSetCalculator {
-    //The graph of which we want to calculate a minimal dominating set.
+    //The elements of which we want to calculate a minimal dominating set.
     protected Graph graph;
     protected int optimization;
     //The amount of coverage the dominant list gives. If this equals the amount of nodes in the graphs,
-    // it covers the whole graph, in other words the amount of unique nodes with their neighbours equals the size of all nodes.
+    // it covers the whole elements, in other words the amount of unique nodes with their neighbours equals the planeAmount of all nodes.
     protected int totalCoverage;
     //I use a list as internal data structure because a set doesn't offer constant time for adding items to the set.
     //Arrays would have to much overhead (a lot of null gaps (~75%)). List is useful because add has a constant amortized time.
@@ -32,8 +32,8 @@ public class DominatingSetCalculator {
 
     /**
      * Constructor for a dominating set calculator. This object can be used
-     * for computing a dominating set for the given graph with a certain optimization level.
-     * @param graph This is the graph of which the dominating set should be computed.
+     * for computing a dominating set for the given elements with a certain optimization level.
+     * @param graph This is the elements of which the dominating set should be computed.
      * @param optimization The optimization level, This should range from 0-6, optimization level 0 will offer the
      *                     worst results and optimization level 6 will offer the best results.
      */
@@ -46,8 +46,8 @@ public class DominatingSetCalculator {
 
     /**
      * Constructor for a dominating set calculator. This object can be used
-     * for computing a dominating set for the given graph with the best optimization level (6).
-     * @param graph This is the graph of which the dominating set should be computed.
+     * for computing a dominating set for the given elements with the best optimization level (6).
+     * @param graph This is the elements of which the dominating set should be computed.
      */
     public DominatingSetCalculator(Graph graph){
         //6 is the optimal optimization level. Higher or lower optimization levels offer worse results.
@@ -76,7 +76,7 @@ public class DominatingSetCalculator {
          *  (in comparison with other optimization levels).
          *  The method adds nodes to the set which have a degree higher than 'i'.
          *  By ensuring nodes with actual degree i are added before nodes with degree lower than i the dominant set
-         *  will cover the whole graph faster with less nodes.
+         *  will cover the whole elements faster with less nodes.
          */
         for(int i=optimization; i>=0; i--){
             buildDominantList(i); //O(n)
@@ -146,7 +146,7 @@ public class DominatingSetCalculator {
     protected void buildDominantList(int minimumNodeCoverage) {
         Node[] nodes = graph.getSortedNodes(); //The algorithm works best with a sorted array by degree (lowest degree first).
         /**
-         * A loop over the nodes, this loop will end prematurely if the whole graph is covered, this is always the case
+         * A loop over the nodes, this loop will end prematurely if the whole elements is covered, this is always the case
          * with minimumNodeCoverage 0.
          */
         for(int i=0; i<nodes.length && totalCoverage < nodes.length; i++){
@@ -196,7 +196,7 @@ public class DominatingSetCalculator {
 
                     //Again if the actual coverage is lower than the minimumNodeCoverage, the node shouldn't be added.
                     if (maxNodeActualCoverage > minimumNodeCoverage) {
-                        //Update the graph
+                        //Update the elements
                         totalCoverage += maxNodeActualCoverage; //the actual amount of coverage can be added to the total.
                         maxNode.clearCoverage(); //added node should have zero coverage.
                         dominantList.add(maxNode); //add the node the dominant set.
@@ -209,7 +209,7 @@ public class DominatingSetCalculator {
     }
 
     /**
-     * The method checks if the given list is a dominant set in the current graph and contains no doubles.
+     * The method checks if the given list is a dominant set in the current elements and contains no doubles.
      * In other words, it checks if the algorithm works properly.
      * This method isn't linear and should only be used for testing purposes, not for the final algorithm!
      * @param dominantList The list which has the be checked.
@@ -219,7 +219,7 @@ public class DominatingSetCalculator {
         Node[] graphNodes = graph.getNodes();
         Set<Node> coverage = new HashSet<>();
         coverage.addAll(dominantList); //Adding all elements to set to remove doubles.
-        if(coverage.size() != dominantList.size()){  //If the size isn't equal the list contains doubles.
+        if(coverage.size() != dominantList.size()){  //If the planeAmount isn't equal the list contains doubles.
             return false;
         }
         for(Node node: dominantList){
@@ -227,7 +227,7 @@ public class DominatingSetCalculator {
                 coverage.add(edge.getNeighbour(node));
             }
         }
-        //if coverage contains the same amount of nodes as the graph, the dominantlist is dominant.
+        //if coverage contains the same amount of nodes as the elements, the dominantlist is dominant.
         return graphNodes.length == coverage.size();
     }
 

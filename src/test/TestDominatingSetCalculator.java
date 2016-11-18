@@ -1,7 +1,7 @@
 package test;
 
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 import gretig.DominatingSetCalculator;
 import input.BinaryFileReader;
 import org.junit.After;
@@ -63,7 +63,7 @@ public class TestDominatingSetCalculator {
     }
 
     /**
-     * Adds all graphs from a directory with .sec files to the graph list.
+     * Adds all graphs from a directory with .sec files to the elements list.
      * @param directoryName The name of the directory
      */
     public void addDirectoryGraphs(String directoryName){

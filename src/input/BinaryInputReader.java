@@ -1,7 +1,7 @@
 package input;
 
-import graph.Graph;
-import graph.Node;
+import datastructures.Graph;
+import elements.Node;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -40,22 +40,22 @@ public class BinaryInputReader {
             int edgeAmount = readNumber(); //Read amount of edges from stdin
             //There should atleast be one node and a positive amount of edges.
             if(nodeAmount<1 || edgeAmount < 0){
-                throw new IllegalArgumentException("A graph should contain more than 1 node and a positive number of edges");
+                throw new IllegalArgumentException("A elements should contain more than 1 node and a positive number of edges");
             }
-            Graph graph = new Graph(nodeAmount, edgeAmount); //Create the new graph.
+            Graph graph = new Graph(nodeAmount, edgeAmount); //Create the new elements.
             Node[] nodes = new Node[nodeAmount]; //Create an empty array for storing the read nodes.
             int nodeIndex = 0;
             nodes[0] = new Node(1);
             /**
-             *  Read all edges from the graph, a new node is indicated by zero,
-             *  one graph contains the following amount of bytes: numberlength*(nodeAmount+edgeAmount*2)
+             *  Read all edges from the elements, a new node is indicated by zero,
+             *  one elements contains the following amount of bytes: numberlength*(nodeAmount+edgeAmount*2)
              */
             for(int i=0; i < numberlength*(nodeAmount+edgeAmount*2); i+=numberlength){
                 int number = readNumber(); //Read the next value from stdin.
                 if (number == 0) { //If the number is zero a new node can be made.
                     graph.addNode(nodes[nodeIndex]); //Add the previous node, which is now configured with its edges.
                     nodeIndex++;
-                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the graph.
+                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the elements.
                         nodes[nodeIndex] = new Node(nodeIndex+1);
                     }
                 } else { //If the number isn't zero, the number is an edgeNumber.

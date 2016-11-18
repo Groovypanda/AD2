@@ -1,7 +1,7 @@
 package experiment.experiments;
 
-import graph.Node;
-import graph.Graph;
+import elements.Node;
+import datastructures.Graph;
 
 import java.util.List;
 
