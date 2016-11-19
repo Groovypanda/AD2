@@ -2,7 +2,6 @@ package datastructures;
 
 import elements.Edge;
 import elements.Plane;
-import elements.Plane;
 
 /**
  * The dual elements is a elements which is returned by drawing a node in every plane and connecting 2 of these nodes
@@ -10,9 +9,8 @@ import elements.Plane;
  * This is a 3-regular elements as every plane in a triangulation has 3 adjacent planes.
  */
 public class DualGraph {
-
     private Plane[] planes; //The nodes of this elements.
-    private int planesSize = 0;
+    int planesIndex = 0; //The current index of the planes array.
     private Graph graph;
 
     public DualGraph(Graph graph) {
@@ -22,35 +20,30 @@ public class DualGraph {
 
     private void setupPlaneSet() {
         planes = new Plane[getSize()]; //There are 2n-4 planes in a triangulation.
-        addFirstAdjacentPlanes(graph.getEdges()[0]);
-    }
-
-    private void addFirstAdjacentPlanes(Edge edge) {
-        Plane[] planes = getAdjacentPlanes(edge);
-        for(Plane plane: planes){
-            this.planes[planesSize++] = plane;
-            addAdjacentPlanes(plane, edge);
-
+        int planesFinishedIndex = 0;
+        for(Plane plane: getAdjacentPlanes(graph.getEdges()[0])){
+            planes[planesIndex++] = plane;
+        }
+        while(planesFinishedIndex<planes.length){ //Initiate all planes, this also makes sure a plane contains all of its adjacent planes.
+            addAdjacentPlanes(planes[planesFinishedIndex++]);
         }
     }
 
-    private void addAdjacentPlanes(Plane plane, Edge edge){
-        for(Edge edge1: plane.getEdges()){ //This iteration will happen in total 3(2n-4) times. Once for each edge in each plane.
-            if(!edge1.equals(edge)){
-                if(!edge1.isFull()){
-                    addAdjacentPlane(plane, edge1);
-                }
-                else {
-                    Plane[] adjacentPlanes = edge.getAdjacentPlanes();
-                    Plane other = adjacentPlanes[0];
-                    if(other.equals(plane)){
-                        other = adjacentPlanes[1];
+    private void addAdjacentPlanes(Plane plane){
+        for(Edge edge: plane.getEdges()){ //This iteration will happen in total 3(2n-4) times. Once for each edge in each plane.
+            if(!edge.isFull()){ //If the 2 adjacent planes to an edge are known yet. Add a plane to the edge.
+                addAdjacentPlane(plane, edge);
+            }
+            else {
+                Plane[] adjacentPlanes = edge.getAdjacentPlanes();
+                boolean foundOther = false;
+                for(int i=0; i<adjacentPlanes.length && !foundOther; i++) { //2 iterations
+                    Plane adjacentPlane = adjacentPlanes[i];
+                    if(adjacentPlane!=null && !adjacentPlane.equals(plane)) {
+                        foundOther=true;
+                        plane.addAdjacentPlane(adjacentPlane);
+                        adjacentPlane.addAdjacentPlane(plane);
                     }
-                    if(other!=null){
-                        plane.addAdjacentPlane(other);
-                        other.addAdjacentPlane(plane);
-                    }
-
                 }
             }
         }
@@ -69,9 +62,7 @@ public class DualGraph {
         Plane adjacentPlane = new Plane(edges);
         plane.addAdjacentPlane(adjacentPlane);
         adjacentPlane.addAdjacentPlane(plane);
-        planes[planesSize++] = adjacentPlane;
-        addAdjacentPlanes(adjacentPlane, edges[1]);
-        addAdjacentPlanes(adjacentPlane, edges[2]);
+        planes[planesIndex++] = adjacentPlane;
     }
 
     private Plane[] getAdjacentPlanes(Edge edge){

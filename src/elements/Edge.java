@@ -160,4 +160,5 @@ public class Edge {
     public Plane[] getAdjacentPlanes() {
         return adjacentPlanes;
     }
+
 }

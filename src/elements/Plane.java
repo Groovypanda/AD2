@@ -9,6 +9,7 @@ public class Plane {
     private int neighbourIndex = 0;
     protected static int PLANESIZE = 3;
     private Edge[] edges;
+    private boolean visited;
 
 
     public Plane(Edge[] edges) {
@@ -22,6 +23,7 @@ public class Plane {
         //PlaneNode. However once the yutsis decomposition begins, we need to be able to extract all the information
         //from the planeNode, while being able to use the functionality of the Plane object.
         this.node = new PlaneNode(this);
+        visited = false;
     }
 
     public String toString(){
@@ -86,6 +88,11 @@ public class Plane {
 
     public void addAdjacentPlane(Plane plane){
         if(neighbourIndex < PLANESIZE){
+            for(int i=0; i<neighbourIndex; i++){
+                if(neighbours[i].equals(plane)){
+                    return; //Don't add the plane if it's already in the adjacent planes.
+                }
+            }
             neighbours[neighbourIndex++] = plane;
         }
     }
@@ -98,4 +105,22 @@ public class Plane {
         return node;
     }
 
+    public Edge getCommonEdge(Plane adjacentPlane){
+        for(Edge edge1: edges){
+            for(Edge edge2: adjacentPlane.edges){
+                if(edge1.equals(edge2)){
+                    return edge2;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void visit() {
+        visited = true;
+    }
 }

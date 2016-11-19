@@ -1,15 +1,21 @@
 package datastructures;
 
+import elements.Plane;
 import elements.PlaneNode;
 
 /**
  * A datastructure representing an array with PlaneNodes in which all operations are constant.
  */
 public enum YutsisArray {
-    V(0), L(1), M(2);
+    V(0), L(1), M(2), D(3);
+
+    //V: Contains all nodes which aren't in L or M.
+    //L: Contains all nodes such that every node in L has one adjacent node to M.
+    //M: One disjunct part of the Yutsis decomposition.
+    //D: The other disjunct part of the Yutsis decomposition.
 
     public final int number;
-    private int length;
+    private int length; //Length is maximum 2n-4 (amount of planes).
     private int size;
     private PlaneNode[] elements;
 
@@ -65,4 +71,16 @@ public enum YutsisArray {
         }
         return output;
     }
+    /*
+    public void connectNodes(){
+        for(PlaneNode node: elements){
+            for(Plane plane: node.getPlane().getAdjacentPlanes()){
+                PlaneNode neighbour = plane.getNode();
+                if(neighbour.isPresent(this)){
+                    node.addNeighbour(neighbour);
+                }
+            }
+        }
+    }
+    */
 }

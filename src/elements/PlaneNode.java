@@ -2,6 +2,9 @@ package elements;
 
 import datastructures.YutsisArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a node in the YutsisArray. It's always part of one array: M, L or V.
  */
@@ -9,11 +12,13 @@ public class PlaneNode {
     private Plane plane;
     private int arrayNumber;
     private int arrayIndex;
+    List<PlaneNode> neighbours;
 
     public PlaneNode(Plane plane) {
         this.plane = plane;
         arrayIndex = -1;
         arrayNumber = 0;
+        neighbours = new ArrayList<>();
     }
 
     public boolean isPresent(YutsisArray array){
@@ -75,5 +80,13 @@ public class PlaneNode {
 
     public Plane getPlane() {
         return plane;
+    }
+
+    public void addNeighbour(PlaneNode planeNode) {
+        neighbours.add(planeNode);
+    }
+
+    public List<PlaneNode> getNeighbours(){
+        return neighbours;
     }
 }
