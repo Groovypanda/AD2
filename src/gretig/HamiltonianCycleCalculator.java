@@ -25,7 +25,9 @@ public class HamiltonianCycleCalculator {
         else{
             CycleEdge head = calculateCycle(YutsisArray.M);
             if(head==null){
-                System.out.println("D");
+                for(Edge edge: graph.getEdges()){
+                    edge.setVisted(false);
+                }
                 head = calculateCycle(YutsisArray.D);
             }
             CycleEdge current = head;
@@ -43,13 +45,14 @@ public class HamiltonianCycleCalculator {
         int i=0;
         int length = 0;
         Plane current = array.get(i++).getPlane();
-        while(head==null){ //O(n) iterations
+        while(head==null){ //O(n) iterations, calculate head
             for(Plane neighbour: current.getAdjacentPlanes()){ //3 iterations
                 if(!neighbour.getNode().isPresent(array)){
                     Edge common = current.getCommonEdge(neighbour);
                     CycleEdge cycleEdge = new CycleEdge(common);
                     if(head==null){
                         head=cycleEdge;
+                        head.getEdge().visit();
                         length++;
                     }
                     else if(head.getEdge().getCommonNode(common)!=null){
@@ -60,8 +63,38 @@ public class HamiltonianCycleCalculator {
             }
             current = array.get(i++).getPlane();
         }
-        head.setPreviousEdge(tail);
-        tail.setNextEdge(head);
+        if(tail==null){ //Fix tail.
+            Edge headEdge = head.getEdge();
+            Plane other;
+            if(!headEdge.getAdjacentPlanes()[0].isVisited()){
+                other = headEdge.getAdjacentPlanes()[0];
+            }
+            else {
+                other = headEdge.getAdjacentPlanes()[1];
+                if(other.isVisited()){
+                    System.out.println("Fatal error.");
+                }
+            }
+            for(Edge edge: other.getEdges()){
+                if(!edge.isVisited() && head.getEdge().getCommonNode(edge)!=null){
+                    CycleEdge cycleEdge = new CycleEdge(edge);
+                    if(tail == null){
+                        tail = cycleEdge;
+                        tail.addNextCycleEdge(head);
+                        length++;
+                    }
+                    else {
+                        head.addNextCycleEdge(cycleEdge);
+                        length++;
+                    }
+                    edge.visit();
+                }
+            }
+        }
+        else {
+            head.addNextCycleEdge(tail);
+        }
+
         while(current!=null){
             current.visit();
             for(Plane neighbour: current.getAdjacentPlanes()){ //3 iterations
@@ -69,19 +102,23 @@ public class HamiltonianCycleCalculator {
                     Edge common = current.getCommonEdge(neighbour);
                     if(common != null && !common.isVisited()){ //Not already a cycleEdge
                         CycleEdge cycleEdge = new CycleEdge(common);
-                        if(cycleEdge.getEdge().getCommonNode(head.getEdge())!=null){ //Edges are adjacent.
-                            CycleEdge newHead = new CycleEdge(common);
-                            head.addNextCycleEdge(newHead);
-                            length++;
-                            head = newHead;
+                        if(cycleEdge.getEdge().getCommonNode(head.getEdge())!=null){ //Head and edge are adjacent.
+                            if(tail!=null){
+                                CycleEdge newHead = new CycleEdge(common);
+                                head.addNextCycleEdge(newHead);
+                                length++;
+                                head = newHead;
+                            }
+
                         }
-                        else { //Tail and common have to be adjacent.
+                        else { //Tail and head are adjacent.
                             CycleEdge newTail = new CycleEdge(common);
                             newTail.addNextCycleEdge(tail);
                             length++;
                             tail = newTail;
                         }
                     }
+                    common.visit();
                 }
                 else {
                     if(!neighbour.isVisited()){

@@ -161,4 +161,7 @@ public class Edge {
         return adjacentPlanes;
     }
 
+    public void setVisted(boolean visited) {
+        this.visited = visited;
+    }
 }
