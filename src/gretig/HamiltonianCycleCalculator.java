@@ -2,7 +2,7 @@ package gretig;
 
 import datastructures.DualGraph;
 import datastructures.Graph;
-import datastructures.YutsisArray;
+import datastructures.PlaneArray;
 import elements.*;
 
 /**
@@ -10,217 +10,77 @@ import elements.*;
  */
 public class HamiltonianCycleCalculator {
     int nodeAmount;
-    private DualGraph dualGraph;
-    public YutsisArray[] possibleCycleTrees;
+    private int cycleSize;
 
     public HamiltonianCycleCalculator(Graph graph) {
         nodeAmount = graph.getSize();
-        this.dualGraph = new DualGraph(graph);
+        YutsisDecomposer decomposer = new YutsisDecomposer(new DualGraph(graph));
         //As the dualgraph contains 2n-4 nodes (the amount of planes). We can try to make a yutsis decomposition.
-        possibleCycleTrees = new YutsisArray[2];
-        boolean found = findYutsisDecomposition();
-        if(!found){
+        PlaneArray[] decomposition =  decomposer.findYutsisDecomposition();
+        if(decomposition == null){
             System.out.println("Geen cykel gevonden");
         }
         else{
-            CycleEdge head = calculateCycle(YutsisArray.M);
-            if(head==null){
-                for(Edge edge: graph.getEdges()){
-                    edge.setVisted(false);
-                }
-                head = calculateCycle(YutsisArray.D);
-            }
-            CycleEdge current = head;
-            while(current!=null){
-                System.out.println(current);
-                current = current.getPrevious();
-            }
-        }
-    }
-
-    private CycleEdge calculateCycle(YutsisArray array) {
-        CycleEdge head = null;
-        CycleEdge tail = null;
-        Plane next = null;
-        int i=0;
-        int length = 0;
-        Plane current = array.get(i++).getPlane();
-        while(head==null){ //O(n) iterations, calculate head
-            for(Plane neighbour: current.getAdjacentPlanes()){ //3 iterations
-                if(!neighbour.getNode().isPresent(array)){
-                    Edge common = current.getCommonEdge(neighbour);
-                    CycleEdge cycleEdge = new CycleEdge(common);
-                    if(head==null){
-                        head=cycleEdge;
-                        head.getEdge().visit();
-                        length++;
-                    }
-                    else if(head.getEdge().getCommonNode(common)!=null){
-                        tail = cycleEdge;
-                        length++;
-                    }
+            CycleNode[] nodes = calculateCycle(decomposition[0]);
+            if(cycleSize!=nodeAmount){
+                System.out.println("Error");
+                nodes = calculateCycle(decomposition[1]);
+                if(cycleSize==nodeAmount){
+                    System.out.println("De eerste keer werkte het niet?");
                 }
             }
-            current = array.get(i++).getPlane();
-        }
-        if(tail==null){ //Fix tail.
-            Edge headEdge = head.getEdge();
-            Plane other;
-            if(!headEdge.getAdjacentPlanes()[0].isVisited()){
-                other = headEdge.getAdjacentPlanes()[0];
+            if(cycleSize==nodeAmount) {
+                CycleNode first = nodes[0];
+                CycleNode cur = first;
+                CycleNode next = first.getNeighbours()[0];
+                CycleNode previous;
+                boolean finished = false;
+                while (!finished) {
+                    System.out.print(cur + " ");
+                    previous = cur;
+                    cur = next;
+                    next = cur.getNext(previous);
+                    if (cur.equals(first)) {
+                        finished = true;
+                    }
+                }
+                System.out.println();
             }
             else {
-                other = headEdge.getAdjacentPlanes()[1];
-                if(other.isVisited()){
-                    System.out.println("Fatal error.");
-                }
-            }
-            for(Edge edge: other.getEdges()){
-                if(!edge.isVisited() && head.getEdge().getCommonNode(edge)!=null){
-                    CycleEdge cycleEdge = new CycleEdge(edge);
-                    if(tail == null){
-                        tail = cycleEdge;
-                        tail.addNextCycleEdge(head);
-                        length++;
-                    }
-                    else {
-                        head.addNextCycleEdge(cycleEdge);
-                        length++;
-                    }
-                    edge.visit();
-                }
+                System.out.println("2 keer niet gevonden :(");
             }
         }
-        else {
-            head.addNextCycleEdge(tail);
-        }
+    }
 
-        while(current!=null){
-            current.visit();
-            for(Plane neighbour: current.getAdjacentPlanes()){ //3 iterations
+    private CycleNode[] calculateCycle(PlaneArray array) {
+        cycleSize = 0;
+        CycleNode cycle[] = new CycleNode[nodeAmount];
+        for(PlaneNode planeNode: array.getNodes()){
+            Plane plane = planeNode.getPlane();
+            for(Plane neighbour: plane.getAdjacentPlanes()){ //3 iterations
                 if(!neighbour.getNode().isPresent(array)){
-                    Edge common = current.getCommonEdge(neighbour);
-                    if(common != null && !common.isVisited()){ //Not already a cycleEdge
-                        CycleEdge cycleEdge = new CycleEdge(common);
-                        if(cycleEdge.getEdge().getCommonNode(head.getEdge())!=null){ //Head and edge are adjacent.
-                            if(tail!=null){
-                                CycleEdge newHead = new CycleEdge(common);
-                                head.addNextCycleEdge(newHead);
-                                length++;
-                                head = newHead;
-                            }
-
+                    Node[] nodes = plane.getCommonEdge(neighbour).getNodes();
+                    int i=0;
+                    CycleNode[] cycleNodes = new CycleNode[2];
+                    for(Node node: nodes){ //Create new CycleNode if the node doesn't have a cyclenode yet.
+                        int index = node.getNumber()-1;
+                        if(cycle[index]==null){
+                            cycleNodes[i] = new CycleNode(node.getNumber());
+                            cycle[index] = cycleNodes[i++];
+                            cycleSize++;
                         }
-                        else { //Tail and head are adjacent.
-                            CycleEdge newTail = new CycleEdge(common);
-                            newTail.addNextCycleEdge(tail);
-                            length++;
-                            tail = newTail;
+                        else{
+                            cycleNodes[i++] = cycle[index];
                         }
                     }
-                    common.visit();
-                }
-                else {
-                    if(!neighbour.isVisited()){
-                        next = neighbour;
-                    }
-                }
-            }
-            current = next;
-            next = null;
-        }
-        if(length == nodeAmount){
-            return head;
-        }
-        else {
-            return null;
-        }
-    }
-
-
-    //Gebaseerd op het algoritme uit de syllabus.
-    //Returns if a yutsisdecomposition is found.
-    //If a yutsisdecomp is found, YutsisArray.D & YutsisArray.M will contain the 2 nodeplane sets.
-    public boolean findYutsisDecomposition(){
-        initializeYutsisArrays();
-        YutsisArray V = YutsisArray.V;
-        YutsisArray M = YutsisArray.M;
-        YutsisArray L = YutsisArray.L;
-        //Note: Always remove a node first, before adding it to another array!
-        int n = V.length();
-        M.initialize(n/2); //M can't contain more than n/2 elements.
-        L.initialize(n);
-        PlaneNode node = V.get(0);
-        V.remove(node);
-        M.add(node);
-        update(node);
-        while(M.length() < n/2 && L.length() >0){
-            //In the original find yutsis algorithm, the max node of L is taken. This has a linear time complexity.
-            //We can only use constant methods inside this while loop. So we look for the maximum neighbour of the last added
-            //element to M. As there are only 3 neighbours, this method is constant.
-            PlaneNode max = node.getMaxNeighbour(V); //Returns null if the node has 0 neighbours in V.
-            if(max == null){
-                max = L.get(0); //If doesn't have any addable neighbours, a random one is chosen from the L set. (The first one)
-            }
-            YutsisArray.values()[max.getArrayNumber()].remove(max); //Remove max from his current array.
-            M.add(max);
-            update(max);
-        }
-
-        boolean hasYutsisDecomposition = M.length() == n/2;
-        if(hasYutsisDecomposition) {
-            YutsisArray D = YutsisArray.D;
-            D.initialize(n/2);
-            //Search elements which are not in M.
-            for (int i = 0; i < V.length(); i++) {
-                D.add(V.get(i));
-            }
-            for (int i = 0; i < L.length(); i++) {
-                D.add(L.get(i));
-            }
-            hasYutsisDecomposition = hasYutsisDecomposition && D.length() == n / 2; //If both sets contain n nodes, there is a yutsis decomposition.
-            return hasYutsisDecomposition;
-        }
-        return false;
-    }
-
-    /**
-     * Updates the L set.
-     * @param node The element which was last added to M.
-     * @return The new size of L.
-     */
-    public void update(PlaneNode node){
-        YutsisArray L = YutsisArray.L;
-        YutsisArray V = YutsisArray.V;
-        YutsisArray M = YutsisArray.M;
-        for(Plane neighbour: node.getPlane().getAdjacentPlanes()){ //3 iterations
-            PlaneNode neighbourNode = neighbour.getNode();
-            if(!neighbourNode.isPresent(M)){
-                int neighbours = neighbourNode.neighbourAmount(M);
-                if(!neighbourNode.isPresent(L) && !neighbourNode.isPresent(M)){
-                    if(neighbours < 2){
-                        V.remove(neighbourNode);
-                        L.add(neighbourNode);
-                    }
-                }
-                else if(neighbours >=2){
-                    L.remove(neighbourNode);
-                    V.add(neighbourNode);
+                    cycleNodes[0].addNeighbour(cycleNodes[1]);
+                    cycleNodes[1].addNeighbour(cycleNodes[0]);
                 }
             }
         }
+        return cycle;
     }
 
-    private void initializeYutsisArrays() {
-        YutsisArray array = YutsisArray.V;
-        array.initialize(dualGraph.getSize());
-        for(Plane plane: dualGraph.getPlanes()){ //Linear time, and is called once.
-            if(plane==null){
-                System.out.println(plane);
-            }
-            else {
-                array.add(plane.getNode());
-            }
-        }
-    }
+
+
 }

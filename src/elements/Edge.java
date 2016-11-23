@@ -9,7 +9,7 @@ public class Edge {
     private Node[] nodes; //An array of the endpoints of the edge. Every edge has 2 endpoints.
     private int[] edgeIndex; //Displays for each node the index of this edge in the edgeList of that node.
     private boolean visited; //Tells if a node has been visited.
-    private Plane[] adjacentPlanes;
+    private Plane[] adjacentPlanes; //2 adjacent planes of an edge.
 
     /**
      * A constructor for an edge. It creates an empty array of 2 nodes, the endpoints of the edge.
@@ -161,7 +161,10 @@ public class Edge {
         return adjacentPlanes;
     }
 
-    public void setVisted(boolean visited) {
-        this.visited = visited;
+    public void setVisted(boolean visited) { this.visited = visited; }
+
+    public Node getOtherNode(Node node) {
+        return node.equals(nodes[0]) ? nodes[1] : nodes[0];
     }
+
 }

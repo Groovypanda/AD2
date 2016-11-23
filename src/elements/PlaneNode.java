@@ -1,77 +1,63 @@
 package elements;
 
-import datastructures.YutsisArray;
-
-import java.util.ArrayList;
-import java.util.List;
+import datastructures.PlaneArray;
 
 /**
- * Represents a node in the YutsisArray. It's always part of one array: M, L or V.
+ * Represents a node in the PlaneArray. It's always part of one array: M, L or V.
  */
 public class PlaneNode {
     private Plane plane;
-    private int arrayNumber;
+    private PlaneArray current;
     private int arrayIndex;
-    List<PlaneNode> neighbours;
+    private PlaneNode[] neighbours;
+    private PlaneEdgePair[] pairs; //Pairs of edges containing this node.
+    private int pairsLength; //Current length of current pairs array.
+    private PlaneEdge[] adjacentEdges;
+    private int edgesLength; //Current length of ajacentEdges array.
+    private Face[] faces;
+    private int facesLength; //Current length of Face array.
 
     public PlaneNode(Plane plane) {
         this.plane = plane;
         arrayIndex = -1;
-        arrayNumber = 0;
-        neighbours = new ArrayList<>();
+        current = null;
+        pairs = new PlaneEdgePair[3];
+        adjacentEdges = new PlaneEdge[3];
+        faces = new Face[3];
+        pairsLength = 0;
+        edgesLength = 0;
+        facesLength = 0;
     }
 
-    public boolean isPresent(YutsisArray array){
-        return array.number == arrayNumber &&  arrayIndex != -1;
+    public boolean isPresent(PlaneArray array){
+        return current == null ? false : array.number == current.number;
     }
 
     //Returns -1 if not in the given array.
-    public int getIndex(YutsisArray array){
-        return array.number == arrayNumber ? arrayIndex : -1;
+    public int getIndex(PlaneArray array){
+        return isPresent(array) ? arrayIndex : -1;
     }
 
-    //If element not in the given array, the array number of this node will be changed.
-    public void setIndex(YutsisArray array, int index){
-        if(array.number!=arrayNumber){
-            arrayNumber = array.number;
+    public void setIndex(PlaneArray array, int index){
+        if(!isPresent(array)){
+            current = array;
         }
         arrayIndex = index;
     }
 
     /**
      * Returns the amount of neighbours a node has in the given array.
-     * @param array A YutsisArray in which the neighbours have to be present.
+     * @param array A PlaneArray in which the neighbours have to be present.
      * @return The amount of neighbours an element has in the given array.
      */
-    public int neighbourAmount(YutsisArray array){
+    public int neighbourAmount(PlaneArray array){
         int amount = 0;
-        for(Plane plane: this.plane.getAdjacentPlanes()){ //3 iterations.
-            PlaneNode node = plane.getNode();
+        for(PlaneNode node: getNeighbours()){ //3 iterations.
             if(node.isPresent(array)){
                 amount++;
             }
         }
         return amount;
-    }
-
-    public PlaneNode getMaxNeighbour(YutsisArray array){
-        int max = 0;
-        PlaneNode maxNode = null;
-        for(Plane plane: this.plane.getAdjacentPlanes()){ //3 iterations.
-            if(!plane.getNode().isPresent(YutsisArray.M)){ //If the element is in M, it can't be chosen as max neighbour.
-                PlaneNode node = plane.getNode();
-                int neighbourAmount = node.neighbourAmount(array);
-                if(neighbourAmount>max){
-                    max = neighbourAmount;
-                    maxNode = node;
-                }
-            }
-        }
-        return maxNode;
-    }
-
-    public int getArrayNumber(){
-        return arrayNumber;
     }
 
     public String toString(){
@@ -82,11 +68,94 @@ public class PlaneNode {
         return plane;
     }
 
-    public void addNeighbour(PlaneNode planeNode) {
-        neighbours.add(planeNode);
+    public PlaneNode[] getNeighbours() {
+        //Only create neighbour array once when necessary.
+        if(neighbours==null){
+            neighbours = new PlaneNode[3];
+            int i = 0;
+            for(Plane plane: getPlane().getAdjacentPlanes()){
+                neighbours[i++] = plane.getNode();
+            }
+        }
+        return neighbours;
     }
 
-    public List<PlaneNode> getNeighbours(){
-        return neighbours;
+    //Returns if this node is addable to M
+    public boolean isAddable(){
+        return true;
+    }
+
+    public void switchTo(PlaneArray newArray) {
+        current.remove(this);
+        newArray.add(this);
+    }
+
+    public void markPairs() {
+        for(PlaneEdgePair pair: pairs){
+            pair.mark();
+        }
+    }
+
+    public void addEdge(PlaneEdge planeEdge) {
+        adjacentEdges[edgesLength++]=planeEdge;
+    }
+
+    public void addPair(PlaneEdgePair pair){
+        pairs[pairsLength++]=pair;
+    }
+
+    public PlaneEdge[] getAdjacentEdges(){
+        return adjacentEdges;
+    }
+
+    public PlaneEdgePair[] getAdjacentPairs(){
+        return pairs;
+    }
+
+    public PlaneEdge getEdgeTo(PlaneNode second) {
+        for(PlaneEdge edge1: adjacentEdges){
+            for(PlaneEdge edge2: second.adjacentEdges){
+                if(edge1.equals(edge2)){
+                    return edge1;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the planeEdgePair with this node as center with the given pair of edges.
+     * @param edge1
+     * @param edge2
+     * @return
+     */
+    public PlaneEdgePair getPlaneEdgePair(PlaneEdge edge1, PlaneEdge edge2) {
+        for(int i=0; i<pairsLength;i++){
+            if(pairs[i].equals(edge1, edge2)){
+                return pairs[i];
+            }
+        }
+        return null;
+    }
+
+    public void addFace(Face face) {
+        faces[facesLength++] = face;
+    }
+
+    //Check if this node has a pair with these edges.
+    public boolean containsPlaneEdgePair(PlaneEdge edge1, PlaneEdge edge2){
+        boolean found = false;
+        for(int i=0; i<pairsLength &&!found; i++){
+            PlaneEdgePair pair = pairs[i];
+            if(pair.equals(edge1, edge2)){
+                found=true;
+            }
+        }
+        return found;
+    }
+
+    public PlaneNode getNeighbour(PlaneEdge edge) {
+        PlaneNode[] nodes = edge.getEndpoints();
+        return nodes[0].equals(this) ? nodes[1] : nodes[0];
     }
 }

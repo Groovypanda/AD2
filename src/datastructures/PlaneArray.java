@@ -1,16 +1,14 @@
 package datastructures;
 
-import elements.Plane;
 import elements.PlaneNode;
 
 /**
  * A datastructure representing an array with PlaneNodes in which all operations are constant.
  */
-public enum YutsisArray {
-    V(0), L(1), M(2), D(3);
+public class PlaneArray {
 
     //V: Contains all nodes which aren't in L or M.
-    //L: Contains all nodes such that every node in L has one adjacent node to M.
+    //L: Contains all nodes such that every node in L has one adjacent node to M AND TODO.
     //M: One disjunct part of the Yutsis decomposition.
     //D: The other disjunct part of the Yutsis decomposition.
 
@@ -18,12 +16,10 @@ public enum YutsisArray {
     private int length; //Length is maximum 2n-4 (amount of planes).
     private int size;
     private PlaneNode[] elements;
+    private PlaneNode lastAdded;
 
-    YutsisArray(int number){
+    public PlaneArray(int number, int size){
         this.number = number;
-    }
-
-    public void initialize(int size){
         this.size = size;
         this.length = 0;
         elements = new PlaneNode[size];
@@ -32,6 +28,7 @@ public enum YutsisArray {
     public void add(PlaneNode node){
         elements[length] = node;
         node.setIndex(this, length);
+        lastAdded = node;
         length++;
     }
 
@@ -45,8 +42,18 @@ public enum YutsisArray {
             }
             node.setIndex(this, -1);
             elements[--length]=null;
+            if(node.equals(lastAdded)){
+                if(length>0){
+                    lastAdded = elements[length-1];
+                }
+                else {
+                    lastAdded = null;
+                }
+            }
         }
-
+        else {
+            System.out.println("Fatal error");
+        }
     }
 
     public PlaneNode get(int index){
@@ -71,16 +78,12 @@ public enum YutsisArray {
         }
         return output;
     }
-    /*
-    public void connectNodes(){
-        for(PlaneNode node: elements){
-            for(Plane plane: node.getPlane().getAdjacentPlanes()){
-                PlaneNode neighbour = plane.getNode();
-                if(neighbour.isPresent(this)){
-                    node.addNeighbour(neighbour);
-                }
-            }
+
+    public PlaneNode peek() {
+        PlaneNode node = null;
+        if(lastAdded != null){
+            node = lastAdded;
         }
+        return node;
     }
-    */
 }

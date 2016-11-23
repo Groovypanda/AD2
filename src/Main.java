@@ -12,12 +12,22 @@ import java.util.List;
  * @author Jarre Knockaert
  */
 public class Main {
-    static int graphNumber = 0;
     public static void main(String[] args) {
-        List<Graph> graphs = readGraphs("klein/triang_alle_05.sec");
+        boolean testset = false;
+        int graphNumber = 0;
+        boolean check = false;
+        List<Graph> graphs;
+        if(testset){
+            graphs = readGraphs("testset/triang1.sec");
+        }
+        else {
+            graphs = readGraphs("klein/triang_alle_05.sec");
+        }
         for(Graph g: graphs){
             System.out.println("================ GRAPH " + ++graphNumber + " ================");
-            HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+            if(!check || graphNumber==5){
+                HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+            }
         }
         /*
         for(int i=1; i<=10; i++){

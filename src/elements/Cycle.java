@@ -7,26 +7,26 @@ import java.util.List;
 /**
  * Created by Jarre on 11/11/2016.
  */
-public class Cycle implements Iterator<CycleEdge2> {
+public class Cycle implements Iterator<CycleEdge> {
 
     private final int maxSize;
     private int size;
-    private CycleEdge2 head;
-    private CycleEdge2 current;
-    private CycleEdge2 tail;
+    private CycleEdge head;
+    private CycleEdge current;
+    private CycleEdge tail;
 
     private boolean visitedRealHead = false;
     private boolean visitedVisibleTail = false;
     private boolean visitedRealTail = false;
     private boolean visitedVisibleHead = false;
 
-    private CycleEdge2 visibleHead;
-    private CycleEdge2 visibleCurrent;
-    private CycleEdge2 visibleTail;
-    private CycleEdge2 tmpRealHead;
-    private CycleEdge2 tmpRealTail;
-    private CycleEdge2 tmpVisibleHead;
-    private CycleEdge2 tmpVisibleTail;
+    private CycleEdge visibleHead;
+    private CycleEdge visibleCurrent;
+    private CycleEdge visibleTail;
+    private CycleEdge tmpRealHead;
+    private CycleEdge tmpRealTail;
+    private CycleEdge tmpVisibleHead;
+    private CycleEdge tmpVisibleTail;
 
     public Cycle(int amount){
         head = null;
@@ -34,7 +34,7 @@ public class Cycle implements Iterator<CycleEdge2> {
         maxSize = amount;
     }
 
-    public void setHead(CycleEdge2 cycleEdge){
+    public void setHead(CycleEdge cycleEdge){
         head = cycleEdge;
     }
 
@@ -42,7 +42,7 @@ public class Cycle implements Iterator<CycleEdge2> {
         return !visitedRealTail;
     }
 
-    public CycleEdge2 next() {
+    public CycleEdge next() {
         if(!visitedRealHead){
             current = head;
             visitedRealHead = true;
@@ -69,7 +69,7 @@ public class Cycle implements Iterator<CycleEdge2> {
 
 
     public List<Edge> getEdges(){
-        CycleEdge2 current = head.getRealNext();
+        CycleEdge current = head.getRealNext();
         List<Edge> edges = new ArrayList<>();
         edges.add(head.getEdge());
         while(!current.getEdge().equals(head.getEdge())){
@@ -81,7 +81,7 @@ public class Cycle implements Iterator<CycleEdge2> {
     }
 
     public void printVisibleCycle(){
-        CycleEdge2 current = visibleHead.getVisibleNext();
+        CycleEdge current = visibleHead.getVisibleNext();
         System.out.println("====== Visible edges: ======");
         System.out.println(visibleHead.getEdge());
         while(!current.getEdge().equals(visibleHead.getEdge())){
@@ -120,25 +120,25 @@ public class Cycle implements Iterator<CycleEdge2> {
         }
     }
 
-    public void add(CycleEdge2 current) {
+    public void add(CycleEdge current) {
         head = current;
         tail = current;
         size++;
     }
 
-    public void add(CycleEdge2 previous, CycleEdge2 current) {
+    public void add(CycleEdge previous, CycleEdge current) {
         previous.connectNextEdge(current);
         size++;
     }
 
-    public void add(CycleEdge2 previous, CycleEdge2 current, CycleEdge2 next){
+    public void add(CycleEdge previous, CycleEdge current, CycleEdge next){
         previous.addNextCycleEdge(current);
         current.addNextCycleEdge(next);
         next.addNextCycleEdge(previous);
         size+=3;
     }
 
-    public void add(CycleEdge2 previous, CycleEdge2 current1, CycleEdge2 current2, CycleEdge2 next){
+    public void add(CycleEdge previous, CycleEdge current1, CycleEdge current2, CycleEdge next){
         previous.addNextCycleEdge(current1);
         current1.addNextCycleEdge(current2);
         current2.addNextCycleEdge(next);
@@ -157,7 +157,7 @@ public class Cycle implements Iterator<CycleEdge2> {
         return !visitedVisibleTail;
     }
 
-    public CycleEdge2 visibleNext() {
+    public CycleEdge visibleNext() {
         if(!visitedVisibleHead){
             visibleCurrent = visibleHead;
             visitedVisibleHead = true;
@@ -171,21 +171,21 @@ public class Cycle implements Iterator<CycleEdge2> {
         return visibleCurrent;
     }
 
-    public CycleEdge2 getVisibleHead() { return visibleHead; }
+    public CycleEdge getVisibleHead() { return visibleHead; }
 
-    public void setVisibleHead(CycleEdge2 visibleHead) { this.visibleHead = visibleHead; }
+    public void setVisibleHead(CycleEdge visibleHead) { this.visibleHead = visibleHead; }
 
-    public void setVisibleTail(CycleEdge2 visibleTail) { this.visibleTail = visibleTail; }
+    public void setVisibleTail(CycleEdge visibleTail) { this.visibleTail = visibleTail; }
 
-    public CycleEdge2 getRealHead() { return head; }
+    public CycleEdge getRealHead() { return head; }
 
-    public void setTmpRealHead(CycleEdge2 tmpRealHead) { this.tmpRealHead = tmpRealHead; }
+    public void setTmpRealHead(CycleEdge tmpRealHead) { this.tmpRealHead = tmpRealHead; }
 
-    public void setTmpRealTail(CycleEdge2 tmpRealTail) { this.tmpRealTail = tmpRealTail; }
+    public void setTmpRealTail(CycleEdge tmpRealTail) { this.tmpRealTail = tmpRealTail; }
 
-    public void setTmpVisibleHead(CycleEdge2 tmpVisibleHead) { this.tmpVisibleHead = tmpVisibleHead; }
+    public void setTmpVisibleHead(CycleEdge tmpVisibleHead) { this.tmpVisibleHead = tmpVisibleHead; }
 
-    public void setTmpVisibleTail(CycleEdge2 tmpVisibleTail) { this.tmpVisibleTail = tmpVisibleTail; }
+    public void setTmpVisibleTail(CycleEdge tmpVisibleTail) { this.tmpVisibleTail = tmpVisibleTail; }
 
     public void update() {
         if(tmpRealHead!=null) {
@@ -202,31 +202,31 @@ public class Cycle implements Iterator<CycleEdge2> {
         visitedVisibleHead = false;
     }
 
-    public void setTail(CycleEdge2 tail) {
+    public void setTail(CycleEdge tail) {
         this.tail = tail;
     }
 
-    public CycleEdge2 getTmpVisibleHead() {
+    public CycleEdge getTmpVisibleHead() {
         return tmpVisibleHead;
     }
 
-    public CycleEdge2 getTmpRealHead() {
+    public CycleEdge getTmpRealHead() {
         return tmpRealHead;
     }
 
-    public CycleEdge2 getRealTail() {
+    public CycleEdge getRealTail() {
         return tail;
     }
 
-    public CycleEdge2 getTmpRealTail() {
+    public CycleEdge getTmpRealTail() {
         return tmpRealTail;
     }
 
-    public CycleEdge2 getTmpVisibleTail() {
+    public CycleEdge getTmpVisibleTail() {
         return tmpVisibleTail;
     }
 
-    public CycleEdge2 getVisibleTail() {
+    public CycleEdge getVisibleTail() {
         return visibleTail;
     }
 }

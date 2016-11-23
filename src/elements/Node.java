@@ -147,10 +147,10 @@ public class Node {
         sb.append(getDegree());
         sb.append("): [");
         for(int i = 0; i< edges.size()-1; i++){
-            sb.append(edges.get(i));
+            sb.append(edges.get(i).getOtherNode(this).getNumber());
             sb.append(", ");
         }
-        sb.append(edges.get(edges.size()-1));
+        sb.append(edges.get(edges.size()-1).getOtherNode(this).getNumber());
         sb.append("]");
         return sb.toString();
     }
