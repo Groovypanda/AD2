@@ -2,6 +2,9 @@ package elements;
 
 import datastructures.PlaneArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a node in the PlaneArray. It's always part of one array: M, L or V.
  */
@@ -10,23 +13,23 @@ public class PlaneNode {
     private PlaneArray current;
     private int arrayIndex;
     private PlaneNode[] neighbours;
-    private PlaneEdgePair[] pairs; //Pairs of edges containing this node.
+    private List<Pair> pairs; //Pairs of edges with this node as startpoint (or endpoint).
+    private Pair[] centerPairs; //Pairs of edges with this node as center.
     private int pairsLength; //Current length of current pairs array.
-    private PlaneEdge[] adjacentEdges;
-    private int edgesLength; //Current length of ajacentEdges array.
     private Face[] faces;
     private int facesLength; //Current length of Face array.
+    private int neighbourIndex[];
 
     public PlaneNode(Plane plane) {
         this.plane = plane;
         arrayIndex = -1;
         current = null;
-        pairs = new PlaneEdgePair[3];
-        adjacentEdges = new PlaneEdge[3];
+        pairs = new ArrayList<>() ;
+        centerPairs = new Pair[3];
         faces = new Face[3];
         pairsLength = 0;
-        edgesLength = 0;
         facesLength = 0;
+        neighbourIndex = new int[3];
     }
 
     public boolean isPresent(PlaneArray array){
@@ -69,20 +72,18 @@ public class PlaneNode {
     }
 
     public PlaneNode[] getNeighbours() {
-        //Only create neighbour array once when necessary.
+        return neighbours;
+    }
+
+    public void setNeighbours(){
         if(neighbours==null){
             neighbours = new PlaneNode[3];
             int i = 0;
             for(Plane plane: getPlane().getAdjacentPlanes()){
-                neighbours[i++] = plane.getNode();
+                neighbours[i] = plane.getNode();
+                i++;
             }
         }
-        return neighbours;
-    }
-
-    //Returns if this node is addable to M
-    public boolean isAddable(){
-        return true;
     }
 
     public void switchTo(PlaneArray newArray) {
@@ -91,71 +92,79 @@ public class PlaneNode {
     }
 
     public void markPairs() {
-        for(PlaneEdgePair pair: pairs){
+        for(Pair pair: pairs){
             pair.mark();
         }
     }
 
-    public void addEdge(PlaneEdge planeEdge) {
-        adjacentEdges[edgesLength++]=planeEdge;
+    public void addPair(Pair pair){
+        pairs.add(pair);
     }
 
-    public void addPair(PlaneEdgePair pair){
-        pairs[pairsLength++]=pair;
+    public void addCenterPair(Pair pair){
+        centerPairs[pairsLength++] = pair;
     }
 
-    public PlaneEdge[] getAdjacentEdges(){
-        return adjacentEdges;
-    }
-
-    public PlaneEdgePair[] getAdjacentPairs(){
+    public List<Pair> getPairs(){
         return pairs;
-    }
-
-    public PlaneEdge getEdgeTo(PlaneNode second) {
-        for(PlaneEdge edge1: adjacentEdges){
-            for(PlaneEdge edge2: second.adjacentEdges){
-                if(edge1.equals(edge2)){
-                    return edge1;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns the planeEdgePair with this node as center with the given pair of edges.
-     * @param edge1
-     * @param edge2
-     * @return
-     */
-    public PlaneEdgePair getPlaneEdgePair(PlaneEdge edge1, PlaneEdge edge2) {
-        for(int i=0; i<pairsLength;i++){
-            if(pairs[i].equals(edge1, edge2)){
-                return pairs[i];
-            }
-        }
-        return null;
     }
 
     public void addFace(Face face) {
         faces[facesLength++] = face;
     }
 
-    //Check if this node has a pair with these edges.
-    public boolean containsPlaneEdgePair(PlaneEdge edge1, PlaneEdge edge2){
-        boolean found = false;
-        for(int i=0; i<pairsLength &&!found; i++){
-            PlaneEdgePair pair = pairs[i];
-            if(pair.equals(edge1, edge2)){
-                found=true;
+    public boolean containsCenterPair(PlaneNode startNode, PlaneNode endNode) {
+        for(int i=0; i<pairsLength; i++){
+            if(centerPairs[i].equals(startNode, this, endNode)){
+                return true;
             }
         }
-        return found;
+        return false;
     }
 
-    public PlaneNode getNeighbour(PlaneEdge edge) {
-        PlaneNode[] nodes = edge.getEndpoints();
-        return nodes[0].equals(this) ? nodes[1] : nodes[0];
+    public Pair findCenterPair(PlaneNode start, PlaneNode end) {
+        for(Pair pair: centerPairs){
+            if(pair.equals(start, this, end)){
+                return pair;
+            }
+        }
+        return null;
+    }
+
+
+    public PlaneNode getNextNode(PlaneNode last, PlaneNode node) {
+        int i;
+        for(i=0; i<neighbours.length; i++){
+            if(neighbours[i].equals(node)){
+                break;
+            }
+
+            if(last!=null && neighbours[i].equals(last)){
+                return last;
+            }
+
+        }
+        if(i==3){
+            return null;
+        }
+        int nextIndex = i-1;
+        if(nextIndex<0){
+            nextIndex+=3;
+        }
+        PlaneNode next = getNeighbours()[nextIndex];
+        return next;
+    }
+
+    public PlaneNode getPreviousNode(PlaneNode first, PlaneNode node) {
+        int i;
+        for(i=0; i<neighbours.length; i++){
+            if(neighbours[i].equals(node)){
+                break;
+            }
+
+        }
+        int nextIndex = i+1;
+        PlaneNode next = getNeighbours()[nextIndex%3];
+        return next;
     }
 }

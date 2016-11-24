@@ -117,7 +117,7 @@ public class Graph {
         return edgeArray;
     }
 
-    /**
+    /**=
      * Private method for retrieving an edge from the elements.
      * @param edgeNumber The number of the edge
      * @return The edge, returns null if the edgeArray doesn't contain the edgeNumber.
@@ -138,5 +138,13 @@ public class Graph {
 
     public int getSize() {
         return size;
+    }
+
+    public void print() {
+        System.out.println("====== GRAPH =======");
+        for(Node n: getNodes()){
+            System.out.println(n);
+        }
+        System.out.println("====================");
     }
 }

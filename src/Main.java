@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        boolean testset = false;
+        boolean testset = true;
         int graphNumber = 0;
         boolean check = false;
         List<Graph> graphs;
@@ -21,7 +21,7 @@ public class Main {
             graphs = readGraphs("testset/triang1.sec");
         }
         else {
-            graphs = readGraphs("klein/triang_alle_05.sec");
+            graphs = readGraphs("klein/triang_alle_06.sec");
         }
         for(Graph g: graphs){
             System.out.println("================ GRAPH " + ++graphNumber + " ================");

@@ -123,4 +123,29 @@ public class Plane {
     public void visit() {
         visited = true;
     }
+
+    //TODO!!!!!!!!!!!!!!!!!!!!
+    public void order() { //Correct the order of the neighbours if incorrect.
+        Node[] nodes = new Node[3];
+        Node[] edgeNodes = edges[0].getNodes();
+        nodes[0] = edgeNodes[0];
+        nodes[1] = edgeNodes[1];
+        int i=0;
+        Plane[] orderedNeighbours = new Plane[3];
+        for(Edge edge: edges){
+            Edge common = getCommonEdge(neighbours[i]);
+            if(common.equals(edge)){
+                orderedNeighbours[i] = neighbours[i];
+            }
+            else {
+                for(Plane plane: edge.getAdjacentPlanes()){
+                    if(!plane.equals(this)){
+                        orderedNeighbours[i] = plane;
+                    }
+                }
+            }
+            i++;
+        }
+        neighbours = orderedNeighbours;
+    }
 }
