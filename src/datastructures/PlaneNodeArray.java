@@ -82,15 +82,6 @@ public class PlaneNodeArray {
         return elements;
     }
 
-    public PlaneNode peek() {
-        PlaneNode node = null;
-        if(lastAdded != null){
-            node = lastAdded;
-        }
-
-        return node;
-    }
-
     public String toString(){
         String output = name + " ";
         for(int i=0; i<length-1; i++){
@@ -105,5 +96,14 @@ public class PlaneNodeArray {
 
     public boolean empty() {
         return length==0;
+    }
+
+    public PlaneNode pull() {
+        PlaneNode node = null;
+        if(lastAdded != null){
+            node = lastAdded;
+            remove(node);
+        }
+        return node;
     }
 }

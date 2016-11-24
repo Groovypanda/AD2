@@ -207,4 +207,5 @@ public class PlaneNode {
         current = null;
         arrayIndex = -1;
     }
+
 }

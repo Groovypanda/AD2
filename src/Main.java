@@ -18,7 +18,7 @@ public class Main {
         boolean check = false;
         List<Graph> graphs;
         if(testset){
-            graphs = readGraphs("testset/triang11.sec");
+            graphs = readGraphs("testset/triang1.sec");
         }
         else {
             graphs = readGraphs("klein/triang_alle_12.sec");
