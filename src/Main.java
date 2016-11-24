@@ -21,11 +21,11 @@ public class Main {
             graphs = readGraphs("testset/triang1.sec");
         }
         else {
-            graphs = readGraphs("klein/triang_alle_06.sec");
+            graphs = readGraphs("klein/triang_alle_12.sec");
         }
         for(Graph g: graphs){
             System.out.println("================ GRAPH " + ++graphNumber + " ================");
-            if(!check || graphNumber==5){
+            if(!check || graphNumber==4){
                 HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
             }
         }

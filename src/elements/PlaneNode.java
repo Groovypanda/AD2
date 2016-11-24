@@ -16,9 +16,6 @@ public class PlaneNode {
     private List<Pair> pairs; //Pairs of edges with this node as startpoint (or endpoint).
     private Pair[] centerPairs; //Pairs of edges with this node as center.
     private int pairsLength; //Current length of current pairs array.
-    private Face[] faces;
-    private int facesLength; //Current length of Face array.
-    private int neighbourIndex[];
 
     public PlaneNode(Plane plane) {
         this.plane = plane;
@@ -26,10 +23,7 @@ public class PlaneNode {
         current = null;
         pairs = new ArrayList<>() ;
         centerPairs = new Pair[3];
-        faces = new Face[3];
         pairsLength = 0;
-        facesLength = 0;
-        neighbourIndex = new int[3];
     }
 
     public boolean isPresent(PlaneArray array){
@@ -107,10 +101,6 @@ public class PlaneNode {
 
     public List<Pair> getPairs(){
         return pairs;
-    }
-
-    public void addFace(Face face) {
-        faces[facesLength++] = face;
     }
 
     public boolean containsCenterPair(PlaneNode startNode, PlaneNode endNode) {

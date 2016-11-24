@@ -92,4 +92,8 @@ public class Pair {
     public int getDirection(){
         return direction;
     }
+
+    public PlaneNode getEndNode(PlaneNode node) {
+        return nodes[0].equals(node) ?  nodes[2] : nodes[0];
+    }
 }

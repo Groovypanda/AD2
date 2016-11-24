@@ -2,8 +2,12 @@ package gretig;
 
 import datastructures.DualGraph;
 import datastructures.PlaneArray;
+import elements.Face;
+import elements.Pair;
 import elements.Plane;
 import elements.PlaneNode;
+
+import java.util.List;
 
 /**
  * Created by Jarre on 22/11/2016.
@@ -24,14 +28,19 @@ public class YutsisDecomposer {
     //Returns if a yutsisdecomposition is found.
     //If a yutsisdecomp is found, PlaneArray.D & PlaneArray.M will contain the 2 nodeplane sets.
     public PlaneArray[] findYutsisDecomposition(){
+        Face lastcheckedFace = null;
         initializeYutsisArrays();
         //Note: Always remove a node first, before adding it to another array!
         int n = V.length();
         PlaneNode node = V.get(0);
         V.remove(node);
         M.add(node);
+        for(Pair pair: node.getPairs()){
+            if(!pair.isMarked()){
+                pair.getFace().markBoundaries();
+            }
+        }
         update(node);
-        //node.markPairs();
         boolean finished = false;
         //Unplaced neighbour: neighbours that are not yet contained in Li or the tree
         while(M.length() < n/2 && !finished){
@@ -65,6 +74,22 @@ public class YutsisDecomposer {
                         node.switchTo(V);
                         node = null;
                     }
+                    else {
+                        List<Pair> pairs = node.getPairs();
+                        boolean found = false;
+                        for(int j=0; j<pairs.size() && !found; j++){
+                            Pair pair = pairs.get(j);
+                            PlaneNode endNode = pair.getEndNode(node);
+                            if(!endNode.isPresent(M) && !pair.isMarked()){
+                                found = true;
+                                lastcheckedFace = pair.getFace();
+                            }
+                        }
+                        if(!found){
+                            node.switchTo(V);
+                            node = null;
+                        }
+                    }
                 }
             }
             if(node==null){
@@ -72,12 +97,15 @@ public class YutsisDecomposer {
             }
             else{
                 node.switchTo(M);
+                lastcheckedFace.markBoundaries();
                 update(node);
                 //node.markPairs();
             }
 
         }
 
+        System.out.println(M.length());
+        System.out.println("Total length: " + n/2);
         boolean hasYutsisDecomposition = M.length() == n/2;
         if(hasYutsisDecomposition) {
             //Search elements which are not in M.
