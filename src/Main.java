@@ -18,10 +18,10 @@ public class Main {
         boolean check = false;
         List<Graph> graphs;
         if(testset){
-            graphs = readGraphs("testset/triang1.sec");
+            graphs = readGraphs("testset/triang14.sec");
         }
         else {
-            graphs = readGraphs("klein/triang1.sec");
+            graphs = readGraphs("klein/triang_alle_11.sec");
         }
         for(Graph g: graphs){
             System.out.println("================ GRAPH " + ++graphNumber + " ================");

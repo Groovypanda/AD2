@@ -107,6 +107,7 @@ public class YutsisDecomposer {
     }
 
     public PlaneArray[] buildDecomposition(int n){
+        System.out.println(M.length() + "/" + n/2);
         boolean hasYutsisDecomposition = M.length() == n/2;
         if(hasYutsisDecomposition) {
             //Search elements which are not in M.
@@ -150,13 +151,12 @@ public class YutsisDecomposer {
 
 
     private void initializeYutsisArrays() {
-        int i=0;
-        V = new PlaneArray(i++, graph.getSize());
-        M = new PlaneArray(i++, graph.getSize()/2);
+        V = new PlaneArray(graph.getSize());
+        M = new PlaneArray(graph.getSize()/2);
         for(int j=0; j<3; j++){
-            L[j] = new PlaneArray(i++, graph.getSize());
+            L[j] = new PlaneArray(graph.getSize());
         }
-        D = new PlaneArray(i++, graph.getSize()/2);
+        D = new PlaneArray(graph.getSize()/2);
         for(Plane plane: graph.getPlanes()){ //Linear time, and is called once.
             if(plane!=null){
                 V.add(plane.getNode());

@@ -125,7 +125,7 @@ public class Plane {
     }
 
     //TODO!!!!!!!!!!!!!!!!!!!!
-    public void order() { //Correct the order of the neighbours if incorrect.
+    public void checkOrder() { //Correct the checkOrder of the neighbours if incorrect.
         Node[] nodes = new Node[3];
         Node[] edgeNodes = edges[0].getNodes();
         nodes[0] = edgeNodes[0];

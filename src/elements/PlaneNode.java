@@ -121,40 +121,23 @@ public class PlaneNode {
         return null;
     }
 
-
-    public PlaneNode getNextNode(PlaneNode last, PlaneNode node) {
-        int i;
-        for(i=0; i<neighbours.length; i++){
-            if(neighbours[i].equals(node)){
-                break;
+    private PlaneNode getAdjacentNode(int direction, PlaneNode node){
+        int i=0;
+        while(!neighbours[i].equals(node)){
+            i++;
+            if(i==3){
+                return null;
             }
-
-            if(last!=null && neighbours[i].equals(last)){
-                return last;
-            }
-
         }
-        if(i==3){
-            return null;
-        }
-        int nextIndex = i-1;
-        if(nextIndex<0){
-            nextIndex+=3;
-        }
-        PlaneNode next = getNeighbours()[nextIndex];
-        return next;
+        //+3 and %3 to make sure i is in the correct interval.
+        return getNeighbours()[(i+3+direction)%3];
     }
 
-    public PlaneNode getPreviousNode(PlaneNode first, PlaneNode node) {
-        int i;
-        for(i=0; i<neighbours.length; i++){
-            if(neighbours[i].equals(node)){
-                break;
-            }
+    public PlaneNode getNextNode(PlaneNode node) {
+        return getAdjacentNode(-1, node);
+    }
 
-        }
-        int nextIndex = i+1;
-        PlaneNode next = getNeighbours()[nextIndex%3];
-        return next;
+    public PlaneNode getPreviousNode(PlaneNode node) {
+        return getAdjacentNode(1, node);
     }
 }

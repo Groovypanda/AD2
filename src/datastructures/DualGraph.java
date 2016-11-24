@@ -3,30 +3,41 @@ package datastructures;
 import elements.*;
 
 /**
- * The dual elements is a elements which is returned by drawing a node in every plane and connecting 2 of these nodes
- * if the corresponding planes have a common edge. (Syllabus Algoritmen en Datastructuren 2)
- * This is a 3-regular elements as every plane in a triangulation has 3 adjacent planes.
+ * The dual graph is created by drawing a node in every plane and connecting 2 of these nodes
+ * if the corresponding planes have a common edge. The edges are the connections between 2 adjacent planes and the vertices
+ * are the different planes. This is a 3-regular graph as every plane in a triangulation has 3 adjacent planes.
+ * This graph is also known as a 2-connected cubic graph.
+ * Note: I refer to the constant n in the comments. This equals the amount of nodes in this graph which equals the size of
+ * 2*x-4, with x the amount of nodes in the inner graph.
  */
 public class DualGraph {
     private Plane[] planes; //The nodes of this graph
     int planesIndex = 0; //The current index of the planes array.
-    private Graph graph;
-    private Pair[] pairs;
+    private Graph graph; //The graph of which this dualGraph is made.
+    private Pair[] pairs; //An array with pairs of edges with size 3*n.
 
+    /**
+     * This constructor creates a DualGraph out of a given planar triangulation.
+     * @param graph The inner graph of the DualGraph which is a planar triangulation.
+     */
     public DualGraph(Graph graph) {
         this.graph = graph;
-        setupPlaneSet();
-        setupGraphStructure();
+        setupPlaneSet(); //Initialise all of the nodes of this graph.
+        setupGraphStructure(); //Initialise all of the pairs and faces of this graph.
     }
 
+    /**
+     * Initialises all of the pairs and faces in this graph.
+     * This method works in linear time. It iterates over all of the planes, and has 2 inner loops which each have
+     * 3 iterations.
+     */
     private void setupGraphStructure(){
         int pairsLength = 0;
-        int length = 2*graph.getNodes().length-4; //If length = n
-        pairs = new Pair[3*length]; //Then amount of pairs is 3*n
-        for(Plane startPlane: planes){ //And amount of planes is n.
+        pairs = new Pair[3*getSize()];  //There are 3*n pairs in a dual graph. (Every node is the center of 3 pairs.)
+        for(Plane startPlane: planes){  //Iterate trough all of the planes.
             PlaneNode startNode = startPlane.getNode();
             for(PlaneNode middleNode: startNode.getNeighbours()){
-                for(PlaneNode endNode: middleNode.getNeighbours()){
+                for(PlaneNode endNode: middleNode.getNeighbours()){ //Create all of the possible pair variations.
                     //Check if Pair exists already in the endNode.
                     if(!startNode.equals(endNode) && !middleNode.containsCenterPair(startNode, endNode)){
                         Pair pair = new Pair(startNode, middleNode, endNode);
@@ -35,40 +46,54 @@ public class DualGraph {
                 }
             }
         }
-        //Once all the pairs are made, the faces can be made.
+
+        /**
+         *  Once all the pairs are made, the faces can be made.
+         *  A face can be made by running trough a cycle with all of its nodes.
+         *  This is done by always taking the next or previous neighbour. Whether a previous or next neighbours have
+         *  to be taken, is given by the pair.
+         */
+
+        //Initialise some variables for the cycle.
+        PlaneNode first;
+        PlaneNode last;
+        PlaneNode current;
+        PlaneNode previous;
+        PlaneNode next;
         for(Pair pair: pairs){
-            if(pair.getFace()==null){
+            if(pair.getFace()==null){ //If the pair already has a face, the face exists already.
                 PlaneNode[] nodes = pair.getNodes();
-                PlaneNode first;
-                PlaneNode last;
-                PlaneNode current;
-                PlaneNode previous;
-                PlaneNode next;
                 last = nodes[0];
                 next = nodes[2];
-                previous = last;
                 current = nodes[1];
                 first = current;
-                Face face = new Face();
-                face.addBoundary(pair);
-                while(next!=last){
+                Face face = new Face(); //Create a new face
+                face.addBoundary(pair); //Add the first pair to the face.
+                while(next!=last){ //Loop trough all of the nodes of this face.
                     previous = current;
                     current = next;
                     if(pair.getDirection()==-1){
-                        next = current.getNextNode(last, previous);
+                        next = current.getNextNode(previous);
                     }
                     else {
-                        next = current.getPreviousNode(last, previous);
+                        next = current.getPreviousNode(previous);
                     }
+                    //Find the pair with the current node as center.
+                    //A node is the center of 3 pairs, thus this call operates in constant time.
                     Pair currentPair = current.findCenterPair(previous, next);
+                    //Add the new pair to the face.
                     face.addBoundary(currentPair);
                 }
+                //Add the last pair to the face.
                 face.addBoundary(last.findCenterPair(first, current));
             }
 
         }
     }
 
+    /**
+     * Initialise all of the nodes of this graph. The nodes are planes of the given inner graph.
+     */
     private void setupPlaneSet() {
         planes = new Plane[getSize()]; //There are 2n-4 planes in a triangulation.
         int planesFinishedIndex = 0;
@@ -79,19 +104,25 @@ public class DualGraph {
             addAdjacentPlanes(planes[planesFinishedIndex++]);
         }
         for(Plane plane: planes){
-            plane.order();
-        }
-        for(Plane plane: planes){
+            //Correct the order of the neighbours in the graph so all the array of neighbours of every node are ordered the same way.
+            plane.checkOrder();
+            //Initialise the neighbours of the node of the plane.
             plane.getNode().setNeighbours();
         }
+
     }
 
+    /**
+     * Adds all of the adjacent planes of the given plane to the array of planes.
+     * This also adds the adjacent planes to the neighbours of the given plane.
+     * @param plane The plane of which the adjacent planes have to be added to the given plane and to this graph.
+     */
     private void addAdjacentPlanes(Plane plane){
         for(Edge edge: plane.getEdges()){ //This iteration will happen in total 3(2n-4) times. Once for each edge in each plane.
             if(!edge.isFull()){ //If the 2 adjacent planes to an edge are known yet. Add a plane to the edge.
-                addAdjacentPlane(plane, edge);
+                addAdjacentPlane(plane, edge); //Create the plane adjacent to this plane with the given edge as common edge.
             }
-            else {
+            else { //The adjacent plane with this edge already exists, it has to be added as adjacent plane to this plane.
                 Plane[] adjacentPlanes = edge.getAdjacentPlanes();
                 boolean foundOther = false;
                 for(int i=0; i<adjacentPlanes.length && !foundOther; i++) { //2 iterations
@@ -106,22 +137,35 @@ public class DualGraph {
         }
     }
 
+    /**
+     * Creates a new plane which is adjacent to the given plane and has the given edge as common edge.
+     * This also adds the new plane to the list of neighbours of the given plane and adds the given plane to the list of
+     * neighbours of the new plane.
+     * @param plane The plane which has the new plane as neighbour.
+     * @param edge The common edge of the 2 planes.
+     */
     private void addAdjacentPlane(Plane plane, Edge edge) {
+        //Find the edges of the new plane.
         Edge[] edges = new Edge[3];
         edges[0] = edge;
         edges[1] = edge.getNextEdge(edge.getNodes()[0]);
         edges[2] = edge.getPreviousEdge(edge.getNodes()[1]);
+        //If current plane has the same edges, than the other side of this edge contains the right edges.
         if(plane.equalEdges(edges)){
-            //If current plane has the same edges, than the other side contains the right edges.
             edges[1] = edge.getNextEdge(edge.getNodes()[1]);
             edges[2] = edge.getPreviousEdge(edge.getNodes()[0]);
         }
-        Plane adjacentPlane = new Plane(edges);
-        plane.addAdjacentPlane(adjacentPlane);
-        adjacentPlane.addAdjacentPlane(plane);
-        planes[planesIndex++] = adjacentPlane;
+        Plane adjacentPlane = new Plane(edges); //Create the plane
+        plane.addAdjacentPlane(adjacentPlane); //Add the new plane as adjacent plane to the given plane.
+        adjacentPlane.addAdjacentPlane(plane); //Add the given plane as adjacent plane to the new plane.
+        planes[planesIndex++] = adjacentPlane; //Add the new plane to the list.
     }
 
+    /**
+     * Creates and returns the both adjacent planes to this edge.
+     * @param edge The common edge of the new planes.
+     * @return 2 new planes adjacent to this edge.
+     */
     private Plane[] getAdjacentPlanes(Edge edge){
         Edge[] edges1 = new Edge[3]; //Edges of first plane.
         Edge[] edges2 = new Edge[3]; //Edges of second plane.

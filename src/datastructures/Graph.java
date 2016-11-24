@@ -99,7 +99,7 @@ public class Graph {
     /**
      * The method sorts the sortedNodeArray with counting sort by their degree in O(n+k).
      * Note: This method should only be called once. If the method is called multiple times it won't sort again.
-     * @param lowestFirst specifies the order in which the sortedNodeArray should be sorted. If lowestFirst is true,
+     * @param lowestFirst specifies the checkOrder in which the sortedNodeArray should be sorted. If lowestFirst is true,
      *                    the nodes with the lowest degree will have the lowest index, if not, the nodes with highest
      *                    degree will have the lowest index.
      */
@@ -132,14 +132,16 @@ public class Graph {
     private void setEdge(int edgeNumber, Edge edge){ edgeArray[edgeNumber-1] =  edge; }
 
 
-    public Plane[] getPlanes() {
-        return planes;
-    }
-
+    /**
+     * @return The amount of nodes in this graph.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Prints this graph to stdout
+     */
     public void print() {
         System.out.println("====== GRAPH =======");
         for(Node n: getNodes()){

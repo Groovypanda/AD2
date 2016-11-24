@@ -3,28 +3,38 @@ package datastructures;
 import elements.PlaneNode;
 
 /**
- * A datastructure representing an array with PlaneNodes in which all operations are constant.
+ * A datastructure representing an array with PlaneNodes.
+ * All of the operations in this datastructure are (and must be) constant.
+ * When referring to a node, this is a PlaneNode.
+ *
+ * The arrays used in the algorithm have the following properties:
+ * V: Contains all nodes which aren't in any L[x] or M.
+ * L[x]: Contains all nodes such that every node in L has one adjacent node to M and X adjacent nodes which aren't in M.
+ * M: One disjunct part of the Yutsis decomposition containing a tree.
+ * D: The other disjunct part of the Yutsis decomposition containing a tree.
  */
 public class PlaneArray {
 
-    //V: Contains all nodes which aren't in L or M.
-    //L: Contains all nodes such that every node in L has one adjacent node to M AND TODO.
-    //M: One disjunct part of the Yutsis decomposition.
-    //D: The other disjunct part of the Yutsis decomposition.
+    public final int number; //A unique identifier of this array.
+    private static int index; //Indicates the number of the last PlaneArray.
+    private int length; //Indicates the length of this array
+    private PlaneNode[] elements; //The elements of this array.
+    private PlaneNode lastAdded; //The last added elements to this array.
 
-    public final int number;
-    private int length; //Length is maximum 2n-4 (amount of planes).
-    private int size;
-    private PlaneNode[] elements;
-    private PlaneNode lastAdded;
-
-    public PlaneArray(int number, int size){
-        this.number = number;
-        this.size = size;
+    /**
+     * A constructor for a new PlaneArray.
+     * @param size The maximum size of this array.
+     */
+    public PlaneArray(int size){
+        this.number = index++;
         this.length = 0;
         elements = new PlaneNode[size];
     }
 
+    /**
+     * Add a new node to this array.
+     * @param node
+     */
     public void add(PlaneNode node){
         elements[length] = node;
         node.setIndex(this, length);
