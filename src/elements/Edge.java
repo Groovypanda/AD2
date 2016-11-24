@@ -157,14 +157,23 @@ public class Edge {
         return adjacentPlanes[1] != null;
     }
 
+    /**
+     * @return The planes which share this edge as common edge.
+     */
     public Plane[] getAdjacentPlanes() {
         return adjacentPlanes;
     }
-
-    public void setVisted(boolean visited) { this.visited = visited; }
 
     public Node getOtherNode(Node node) {
         return node.equals(nodes[0]) ? nodes[1] : nodes[0];
     }
 
+    /**
+     * Note: this function assumes the plane is an adjacent plane. (One of the planes edges is this edge).
+     * @param plane An adjacent plane to this edge.
+     * @return The other adjacent plane to this edge.
+     */
+    public Plane getAdjacentPlane(Plane plane) {
+        return adjacentPlanes[0].equals(plane) ? adjacentPlanes[1] : adjacentPlanes[0];
+    }
 }

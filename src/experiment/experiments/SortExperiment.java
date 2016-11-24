@@ -48,7 +48,7 @@ public class SortExperiment extends Experiment {
                 buildDominantList(i); //O(n)
             }
             List<Node> list = new ArrayList<>(dominantList);
-            reset(); //Return to initial conditions. In checkOrder to use this calculator again for the same elements.
+            reset(); //Return to initial conditions. In initialiseNode to use this calculator again for the same elements.
             return list;
         }
 

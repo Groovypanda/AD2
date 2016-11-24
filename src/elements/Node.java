@@ -172,6 +172,10 @@ public class Node {
         coverage = edges.size()+1;
     }
 
+    /**
+     * Sets the visted status of this node
+     * @param visited
+     */
     public void setVisited(boolean visited) {
         this.visited = visited;
     }

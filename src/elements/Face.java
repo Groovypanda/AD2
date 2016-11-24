@@ -4,30 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jarre on 23/11/2016.
+ * Represents a Face (Plane) in a 2-connected cubic graph.
+ * Important: The difference with the class Plane is the following, the nodes of this
+ * class are PlaneNodes, the nodes of the Plane class are Nodes.
  */
-public class Face {
-    private List<Pair> boundaries;
 
+public class Face {
+    //A list of pairs contained in this,
+    private List<Pair> pairs;
+
+    /**
+     * Initializes an empty face.
+     */
     public Face() {
-        boundaries = new ArrayList<>();
+        pairs = new ArrayList<>();
     }
 
-    public void markBoundaries(){
-        for(Pair pair: boundaries){
+    /**
+     * Mark all of the pairs in this face.
+     */
+    public void markPairs(){
+        for(Pair pair: pairs){
             pair.mark();
         }
     }
 
-    public void addBoundary(Pair pair){
-        boundaries.add(pair);
+    /**
+     * Adds a pair to this face.
+     * @param pair The boundary
+     */
+    public void addPair(Pair pair){
+        pairs.add(pair);
         pair.setFace(this);
-    }
-
-    public void print(){
-        for(Pair pair: boundaries){
-            System.out.println(pair);
-        }
-        System.out.println("===============");
     }
 }

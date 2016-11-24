@@ -1,41 +1,57 @@
 package elements;
 
-import datastructures.PlaneArray;
-
-import java.util.ArrayList;
-import java.util.List;
+import datastructures.PlaneNodeArray;
 
 /**
- * Represents a node in the PlaneArray. It's always part of one array: M, L or V.
+ * Represents a node in the DualGraph. This node is a plane in the original graph as the nodes of the dualgraph are planes.
+ * Every node is part of just one PlaneNodeArray.
+ * Note: All methods run in constant time.
  */
+
 public class PlaneNode {
-    private Plane plane;
-    private PlaneArray current;
-    private int arrayIndex;
-    private PlaneNode[] neighbours;
-    private List<Pair> pairs; //Pairs of edges with this node as startpoint (or endpoint).
-    private Pair[] centerPairs; //Pairs of edges with this node as center.
+    private Plane plane; //The node represents this plane.
+    private PlaneNodeArray current; //The array this node belongs to in order to check fast which array contains this node.
+    private int arrayIndex; //The index of node in order to remove nodes in constant time from the planearray.
+    private PlaneNode[] neighbours; //The neighbours of this node in the dual graph.
+    private Pair[] pairs; //Pairs of edges with this node as center.
     private int pairsLength; //Current length of current pairs array.
 
+    /**
+     * Initializes a new node representing the given plane.
+     * @param plane
+     */
     public PlaneNode(Plane plane) {
         this.plane = plane;
-        arrayIndex = -1;
+        arrayIndex = -1; //Initially the node isn't part of a PlaneNodeArray.
         current = null;
-        pairs = new ArrayList<>() ;
-        centerPairs = new Pair[3];
+        pairs = new Pair[3]; //Every node is the center of 3 pairs.
         pairsLength = 0;
     }
 
-    public boolean isPresent(PlaneArray array){
+    /**
+     * Checks if the node is in the given array
+     * @param array
+     * @return True if the node is in the given array.
+     */
+    public boolean isPresent(PlaneNodeArray array){
         return current == null ? false : array.number == current.number;
     }
 
-    //Returns -1 if not in the given array.
-    public int getIndex(PlaneArray array){
+    /**
+     * Gets the index of this node in the given array. Returns -1 if the node isn't in the given array.
+     * @param array
+     * @return The index of this node in the given array. -1 if this node isn't in the array.
+     */
+    public int getIndex(PlaneNodeArray array){
         return isPresent(array) ? arrayIndex : -1;
     }
 
-    public void setIndex(PlaneArray array, int index){
+    /**
+     * Sets the index of this node in the given array. The array field of this node is changed if it doesn't equal the given array.
+     * @param array The (new) array of this node.
+     * @param index The new index of this node.
+     */
+    public void setIndex(PlaneNodeArray array, int index){
         if(!isPresent(array)){
             current = array;
         }
@@ -44,12 +60,12 @@ public class PlaneNode {
 
     /**
      * Returns the amount of neighbours a node has in the given array.
-     * @param array A PlaneArray in which the neighbours have to be present.
+     * @param array A PlaneNodeArray in which the neighbours have to be present.
      * @return The amount of neighbours an element has in the given array.
      */
-    public int neighbourAmount(PlaneArray array){
+    public int neighbourAmount(PlaneNodeArray array){
         int amount = 0;
-        for(PlaneNode node: getNeighbours()){ //3 iterations.
+        for(PlaneNode node: getNeighbours()){
             if(node.isPresent(array)){
                 amount++;
             }
@@ -57,70 +73,93 @@ public class PlaneNode {
         return amount;
     }
 
-    public String toString(){
-        return plane.toString();
-    }
-
+    /**
+     * @return The plane this node represents
+     */
     public Plane getPlane() {
         return plane;
     }
 
+    /**
+     * @return The neighbours of this node in the dualgraph.
+     */
     public PlaneNode[] getNeighbours() {
         return neighbours;
     }
 
-    public void setNeighbours(){
-        if(neighbours==null){
-            neighbours = new PlaneNode[3];
-            int i = 0;
-            for(Plane plane: getPlane().getAdjacentPlanes()){
-                neighbours[i] = plane.getNode();
-                i++;
-            }
-        }
-    }
-
-    public void switchTo(PlaneArray newArray) {
+    /**
+     * Removes this node from its current array and adds it to the given array.
+     * @param newArray The new array for this node.
+     */
+    public void switchTo(PlaneNodeArray newArray) {
         current.remove(this);
         newArray.add(this);
     }
 
-    public void markPairs() {
-        for(Pair pair: pairs){
-            pair.mark();
-        }
-    }
-
+    /**
+     * Adds a pair of edges of which this node is the center.
+     * @param pair The pair of edges.
+     */
     public void addPair(Pair pair){
-        pairs.add(pair);
+        pairs[pairsLength++] = pair;
     }
 
-    public void addCenterPair(Pair pair){
-        centerPairs[pairsLength++] = pair;
-    }
-
-    public List<Pair> getPairs(){
+    /**
+     * @return The pairs of which this node is the center.
+     */
+    public Pair[] getPairs() {
         return pairs;
     }
 
-    public boolean containsCenterPair(PlaneNode startNode, PlaneNode endNode) {
+    /**
+     * Checks if this node is the center the pair with the given endpoints.
+     * @param endpoint1
+     * @param endpoint2
+     * @return True if the node contains a pair with the given endpoints.
+     */
+    public boolean containsCenterPair(PlaneNode endpoint1, PlaneNode endpoint2) {
         for(int i=0; i<pairsLength; i++){
-            if(centerPairs[i].equals(startNode, this, endNode)){
+            if(pairs[i].equals(endpoint1, this, endpoint2)){
                 return true;
             }
         }
         return false;
     }
 
-    public Pair findCenterPair(PlaneNode start, PlaneNode end) {
-        for(Pair pair: centerPairs){
-            if(pair.equals(start, this, end)){
+    /**
+     * @param endpoint1
+     * @param endpoint2
+     * @return The pair with the given nodes as endpoints. Null if no such pair was found.
+     */
+    public Pair findCenterPair(PlaneNode endpoint1, PlaneNode endpoint2) {
+        for(Pair pair: pairs){
+            if(pair.equals(endpoint1, this, endpoint2)){
                 return pair;
             }
         }
         return null;
     }
 
+
+    /**
+     * @param node
+     * @return The neighbour after the given node in the array of neighbours.
+     */
+    public PlaneNode getNextNode(PlaneNode node) {
+        //The next node has the index of the given node - 1 as the nodes in the array are sorted anti-clockwise.
+        return getAdjacentNode(-1, node);
+    }
+
+    public PlaneNode getPreviousNode(PlaneNode node) {
+        //The previous node has the index of the given node +1 as the nodes in the array are sorted anti-clockwise.
+        return getAdjacentNode(1, node);
+    }
+
+    /**
+     * @param direction
+     * @param node
+     * @return The node with index of node + direction in the array of neighbours.
+     */
     private PlaneNode getAdjacentNode(int direction, PlaneNode node){
         int i=0;
         while(!neighbours[i].equals(node)){
@@ -133,11 +172,31 @@ public class PlaneNode {
         return getNeighbours()[(i+3+direction)%3];
     }
 
-    public PlaneNode getNextNode(PlaneNode node) {
-        return getAdjacentNode(-1, node);
+    /**
+     * Sets the neighbours of this node.
+     * @param orderedNeighbours
+     */
+    public void setNeighbours(PlaneNode[] orderedNeighbours) {
+        this.neighbours = orderedNeighbours;
     }
 
-    public PlaneNode getPreviousNode(PlaneNode node) {
-        return getAdjacentNode(1, node);
+    /**
+     * Checks if this pair is the center of any pair which isn't marked and doesn't have endpoints in the given array.
+     * @param M
+     * @return The Face of the pair which isn't marked and doesn't lead to endpoints in M, null if this is a cut vertex.
+     */
+    public Face isCutVertex(PlaneNodeArray M){
+        for(int j=0; j<pairs.length; j++){
+            Pair pair = pairs[j];
+            PlaneNode[] nodes = pair.getEndNodes();
+            if(!nodes[0].isPresent(M) && !nodes[1].isPresent(M) && !pair.isMarked()){
+                return  pair.getFace();
+            }
+        }
+        return null;
+    }
+
+    public String toString(){
+        return plane.toString();
     }
 }

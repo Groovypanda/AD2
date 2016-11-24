@@ -1,4 +1,7 @@
-package elements;
+package old_hamiltonian;
+
+import elements.Edge;
+import elements.Node;
 
 import java.util.ArrayList;
 import java.util.Iterator;

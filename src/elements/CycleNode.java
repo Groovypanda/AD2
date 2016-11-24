@@ -1,21 +1,32 @@
 package elements;
 
 /**
- * Created by Jarre on 20/11/2016.
+ * Represents a node in a hamiltonian cycle.
  */
 public class CycleNode {
-    private int number;
-    private CycleNode[] neighbours;
+    private int number; //The number of the node this CycleNode represents.
+    private CycleNode[] neighbours; //The 2 adjacent neighbours in this cycle of this node.
 
+    /**
+     * Constructor for a CycleNode
+     * @param number The number of the node this CycleNode represents.
+     */
     public CycleNode(int number) {
         this.number = number;
         neighbours = new CycleNode[2];
     }
 
+    /**
+     * @return The 2 adjacent neighbours of the cycle this node belongs to.
+     */
     public CycleNode[] getNeighbours() {
         return neighbours;
     }
 
+    /**
+     * Adds a neighbour of this node in the cycle.
+     * @param cycleNode The neighbour of this node in the cycle
+     */
     public void addNeighbour(CycleNode cycleNode){
         if(neighbours[0] == null){
             neighbours[0]=cycleNode;
@@ -23,14 +34,12 @@ public class CycleNode {
         else if(neighbours[1] == null && !neighbours[0].equals(cycleNode)){
             neighbours[1]=cycleNode;
         }
-        else {
-            if(!neighbours[0].equals(cycleNode) || !neighbours[1].equals(cycleNode)){
-                System.out.println("Tried adding to many edges.");
-            }
-        }
-        //Else neighbours is filled.
     }
 
+    /**
+     * @param previous The previous neighbour of this node in the cycle.
+     * @return The next neighbour of this node in the cycle.
+     */
     public CycleNode getNext(CycleNode previous){
         return !previous.equals(neighbours[0]) ? neighbours[0] : neighbours[1];
     }

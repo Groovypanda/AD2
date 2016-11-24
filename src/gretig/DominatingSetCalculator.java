@@ -119,13 +119,17 @@ public class DominatingSetCalculator {
      * This method implements the actual greedy linear algorithm for building an approximation of the optimal minimal
      * dominant set. The basic algorithm is the following, (a more formal algorithm is written in the report):
      *
-     * Precondition:
+     * Preconditions:
+     * ==============
      * - all nodes are initialized with their degree as coverage.
      * - all nodes are unvisited.
      *
-     * Postcondition:
+     * Postconditions:
+     * ==============
      * - dominating set contains an approximation of a minimal dominating set.
      *
+     * Algorithm:
+     * ==============
      * coverage = 0
      * while coverage < amount of nodes:
      *    loop trough neighbours and v to find node w with highest coverage

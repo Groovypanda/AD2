@@ -1,4 +1,4 @@
-package gretig;
+package old_hamiltonian;
 
 import datastructures.Graph;
 import elements.*;

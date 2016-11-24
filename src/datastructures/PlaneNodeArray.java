@@ -2,6 +2,8 @@ package datastructures;
 
 import elements.PlaneNode;
 
+import java.util.Stack;
+
 /**
  * A datastructure representing an array with PlaneNodes.
  * All of the operations in this datastructure are (and must be) constant.
@@ -13,22 +15,24 @@ import elements.PlaneNode;
  * M: One disjunct part of the Yutsis decomposition containing a tree.
  * D: The other disjunct part of the Yutsis decomposition containing a tree.
  */
-public class PlaneArray {
+public class PlaneNodeArray {
 
     public final int number; //A unique identifier of this array.
-    private static int index; //Indicates the number of the last PlaneArray.
+    private static int index; //Indicates the number of the last PlaneNodeArray.
     private int length; //Indicates the length of this array
     private PlaneNode[] elements; //The elements of this array.
     private PlaneNode lastAdded; //The last added elements to this array.
+    private String name; //Used for the representation of this array
 
     /**
-     * A constructor for a new PlaneArray.
+     * A constructor for a new PlaneNodeArray.
      * @param size The maximum size of this array.
      */
-    public PlaneArray(int size){
+    public PlaneNodeArray(String name, int size){
         this.number = index++;
         this.length = 0;
         elements = new PlaneNode[size];
+        this.name = name;
     }
 
     /**
@@ -78,8 +82,17 @@ public class PlaneArray {
         return elements;
     }
 
+    public PlaneNode peek() {
+        PlaneNode node = null;
+        if(lastAdded != null){
+            node = lastAdded;
+        }
+
+        return node;
+    }
+
     public String toString(){
-        String output = "";
+        String output = name + " ";
         for(int i=0; i<length-1; i++){
             output += "(" + elements[i] + "), ";
         }
@@ -89,11 +102,8 @@ public class PlaneArray {
         return output;
     }
 
-    public PlaneNode peek() {
-        PlaneNode node = null;
-        if(lastAdded != null){
-            node = lastAdded;
-        }
-        return node;
+
+    public boolean empty() {
+        return length==0;
     }
 }

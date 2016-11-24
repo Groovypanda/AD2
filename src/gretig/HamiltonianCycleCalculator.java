@@ -2,7 +2,7 @@ package gretig;
 
 import datastructures.DualGraph;
 import datastructures.Graph;
-import datastructures.PlaneArray;
+import datastructures.PlaneNodeArray;
 import elements.*;
 
 /**
@@ -16,7 +16,7 @@ public class HamiltonianCycleCalculator {
         nodeAmount = graph.getSize();
         YutsisDecomposer decomposer = new YutsisDecomposer(new DualGraph(graph));
         //As the dualgraph contains 2n-4 nodes (the amount of planes). We can try to make a yutsis decomposition.
-        PlaneArray[] decomposition =  decomposer.findYutsisDecomposition();
+        PlaneNodeArray[] decomposition =  decomposer.findYutsisDecomposition();
         if(decomposition == null){
             System.out.println("Geen cykel gevonden");
         }
@@ -52,7 +52,7 @@ public class HamiltonianCycleCalculator {
         }
     }
 
-    private CycleNode[] calculateCycle(PlaneArray array) {
+    private CycleNode[] calculateCycle(PlaneNodeArray array) {
         cycleSize = 0;
         CycleNode cycle[] = new CycleNode[nodeAmount];
         for(PlaneNode planeNode: array.getNodes()){

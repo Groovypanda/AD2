@@ -62,13 +62,13 @@ public class DualGraph {
         PlaneNode next;
         for(Pair pair: pairs){
             if(pair.getFace()==null){ //If the pair already has a face, the face exists already.
-                PlaneNode[] nodes = pair.getNodes();
-                last = nodes[0];
-                next = nodes[2];
-                current = nodes[1];
+                PlaneNode[] endNodes = pair.getEndNodes();
+                last = endNodes[0];
+                next = endNodes[1];
+                current = pair.getCenter();
                 first = current;
                 Face face = new Face(); //Create a new face
-                face.addBoundary(pair); //Add the first pair to the face.
+                face.addPair(pair); //Add the first pair to the face.
                 while(next!=last){ //Loop trough all of the nodes of this face.
                     previous = current;
                     current = next;
@@ -82,10 +82,10 @@ public class DualGraph {
                     //A node is the center of 3 pairs, thus this call operates in constant time.
                     Pair currentPair = current.findCenterPair(previous, next);
                     //Add the new pair to the face.
-                    face.addBoundary(currentPair);
+                    face.addPair(currentPair);
                 }
                 //Add the last pair to the face.
-                face.addBoundary(last.findCenterPair(first, current));
+                face.addPair(last.findCenterPair(first, current));
             }
 
         }
@@ -104,10 +104,8 @@ public class DualGraph {
             addAdjacentPlanes(planes[planesFinishedIndex++]);
         }
         for(Plane plane: planes){
-            //Correct the order of the neighbours in the graph so all the array of neighbours of every node are ordered the same way.
-            plane.checkOrder();
-            //Initialise the neighbours of the node of the plane.
-            plane.getNode().setNeighbours();
+            //Initialises the node of the given plane correctly.
+            plane.initialiseNode();
         }
 
     }
@@ -134,6 +132,7 @@ public class DualGraph {
                     }
                 }
             }
+
         }
     }
 

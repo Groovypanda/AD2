@@ -1,4 +1,6 @@
-package elements;
+package old_hamiltonian;
+
+import elements.Edge;
 
 /**
  * Created by Jarre on 11/11/2016.
