@@ -199,4 +199,12 @@ public class PlaneNode {
     public String toString(){
         return plane.toString();
     }
+
+    /**
+     * Resets this node to its initial conditions.
+     */
+    public void reset() {
+        current = null;
+        arrayIndex = -1;
+    }
 }

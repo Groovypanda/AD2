@@ -10,46 +10,19 @@ import elements.*;
  */
 public class HamiltonianCycleCalculator {
     int nodeAmount;
-    private int cycleSize;
+    private int cycleSize = 0;
+    //public static int i=0;
 
     public HamiltonianCycleCalculator(Graph graph) {
         nodeAmount = graph.getSize();
-        YutsisDecomposer decomposer = new YutsisDecomposer(new DualGraph(graph));
+        DualGraph dualGraph = new DualGraph(graph);
+        YutsisDecomposer decomposer = new YutsisDecomposer(dualGraph);
         //As the dualgraph contains 2n-4 nodes (the amount of planes). We can try to make a yutsis decomposition.
-        PlaneNodeArray[] decomposition =  decomposer.findYutsisDecomposition();
-        if(decomposition == null){
-            System.out.println("Geen cykel gevonden");
-        }
-        else{
-            CycleNode[] nodes = calculateCycle(decomposition[0]);
-            if(cycleSize!=nodeAmount){
-                System.out.println("Error");
-                nodes = calculateCycle(decomposition[1]);
-                if(cycleSize==nodeAmount){
-                    System.out.println("De eerste keer werkte het niet?");
-                }
-            }
-            if(cycleSize==nodeAmount) {
-                CycleNode first = nodes[0];
-                CycleNode cur = first;
-                CycleNode next = first.getNeighbours()[0];
-                CycleNode previous;
-                boolean finished = false;
-                while (!finished) {
-                    System.out.print(cur + " ");
-                    previous = cur;
-                    cur = next;
-                    next = cur.getNext(previous);
-                    if (cur.equals(first)) {
-                        finished = true;
-                    }
-                }
-                System.out.println();
-            }
-            else {
-                System.out.println("2 keer niet gevonden :(");
-            }
-        }
+        //The yutsis decomposer only returns one of the trees. All of the PlaneNodes which aren't in this tree, form
+        //the other tree.
+        PlaneNodeArray tree =  decomposer.findYutsisDecomposition(0);
+        //dualGraph.reset();
+        printCycle(tree);
     }
 
     private CycleNode[] calculateCycle(PlaneNodeArray array) {
@@ -81,6 +54,27 @@ public class HamiltonianCycleCalculator {
         return cycle;
     }
 
-
-
+    public void printCycle(PlaneNodeArray tree){
+        if(tree == null){
+            System.out.println("Geen cykel gevonden");
+        }
+        else{
+            CycleNode[] nodes = calculateCycle(tree);
+            CycleNode first = nodes[0];
+            CycleNode cur = first;
+            CycleNode next = first.getNeighbours()[0];
+            CycleNode previous;
+            boolean finished = false;
+            while (!finished) {
+                System.out.print(cur + " ");
+                previous = cur;
+                cur = next;
+                next = cur.getNext(previous);
+                if (cur.equals(first)) {
+                    finished = true;
+                }
+            }
+            System.out.println();
+        }
+    }
 }

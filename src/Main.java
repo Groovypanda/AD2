@@ -13,18 +13,18 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        boolean testset = false;
+        boolean testset = true;
         int graphNumber = 0;
         boolean check = false;
         List<Graph> graphs;
         if(testset){
-            graphs = readGraphs("testset/triang3.sec");
+            graphs = readGraphs("testset/triang11.sec");
         }
         else {
-            graphs = readGraphs("klein/triang1.sec");
+            graphs = readGraphs("klein/triang_alle_12.sec");
         }
         for(Graph g: graphs){
-            System.out.println("================ GRAPH " + ++graphNumber + " ================");
+            //System.out.println("================ GRAPH " + ++graphNumber + " ================");
             if(!check || graphNumber==4){
                 HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
             }

@@ -15,7 +15,6 @@ public class DualGraph {
     int planesIndex = 0; //The current index of the planes array.
     private Graph graph; //The graph of which this dualGraph is made.
     private Pair[] pairs; //An array with pairs of edges with size 3*n.
-
     /**
      * This constructor creates a DualGraph out of a given planar triangulation.
      * @param graph The inner graph of the DualGraph which is a planar triangulation.
@@ -182,11 +181,29 @@ public class DualGraph {
         return planes;
     }
 
+    /**
+     * @return The nodes (Planes) of this graph.
+     */
     public Plane[] getPlanes(){
         return planes;
     }
 
+    /**
+     * @return The amount of nodes (planes) of this graph.
+     */
     public int getSize() {
         return 2*graph.getSize()-4;
+    }
+
+    /**
+     * Resets the graph to its initial conditions.
+     */
+    public void reset(){
+        for(Plane plane: planes){
+            plane.getNode().reset();
+        }
+        for(Pair pair: pairs){
+            pair.unmark();
+        }
     }
 }

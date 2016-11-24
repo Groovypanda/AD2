@@ -91,4 +91,8 @@ public class Pair {
     public PlaneNode[] getEndNodes() {
         return endNodes;
     }
+
+    public void unmark() {
+        marked = false;
+    }
 }
