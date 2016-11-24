@@ -62,7 +62,7 @@ public class YutsisDecomposer {
                             node = maxNode;
                         }
                     }
-                    else {
+                    else { //If i = 0, neighbourAmount doesn't have to be checked.
                         node = maxNode;
                     }
                 }
@@ -103,9 +103,10 @@ public class YutsisDecomposer {
             }
 
         }
+        return buildDecomposition(n); //Makes 2 independent trees from the sets.
+    }
 
-        System.out.println(M.length());
-        System.out.println("Total length: " + n/2);
+    public PlaneArray[] buildDecomposition(int n){
         boolean hasYutsisDecomposition = M.length() == n/2;
         if(hasYutsisDecomposition) {
             //Search elements which are not in M.
