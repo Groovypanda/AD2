@@ -134,6 +134,10 @@ public class YutsisDecomposer {
         return null;
     }
 
+    /**
+     * Updates the neighbours of the newly added node to M
+     * @param node The newly added node to M
+     */
     private void update(PlaneNode node) {
         for(PlaneNode neighbour: node.getNeighbours()){
             int index = neighbour.neighbourAmount(V);
@@ -151,6 +155,9 @@ public class YutsisDecomposer {
     }
 
 
+    /**
+     * Initializes all of the PlaneNodeArrays this algorithm uses.
+     */
     private void initializeYutsisArrays() {
         V = new PlaneNodeArray("V", graph.getSize());
         M = new PlaneNodeArray("M", graph.getSize()/2);

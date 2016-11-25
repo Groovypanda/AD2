@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        boolean testset = true;
+        boolean testset = false;
         int graphNumber = 0;
         boolean check = false;
         List<Graph> graphs;
@@ -21,12 +21,13 @@ public class Main {
             graphs = readGraphs("testset/triang1.sec");
         }
         else {
-            graphs = readGraphs("klein/triang_alle_12.sec");
+            graphs = readGraphs("klein/triang2.sec");
         }
         for(Graph g: graphs){
             //System.out.println("================ GRAPH " + ++graphNumber + " ================");
             if(!check || graphNumber==4){
                 HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+                calculator.printCycle();
             }
         }
         /*
