@@ -2,7 +2,7 @@ package experiment;
 
 import experiment.experiments.BetterExperiment;
 import experiment.experiments.Experiment;
-import elements.Node;
+import graph.Node;
 import gretig.DominatingSetCalculator;
 
 import java.util.List;

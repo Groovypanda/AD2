@@ -1,6 +1,8 @@
-package datastructures;
+package dualgraph;
 
-import elements.*;
+import graph.Edge;
+import graph.Graph;
+import graph.Plane;
 
 /**
  * The dual graph is created by drawing a node in every plane and connecting 2 of these nodes
@@ -12,7 +14,7 @@ import elements.*;
  */
 public class DualGraph {
     private Plane[] planes; //The nodes of this graph
-    int planesIndex = 0; //The current index of the planes array.
+    int planesIndex; //The current index of the planes array.
     private Graph graph; //The graph of which this dualGraph is made.
     private Pair[] pairs; //An array with pairs of edges with size 3*n.
     /**
@@ -20,6 +22,7 @@ public class DualGraph {
      * @param graph The inner graph of the DualGraph which is a planar triangulation.
      */
     public DualGraph(Graph graph) {
+        planesIndex = 0;
         this.graph = graph;
         setupPlaneSet(); //Initialise all of the nodes of this graph.
         setupGraphStructure(); //Initialise all of the pairs and faces of this graph.

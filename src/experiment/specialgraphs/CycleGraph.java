@@ -1,7 +1,7 @@
 package experiment.specialgraphs;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 /**
  * This is a elements in which every node has 2 edges and the elements consists of one cycle.

@@ -1,8 +1,8 @@
 package experiment;
 
-import elements.Edge;
-import datastructures.Graph;
-import elements.Node;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
 
 /**
  * This is a DominatingSetCalculator used for making better minimal domating set approximations.

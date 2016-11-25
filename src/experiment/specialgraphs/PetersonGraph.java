@@ -1,7 +1,7 @@
 package experiment.specialgraphs;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 /**
  * A elements used as counterexample for many optimistic predictions.

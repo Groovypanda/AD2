@@ -1,10 +1,10 @@
-import datastructures.Graph;
-import elements.*;
+import graph.Graph;
 import gretig.HamiltonianCycleCalculator;
 import input.BinaryFileReader;
+import gretig.HamiltonianCycleCalculatorOld;
 
-import java.io.IOException;
-import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * A class purely used for testing purposes.
@@ -13,23 +13,26 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
+        BinaryFileReader reader = new BinaryFileReader();
+        Path path;
         boolean testset = false;
-        int graphNumber = 0;
-        boolean check = false;
-        List<Graph> graphs;
         if(testset){
-            graphs = readGraphs("testset/triang1.sec");
+            path = Paths.get(System.getProperty("user.dir"), "data", "testset", "triang16.sec");
         }
         else {
-            graphs = readGraphs("klein/triang2.sec");
+            path = Paths.get(System.getProperty("user.dir"), "data", "klein", "triang_alle_12.sec");
         }
-        for(Graph g: graphs){
+        for(Graph g: reader.getFileGraphs(path)){
             //System.out.println("================ GRAPH " + ++graphNumber + " ================");
-            if(!check || graphNumber==4){
-                HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
-                calculator.printCycle();
-            }
+            System.out.print("New: ");
+            HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
+            calculator.printCycle(calculator.calculateCycle());
+            System.out.print("Old: ");
+            HamiltonianCycleCalculatorOld calculatorOld = new HamiltonianCycleCalculatorOld(g);
+            calculatorOld.printCycle(calculatorOld.calculateCycle());
         }
+        System.out.println("New: " + (double)HamiltonianCycleCalculator.succesful/HamiltonianCycleCalculator.total);
+        System.out.println("Old: " + (double)HamiltonianCycleCalculatorOld.succesful/HamiltonianCycleCalculatorOld.total);
         /*
         for(int i=1; i<=10; i++){
             List<Graph> graphs = readGraphs(String.format("testset/triang%d.sec", i));
@@ -39,22 +42,5 @@ public class Main {
             }
         }
         */
-    }
-
-    public static List<Graph> readGraphs(String filename) {
-        BinaryFileReader bfr = new BinaryFileReader();
-        try {
-            return bfr.readByteArray(bfr.readBinaryFile(filename));
-        } catch (IOException e) {
-            System.out.println("Failed reading the given file.");
-            return null;
-        }
-
-    }
-
-    public static void showGraph(Graph graph){
-        for(Node n: graph.getNodes()){
-            System.out.println(n);
-        }
     }
 }

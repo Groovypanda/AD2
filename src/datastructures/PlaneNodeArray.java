@@ -1,19 +1,19 @@
 package datastructures;
 
-import elements.PlaneNode;
-
-import java.util.Stack;
+import dualgraph.PlaneNode;
 
 /**
  * A datastructure representing an array with PlaneNodes.
- * All of the operations in this datastructure are (and must be) constant.
+ * Adding, removing and lookup are operate in constant time.
  * When referring to a node, this is a PlaneNode.
  *
  * The arrays used in the algorithm have the following properties:
  * V: Contains all nodes which aren't in any L[x] or M.
  * L[x]: Contains all nodes such that every node in L has one adjacent node to M and X adjacent nodes which aren't in M.
  * M: One disjunct part of the Yutsis decomposition containing a tree.
- * D: The other disjunct part of the Yutsis decomposition containing a tree.
+ *
+ * The class also keeps track of a lastAdded element. However this is an approximation and might be incorrect in certain
+ * circumstances. The algorithm performs better with this array than with a stack, as it allows for linear lookups.
  */
 public class PlaneNodeArray {
 
@@ -46,17 +46,22 @@ public class PlaneNodeArray {
         length++;
     }
 
+    /**
+     * Removes a node from this array. If the node isn't in the array, nothing will happen.
+     * This function also updates the lastAdded field.
+     * @param node
+     */
     public void remove(PlaneNode node){
         if(node.isPresent(this)){
-            int nodeIndex = node.getIndex(this);
+            int nodeIndex = node.getIndex(this); //Get the index of this node in the array.
             if(nodeIndex!=length-1){ //Fills the spot of the removed node with the last element.
                 PlaneNode last = elements[length-1];
                 elements[nodeIndex] = last;
                 last.setIndex(this, nodeIndex);
             }
-            node.setIndex(this, -1);
-            elements[--length]=null;
-            if(node.equals(lastAdded)){
+            node.setIndex(this, -1); //Resets the index of the node.
+            elements[--length]=null; //Remove a spot.
+            if(node.equals(lastAdded)){ //Update lastAdded if necessary.
                 if(length>0){
                     lastAdded = elements[length-1];
                 }
@@ -70,14 +75,25 @@ public class PlaneNodeArray {
         }
     }
 
+    /**
+     * Returns a node with the given index.
+     * @param index
+     * @return The node with the given index.
+     */
     public PlaneNode get(int index){
         return elements[index];
     }
 
+    /**
+     * @return The length of this array.
+     */
     public int length(){
         return length;
     }
 
+    /**
+     * @return All of the nodes of this array.
+     */
     public PlaneNode[] getNodes() {
         return elements;
     }
@@ -94,10 +110,17 @@ public class PlaneNodeArray {
     }
 
 
+    /**
+     * @return True if this array is empty.
+     */
     public boolean empty() {
         return length==0;
     }
 
+    /**
+     * Removes and returns the last added element to this array.
+     * @return The last added element.
+     */
     public PlaneNode pull() {
         PlaneNode node = null;
         if(lastAdded != null){

@@ -1,7 +1,7 @@
 package gretig;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 import input.BinaryInputReader;
 

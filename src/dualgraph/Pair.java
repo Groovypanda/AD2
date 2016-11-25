@@ -1,4 +1,7 @@
-package elements;
+package dualgraph;
+
+import dualgraph.Face;
+import dualgraph.PlaneNode;
 
 /**
  * This class represents a pair of edges in a 2-connected cubic graph.

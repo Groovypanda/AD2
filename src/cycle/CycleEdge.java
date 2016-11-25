@@ -1,6 +1,6 @@
-package old_hamiltonian;
+package cycle;
 
-import elements.Edge;
+import graph.Edge;
 
 /**
  * Created by Jarre on 11/11/2016.

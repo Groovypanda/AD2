@@ -1,7 +1,7 @@
 package experiment.specialgraphs;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 /**
  * A checkmate elements is a elements which has the form of a checkmate, and every node is a tile.

@@ -1,6 +1,6 @@
 package datastructures;
 
-import elements.Node;
+import graph.Node;
 
 import java.util.Stack;
 

@@ -1,7 +1,7 @@
 package input;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -103,5 +104,38 @@ public class BinaryFileReader {
             exp*=256; //If a byte has been read, the exponent has to be increased by 2^8.
         }
         return number;
+    }
+
+    /**
+     * Adds all graphs from a .sec file to the graphs list.
+     */
+    public List<Graph> getFileGraphs(Path path){
+        List<Graph> graphs = new ArrayList<>();
+        try {
+            graphs.addAll(readByteArray(Files.readAllBytes(path)));
+        } catch (IOException e) {
+            throw new AssertionError("The file couldn't be read.");
+        }
+        return graphs;
+    }
+
+    /**
+     * Adds all graphs from a directory with .sec files to the elements list.
+     * @param directoryName The name of the directory
+     */
+    public List<Graph> getDirectoryGraphs(String directoryName){
+        List<Graph> graphs = new ArrayList<>();
+        try {
+            try(Stream<Path> paths = Files.walk(Paths.get(System.getProperty("user.dir"), "data", directoryName))) {
+                paths.forEach(filePath -> {
+                    if (Files.isRegularFile(filePath)) {
+                        graphs.addAll(getFileGraphs(filePath));
+                    }
+                });
+            }
+        } catch (IOException e) {
+            throw new AssertionError("Couldn't find the given directory");
+        }
+        return graphs;
     }
 }

@@ -1,11 +1,11 @@
-package gretig;
+package dualgraph;
 
-import datastructures.DualGraph;
+import dualgraph.DualGraph;
 import datastructures.PlaneNodeArray;
-import elements.Face;
-import elements.Pair;
-import elements.Plane;
-import elements.PlaneNode;
+import dualgraph.Face;
+import dualgraph.Pair;
+import graph.Plane;
+import dualgraph.PlaneNode;
 
 /**
  * Object used for computing the yutsis decomposition of a 2-connected cubic graph in linear time with a greedy algorithm.
@@ -94,7 +94,7 @@ public class YutsisDecomposer {
             return M;
         }
         else { //Algorithm didn't find a decomposition.
-            System.out.println(M.length() + "/" + n/2);
+            //System.out.println(M.length() + "/" + n/2);
             return null;
         }
     }
@@ -162,7 +162,7 @@ public class YutsisDecomposer {
         V = new PlaneNodeArray("V", graph.getSize());
         M = new PlaneNodeArray("M", graph.getSize()/2);
         L = new PlaneNodeArray[3];
-        nonVisitable = new PlaneNodeArray("test", graph.getSize());
+        nonVisitable = new PlaneNodeArray("Non-visitable", graph.getSize());
         for(int j=0; j<3; j++){
             L[j] = new PlaneNodeArray("L" + j,graph.getSize());
         }

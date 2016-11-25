@@ -1,8 +1,8 @@
 package gretig;
 
-import elements.Edge;
-import datastructures.Graph;
-import elements.Node;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,8 +50,8 @@ public class DominatingSetCalculator {
      * @param graph This is the elements of which the dominating set should be computed.
      */
     public DominatingSetCalculator(Graph graph){
-        //6 is the optimal optimization level. Higher or lower optimization levels offer worse results.
         this(graph, 6);
+        //6 is the optimal optimization level. Higher or lower optimization levels offer worse results.
     }
 
     /**

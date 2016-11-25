@@ -1,8 +1,8 @@
 package experiment;
 
 import experiment.experiments.Experiment;
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 import input.BinaryFileReader;
 
 import java.io.IOException;

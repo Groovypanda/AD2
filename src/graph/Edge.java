@@ -1,4 +1,5 @@
-package elements;
+package graph;
+
 /**
  * The class is a simple blueprint for all edges.
  * It contains some simple methods for representing an edge, getting the neighbour of a node and adding nodes.

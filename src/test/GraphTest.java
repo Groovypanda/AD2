@@ -1,8 +1,8 @@
 package test;
 
-import elements.Edge;
-import datastructures.Graph;
-import elements.Node;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
 import input.BinaryFileReader;
 
 import org.junit.After;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  * A JUnit test for all methods in the elements class.
  * Note: In this test the SortedNodeArray, Edge and Node are tested because Graph uses all functionality these classes offer!
  */
-public class TestGraph {
+public class GraphTest {
     List<Graph> graphs;
 
     @Before

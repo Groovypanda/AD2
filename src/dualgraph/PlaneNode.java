@@ -1,6 +1,7 @@
-package elements;
+package dualgraph;
 
 import datastructures.PlaneNodeArray;
+import graph.Plane;
 
 /**
  * Represents a node in the DualGraph. This node is a plane in the original graph as the nodes of the dualgraph are planes.

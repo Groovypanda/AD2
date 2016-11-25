@@ -1,7 +1,7 @@
 package experiment;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 import gretig.DominatingSetCalculator;
 
 import java.util.ArrayList;

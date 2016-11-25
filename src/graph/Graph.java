@@ -1,9 +1,7 @@
-package datastructures;
+package graph;
 
 
-import elements.Edge;
-import elements.Node;
-import elements.Plane;
+import datastructures.SortedNodeArray;
 
 /**
  * <h1>Data structure for a elements</h1>

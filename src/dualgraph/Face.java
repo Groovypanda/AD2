@@ -1,4 +1,4 @@
-package elements;
+package dualgraph;
 
 import java.util.ArrayList;
 import java.util.List;

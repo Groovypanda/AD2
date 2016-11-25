@@ -1,7 +1,7 @@
 package input;
 
-import datastructures.Graph;
-import elements.Node;
+import graph.Graph;
+import graph.Node;
 
 import java.io.*;
 import java.util.ArrayList;

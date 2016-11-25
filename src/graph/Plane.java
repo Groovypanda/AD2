@@ -1,4 +1,6 @@
-package elements;
+package graph;
+
+import dualgraph.PlaneNode;
 
 /**
  * Represents a plane in a planar triangulation. A plane is a node in the dual graph of this graph.
