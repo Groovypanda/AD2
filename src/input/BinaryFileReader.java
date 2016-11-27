@@ -7,9 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 
@@ -57,11 +55,11 @@ public class BinaryFileReader {
         List<Graph> graphs = new ArrayList<Graph>();
         //Loop trough bytes and and create graphs.
         while(i<bytes.length) {
-            //Read a single elements.
+            //Read a single graph.
             int numberLength = (int) bytes[i++];
-            //Amount of nodes in the elements.
+            //Amount of nodes in the graph.
             int nodeAmount = readNumber(bytes, i, numberLength);
-            //Amount of edges in the elements.
+            //Amount of edges in the graph.
             int edgeAmount = readNumber(bytes, i + numberLength, numberLength);
             Graph graph = new Graph(nodeAmount, edgeAmount);
             int nodeIndex = 0;
@@ -75,7 +73,7 @@ public class BinaryFileReader {
                 if (number == 0) { //If the number is zero a new node can be made.
                     graph.addNode(nodes[nodeIndex]); //Add the previous node, which is now configured with its edges.
                     nodeIndex++;
-                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the elements.
+                    if(nodeIndex!=nodeAmount){ //If it's the last node, it indicates the end of the graph.
                         nodes[nodeIndex] = new Node(nodeIndex+1);
                     }
                 } else { //If the number isn't zero, the number is an edgeNumber.
@@ -120,8 +118,9 @@ public class BinaryFileReader {
     }
 
     /**
-     * Adds all graphs from a directory with .sec files to the elements list.
+     * Adds all graphs from a directory with .sec files to the graph list.
      * @param directoryName The name of the directory
+     * @return A list with all the graphs
      */
     public List<Graph> getDirectoryGraphs(String directoryName){
         List<Graph> graphs = new ArrayList<>();
@@ -130,6 +129,29 @@ public class BinaryFileReader {
                 paths.forEach(filePath -> {
                     if (Files.isRegularFile(filePath)) {
                         graphs.addAll(getFileGraphs(filePath));
+                    }
+                });
+            }
+        } catch (IOException e) {
+            throw new AssertionError("Couldn't find the given directory");
+        }
+        return graphs;
+    }
+
+    /**
+     * Adds all the graphs from a directory with .sec files to the graph map.
+     * The difference with the method getDirectoryGraphs is: the result here is saved in map in which each key represents
+     * the name of the file.
+     * @param directoryName The name of the directory
+     * @return
+     */
+    public Map<String, List<Graph>> getDirectoryGraphsExtended(String directoryName){
+        Map<String, List<Graph>> graphs = new HashMap<>();
+        try {
+            try(Stream<Path> paths = Files.walk(Paths.get(System.getProperty("user.dir"), "data", directoryName))) {
+                paths.forEach(filePath -> {
+                    if (Files.isRegularFile(filePath)) {
+                        graphs.put(filePath.getFileName().toString(), getFileGraphs(filePath));
                     }
                 });
             }

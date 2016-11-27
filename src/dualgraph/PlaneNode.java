@@ -102,7 +102,7 @@ public class PlaneNode {
      * @param pair The pair of edges.
      */
     public void addPair(Pair pair){
-        pairs[pairsLength++] = pair;
+            pairs[pairsLength++] = pair;
     }
 
     /**
@@ -209,4 +209,7 @@ public class PlaneNode {
         arrayIndex = -1;
     }
 
+    public boolean equals(Object other){
+        return other instanceof PlaneNode && plane.equals(((PlaneNode) other).getPlane());
+    }
 }

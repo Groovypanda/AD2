@@ -149,12 +149,12 @@ public class DualGraph {
         //Find the edges of the new plane.
         Edge[] edges = new Edge[3];
         edges[0] = edge;
-        edges[1] = edge.getNextEdge(edge.getNodes()[0]);
-        edges[2] = edge.getPreviousEdge(edge.getNodes()[1]);
+        edges[1] = edge.getNextEdge(edge.getEndPoints()[0]);
+        edges[2] = edge.getPreviousEdge(edge.getEndPoints()[1]);
         //If current plane has the same edges, than the other side of this edge contains the right edges.
         if(plane.equalEdges(edges)){
-            edges[1] = edge.getNextEdge(edge.getNodes()[1]);
-            edges[2] = edge.getPreviousEdge(edge.getNodes()[0]);
+            edges[1] = edge.getNextEdge(edge.getEndPoints()[1]);
+            edges[2] = edge.getPreviousEdge(edge.getEndPoints()[0]);
         }
         Plane adjacentPlane = new Plane(edges); //Create the plane
         plane.addAdjacentPlane(adjacentPlane); //Add the new plane as adjacent plane to the given plane.
@@ -172,11 +172,11 @@ public class DualGraph {
         Edge[] edges2 = new Edge[3]; //Edges of second plane.
         Plane[] planes = new Plane[2];
         edges1[0] = edge;
-        edges1[1] = edge.getNextEdge(edge.getNodes()[0]);
-        edges1[2] = edge.getPreviousEdge(edge.getNodes()[1]);
+        edges1[1] = edge.getNextEdge(edge.getEndPoints()[0]);
+        edges1[2] = edge.getPreviousEdge(edge.getEndPoints()[1]);
         edges2[0] = edge;
-        edges2[1] = edge.getNextEdge(edge.getNodes()[1]);
-        edges2[2] = edge.getPreviousEdge(edge.getNodes()[0]);
+        edges2[1] = edge.getNextEdge(edge.getEndPoints()[1]);
+        edges2[2] = edge.getPreviousEdge(edge.getEndPoints()[0]);
         planes[0] = new Plane(edges1);
         planes[1] = new Plane(edges2);
         planes[0].addAdjacentPlane(planes[1]);

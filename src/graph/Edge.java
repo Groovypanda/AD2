@@ -94,24 +94,44 @@ public class Edge {
     }
 
     //-1 if previous, 1 if next
+
+    /**
+     * Returns an adjacent edge (the both edges have a common endpoint). If next is -1 the previous edge will be given,
+     * if next is 1 the next edge will be given. The next edge (resp. previous) of this edge given a certain node, is
+     * the edge in the (circular) list of edges in the node incremented (resp. decremented) with one.
+     * @param node
+     * @param next -1 if previous, +1 if next.
+     * @return The previous (-1) or next (+1) edge.
+     */
     private Edge getAdjacentEdge(Node node, int next){
         int index = edgeIndex[getNodeIndex(node)]; //Get the index of this node in the list of the edges of that node
         int size = node.getEdges().size();
-        int adjacentEdgeIndex = (index + next) % size; //Next edge has this index increment with one.
+        int adjacentEdgeIndex = (index + next) % size; //Next or previous edge has this index incremented or decremented with one.
         if(adjacentEdgeIndex<0){
             adjacentEdgeIndex+=size;
         }
         return node.getEdges().get(adjacentEdgeIndex);
     }
 
+    /**
+     * @param node
+     * @return The next edge in the array of edges in the given node.
+     */
     public Edge getNextEdge(Node node){
         return getAdjacentEdge(node, 1);
     }
 
+    /**
+     * @param node
+     * @return The previous edge in the array of edges in the given node.
+     */
     public Edge getPreviousEdge(Node node){
         return getAdjacentEdge(node, -1);
     }
 
+    /**
+     * Mark this edge and its endpoints as visited.
+     */
     public void visit() {
         visited = true;
         for(Node node: nodes){
@@ -119,17 +139,27 @@ public class Edge {
         }
     }
 
-    public Node[] getNodes() {
+    /**
+     * @return The endpoints of this edge.
+     */
+    public Node[] getEndPoints() {
         return nodes;
     }
 
+    /*
+     * @return The visited status
+     */
     public boolean isVisited() {
         return visited;
     }
 
+    /**
+     * @param other An edge which shares an endpoint with this edge.
+     * @return The common endpoint with the given edge
+     */
     public Node getCommonNode(Edge other){
         for(Node node: nodes){
-            for(Node otherNode: other.getNodes()){
+            for(Node otherNode: other.getEndPoints()){
                 if(node.equals(otherNode)){
                     return node;
                 }
@@ -177,4 +207,12 @@ public class Edge {
     public Plane getAdjacentPlane(Plane plane) {
         return adjacentPlanes[0].equals(plane) ? adjacentPlanes[1] : adjacentPlanes[0];
     }
+
+    /**
+     * @return The number of this edge
+     */
+    public int getNumber() {
+        return number;
+    }
+
 }

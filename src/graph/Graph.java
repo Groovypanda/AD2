@@ -4,7 +4,7 @@ package graph;
 import datastructures.SortedNodeArray;
 
 /**
- * <h1>Data structure for a elements</h1>
+ * <h1>Data structure for a graph</h1>
  * The data structure contains an array of edges, array of nodes and sorted array of nodes.
  * The unsorted array of nodes is redundant, but can be helpful for certain implementations.
  * The structure supports adding nodes and edges, and accessing the nodes (sorted or unsorted).
@@ -14,11 +14,10 @@ public class Graph {
     private Node[] nodeArray; //array of all nodes
     private SortedNodeArray sortedNodeArray; //sorted array of all nodes
     private boolean hasSorted = false; //checks if the sort method has been called.
-    private Plane[] planes;
     private int size;
 
     /**
-     * Constructor for a elements. It initiates the internal data structures.
+     * Constructor for a graph. It initiates the internal data structures.
      * @param nodeAmount Total amount of nodes
      * @param edgeAmount Total amount of edges
      */
@@ -34,7 +33,31 @@ public class Graph {
     }
 
     /**
-     * Sets the elements back to starting condition. (Before sort has been called.)
+     * Copies the given graph.
+     * @param graph
+     */
+    public Graph(Graph graph){
+        this(graph.nodeArray.length, graph.edgeArray.length);
+        for(Edge edge: graph.edgeArray){
+            addEdgeCopy(edge);
+        }
+        for(Node node: graph.nodeArray){
+            addNodeCopy(node);
+        }
+        for(Edge edge: graph.edgeArray) {
+            for(Node node: edge.getEndPoints()){
+                edgeArray[edge.getNumber()-1].addNode(nodeArray[node.getNumber()-1]);
+            }
+        }
+        for(Node node: graph.nodeArray){
+            for(Edge edge: node.getEdges()){
+                nodeArray[node.getNumber()-1].addEdge(edgeArray[edge.getNumber()-1]);
+            }
+        }
+    }
+
+    /**
+     * Sets the graph back to starting condition. (Before sort has been called.)
      */
     public void reset(){
         this.sortedNodeArray = new SortedNodeArray(nodeArray);
@@ -45,9 +68,9 @@ public class Graph {
     }
 
     /**
-     * Adds a node to the elements.
+     * Adds a node to the graph.
      * @param node The node which has to be added
-     * @throws IndexOutOfBoundsException The nodeNumber exceeds the planeAmount of the elements or the nodeNumber is 0 or negative.
+     * @throws IndexOutOfBoundsException The nodeNumber exceeds the planeAmount of the graph or the nodeNumber is 0 or negative.
      */
     public void addNode(Node node) {
         if(nodeArray[node.getNumber()-1]!=null){
@@ -115,7 +138,7 @@ public class Graph {
         return edgeArray;
     }
 
-    /**=
+    /**
      * Private method for retrieving an edge from the elements.
      * @param edgeNumber The number of the edge
      * @return The edge, returns null if the edgeArray doesn't contain the edgeNumber.
@@ -146,5 +169,18 @@ public class Graph {
             System.out.println(n);
         }
         System.out.println("====================");
+    }
+
+    /**
+     * Adds a copy of the given edge to this graph.
+     * @param edge
+     */
+    public void addEdgeCopy(Edge edge){
+        Edge newEdge = new Edge(edge.getNumber());
+        setEdge(edge.getNumber(), newEdge);
+    }
+
+    public void addNodeCopy(Node node){
+        nodeArray[node.getNumber()-1] = new Node(node.getNumber());
     }
 }

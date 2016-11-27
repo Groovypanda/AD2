@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  24 NOV 2016 14:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  27 NOV 2016 18:30
 entering extended mode
 **./verslag.tex
 (verslag.tex
@@ -424,6 +424,18 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 635.
 LaTeX Info: Redefining \[ on input line 2739.
 LaTeX Info: Redefining \] on input line 2740.
 )
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amscls\amsthm.sty"
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks34
+\thm@bodyfont=\toks35
+\thm@headfont=\toks36
+\thm@notefont=\toks37
+\thm@headpunct=\toks38
+\thm@preskip=\skip49
+\thm@postskip=\skip50
+\thm@headsep=\skip51
+\dth@everypar=\toks39
+)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\babel\babel.sty"
 Package: babel 2016/04/23 3.9r The Babel package
 
@@ -446,8 +458,8 @@ Package babel Info: Making " an active character on input line 132.
 ))
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\inputenc.sty"
 Package: inputenc 2015/03/17 v1.2c Input encoding file
-\inpenc@prehook=\toks34
-\inpenc@posthook=\toks35
+\inpenc@prehook=\toks40
+\inpenc@posthook=\toks41
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\latin1.def"
 File: latin1.def 2015/03/17 v1.2c Input encoding file
@@ -455,9 +467,9 @@ File: latin1.def 2015/03/17 v1.2c Input encoding file
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count121
-\float@exts=\toks36
+\float@exts=\toks42
 \float@box=\box39
-\@float@everytoks=\toks37
+\@float@everytoks=\toks43
 \@floatcapt=\box40
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\algorithmicx\algpseudocode.sty"
@@ -473,19 +485,19 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@line=\count122
 \c@ALG@rem=\count123
 \c@ALG@nested=\count124
-\ALG@tlm=\skip49
-\ALG@thistlm=\skip50
+\ALG@tlm=\skip52
+\ALG@thistlm=\skip53
 \c@ALG@Lnr=\count125
 \c@ALG@blocknr=\count126
 \c@ALG@storecount=\count127
 \c@ALG@tmpcounter=\count128
-\ALG@tmplength=\skip51
+\ALG@tmplength=\skip54
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
-\@float@every@algorithm=\toks38
+\@float@every@algorithm=\toks44
 \c@algorithm=\count129
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\textcomp.sty"
@@ -570,18 +582,6 @@ Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
 )
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amscls\amsthm.sty"
-Package: amsthm 2015/03/04 v2.20.2
-\thm@style=\toks39
-\thm@bodyfont=\toks40
-\thm@headfont=\toks41
-\thm@notefont=\toks42
-\thm@headpunct=\toks43
-\thm@preskip=\skip52
-\thm@postskip=\skip53
-\thm@headsep=\skip54
-\dth@everypar=\toks44
-)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\rotating.sty"
 Package: rotating 2016/05/22 v2.16c rotated objects in LaTeX
 \c@r@tfl@t=\count130
@@ -632,43 +632,59 @@ Library (tcolorbox): 'tcbskins.code.tex' version '3.95'
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tcolorbox\tcbskinsjigsaw.code.tex
 "
 Library (tcolorbox): 'tcbskinsjigsaw.code.tex' version '3.95'
-)))
-\c@opgave=\count135
-\c@definitie=\count136
-\c@opmerking=\count137
- (verslag.aux)
+))) ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\csvsimple\csvsimple.sty"
+Package: csvsimple 2016/07/01 version 1.20 LaTeX CSV file processing
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tools\shellesc.sty"
+Package: shellesc 2016/06/07 v0.02a unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 69.
+)
+\csv@file=\read3
+\c@csvinputline=\count135
+\c@csvrow=\count136
+\c@csvcol=\count137
+\csv@out=\write6
+)
+\c@opgave=\count138
+\c@definitie=\count139
+\c@opmerking=\count140
+\c@stelling=\count141
+\c@lemma=\count142
+
+(verslag.aux)
 \openout1 = `verslag.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 35.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 37.
  ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 35.
- ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+LaTeX Font Info:    ... okay on input line 37.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count138
+\scratchcounter=\count143
 \scratchdimen=\dimen163
 \scratchbox=\box51
-\nofMPsegments=\count139
-\nofMParguments=\count140
+\nofMPsegments=\count144
+\nofMParguments=\count145
 \everyMPshowfont=\toks48
-\MPscratchCnt=\count141
+\MPscratchCnt=\count146
 \MPscratchDim=\dimen164
-\MPnumerator=\count142
-\makeMPintoPDFobject=\count143
+\MPnumerator=\count147
+\makeMPintoPDFobject=\count148
 \everyMPtoPDFconversion=\toks49
 ) ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
 Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
@@ -717,35 +733,96 @@ G,.JBIG2,.JB2,.eps]
 )
 ABD: EveryShipout initializing macros [1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] [2]
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [1] [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 156--160
 
-LaTeX Warning: Float too large for page by 4.75243pt on input line 174.
+ []
 
 
-Overfull \hbox (27.16228pt too wide) in paragraph at lines 187--189
+Underfull \hbox (badness 10000) in paragraph at lines 156--160
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--160
+
+ []
+
+[4]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 172.
+
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 172.
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--181
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 185--187
+
+ []
+
+
+LaTeX Warning: Float too large for page by 4.75243pt on input line 242.
+
+[6] [7]
+Overfull \hbox (27.16228pt too wide) in paragraph at lines 255--257
 \OT1/cmr/m/n/10.95 teit is hier $\OML/cmm/m/it/10.95 O\OT1/cmr/m/n/10.95 (7 \OM
 S/cmsy/m/n/10.95  \OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 complexiteit van elk
 e iteratie\OT1/cmr/m/n/10.95 )) = \OML/cmm/m/it/10.95 O\OT1/cmr/m/n/10.95 (\OML
 /cmm/m/it/10.95 complexiteit iteratie\OT1/cmr/m/n/10.95 )$ 
  []
 
-[3] [4] [5] [6] [7] [8]
+[8]
 
-LaTeX Warning: Reference `tabel:ordening' on page 9 undefined on input line 298
-.
+LaTeX Warning: Float too large for page by 17.13577pt on input line 333.
 
-[9]
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 334--349
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--335
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--335
+
+ []
+
+[9] [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 353--357
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--357
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--357
+
+ []
+
+[12] [13] [14] [15] [16] [17]
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 478--493
  [][] 
  []
 
 
-Overfull \hbox (75.72495pt too wide) in paragraph at lines 355--370
+Overfull \hbox (75.72495pt too wide) in paragraph at lines 499--514
  [][] 
  []
 
-[10] [11] [12] [13]
-\c@x=\count144
+[18] [19] [20]
+\c@x=\count149
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -810,8 +887,8 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-\c@y=\count145
-\c@z=\count146
+\c@y=\count150
+\c@z=\count151
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -980,8 +1057,8 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-\c@a=\count147
-\c@b=\count148
+\c@a=\count152
+\c@b=\count153
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1074,33 +1151,99 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
- [14] [15] (verslag.aux)
+ [21] [22]
+Underfull \hbox (badness 10000) in paragraph at lines 728--734
 
-LaTeX Warning: There were undefined references.
+ []
 
- ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--734
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--734
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--734
+
+ []
+
+[23] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 736--740
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 736--740
+
+ []
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 746--751
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 746--751
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 746--751
+
+ []
+
+[26]
+Overfull \hbox (5.32454pt too wide) in paragraph at lines 754--754
+[]\OT1/cmr/bx/n/10.95 Optimalisaties en ex-pe-ri-men-ten voor de Yutsis-decompo
+sitie 
+ []
+
+[27]
+Overfull \hbox (10.42146pt too wide) in paragraph at lines 767--776
+ \OT1/cmr/bx/n/10.95 Meer-dere po-gin-gen[] \OT1/cmr/m/n/10.95 In-dien het al-g
+o-ritme meer-dere ke-ren uit-ge-voerd wordt,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 778--818
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 778--818
+
+ []
+
+[28] [29] [30] [31] [32] (verslag.aux) ) 
 Here is how much of TeX's memory you used:
- 17288 strings out of 493334
- 347177 string characters out of 3136671
- 518749 words of memory out of 3000000
- 20508 multiletter control sequences out of 15000+200000
- 10349 words of font info for 37 fonts, out of 3000000 for 9000
+ 17872 strings out of 493334
+ 361482 string characters out of 3136671
+ 535311 words of memory out of 3000000
+ 21075 multiletter control sequences out of 15000+200000
+ 10695 words of font info for 38 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,11n,87p,1357b,935s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Jarre\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
-tcrm1095.pk><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-mbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmb
-x12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi1
-0.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.p
-fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb>
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progra
-m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on verslag.pdf (16 pages, 182603 bytes).
+ 55i,11n,87p,1811b,941s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\Jarre\AppData\Local\MiKTeX\2
+.9\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1095.pk><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
+type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/typ
+e1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmti10.pfb>
+Output written on verslag.pdf (33 pages, 253523 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
+ 164 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

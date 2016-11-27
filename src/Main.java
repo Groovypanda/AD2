@@ -1,14 +1,14 @@
 import graph.Graph;
 import gretig.HamiltonianCycleCalculator;
 import input.BinaryFileReader;
-import gretig.HamiltonianCycleCalculatorOld;
+import hamilton_experiment.calculators.HamiltonianCycleCalculatorOld;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * A class purely used for testing purposes.
- * It basically contains a main function and a few help methods.
+ * This class changes all the time.
  * @author Jarre Knockaert
  */
 public class Main {
@@ -23,7 +23,6 @@ public class Main {
             path = Paths.get(System.getProperty("user.dir"), "data", "klein", "triang_alle_12.sec");
         }
         for(Graph g: reader.getFileGraphs(path)){
-            //System.out.println("================ GRAPH " + ++graphNumber + " ================");
             System.out.print("New: ");
             HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
             calculator.printCycle(calculator.calculateCycle());
@@ -33,14 +32,5 @@ public class Main {
         }
         System.out.println("New: " + (double)HamiltonianCycleCalculator.succesful/HamiltonianCycleCalculator.total);
         System.out.println("Old: " + (double)HamiltonianCycleCalculatorOld.succesful/HamiltonianCycleCalculatorOld.total);
-        /*
-        for(int i=1; i<=10; i++){
-            List<Graph> graphs = readGraphs(String.format("testset/triang%d.sec", i));
-            for(Graph g: graphs){
-                System.out.println("================ GRAPH " + ++graphNumber + " ================");
-                HamiltonianCycleCalculator calculator = new HamiltonianCycleCalculator(g);
-            }
-        }
-        */
     }
 }

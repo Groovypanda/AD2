@@ -7,7 +7,7 @@ import java.util.List;
  * This class is  a blueprint for the nodes.
  * It offers a list of instructions: adding adjacent edges, retrieving these edges, retrieving the degree,
  * visiting a node (marking the node as visited), checking if the node has been visited, visiting the neighbours,
- * retrieving an approximation of the coverage of a node (this is an upper bound for the coverage a certain node can offer to a elements)
+ * retrieving an approximation of the coverage of a node (this is an upper bound for the coverage a certain node can offer to a graph)
  * and changing the coverage.
  * @author Jarre Knockaert
  */
@@ -21,7 +21,7 @@ public class Node {
      * which is part of the dominant set.
      */
     private boolean visited = false;
-    //An upper bound for the coverage of a elements a node can offer when it is added to the dominant set.
+    //An upper bound for the coverage of a graph a node can offer when it is added to the dominant set.
     private int coverage;
 
     /**
@@ -45,7 +45,7 @@ public class Node {
     }
 
     /**
-     * @return An upperbound of the coverage a certain node can offer in a elements.
+     * @return An upperbound of the coverage a certain node can offer in a graph.
      */
     public int getCoverage(){
         return coverage;

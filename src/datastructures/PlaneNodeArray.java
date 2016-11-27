@@ -20,8 +20,8 @@ public class PlaneNodeArray {
     public final int number; //A unique identifier of this array.
     private static int index; //Indicates the number of the last PlaneNodeArray.
     private int length; //Indicates the length of this array
-    private PlaneNode[] elements; //The elements of this array.
-    private PlaneNode lastAdded; //The last added elements to this array.
+    private PlaneNode[] elements; //The graph of this array.
+    private PlaneNode lastAdded; //The last added element to this array.
     private String name; //Used for the representation of this array
 
     /**
@@ -69,9 +69,6 @@ public class PlaneNodeArray {
                     lastAdded = null;
                 }
             }
-        }
-        else {
-            System.out.println("Fatal error");
         }
     }
 
@@ -122,9 +119,14 @@ public class PlaneNodeArray {
      * @return The last added element.
      */
     public PlaneNode pull() {
-        PlaneNode node = null;
+        PlaneNode node;
         if(lastAdded != null){
             node = lastAdded;
+            lastAdded = null;
+            remove(node);
+        }
+        else {
+            node =elements[0];
             remove(node);
         }
         return node;

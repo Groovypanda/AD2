@@ -2,20 +2,18 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage[dutch]{babel}
 \usepackage[latin1]{inputenc} 
 \usepackage{float}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 \usepackage{textcomp}
-\usepackage{amsthm}
 \usepackage{rotating}
 \usepackage[section]{placeins}
-
-
-
-
 \usepackage[skins]{tcolorbox}
+\usepackage{csvsimple}
+
 \makeatletter
 \newenvironment{algoritme}[1][H]{%
 	\renewcommand{\ALG@name}{Algoritme}% Update algorithm name
@@ -24,6 +22,7 @@
 	\begin{algorithm}[#1]%
 	}{\end{algorithm}}
 \makeatother
+\setlength{\parindent}{0pt}
 
 \theoremstyle{definition}
 \newtheorem{opgave}{Opgave}
@@ -31,6 +30,9 @@
 \newtheorem{definitie}{Definitie}
 \theoremstyle{definition}
 \newtheorem{opmerking}{Opmerking}
+\newtheorem{stelling}{Stelling}
+\newtheorem{lemma}{Lemma}
+
 
 \begin{document}
 	\title{Project Gretige Algoritmen}
@@ -62,14 +64,27 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 	\end{equation}
 \end{definitie}
 \begin{definitie}
-	De \textbf{actual coverage} of \textbf{werkelijke bedekking} van een top v stelt de eigenlijke bijdrage van top aan de dominante verzameling. Deze bijdrage is het exacte aantal toppen die toegevoegd worden aan de dominante lijst door het toevoegen van v aan D(G).
+	De \textbf{actual coverage} of \textbf{werkelijke bedekking} van een top v stelt de eigenlijke bijdrage van v voor aan de dominante verzameling. Deze bijdrage is het exacte aantal toppen die toegevoegd worden aan de dominante lijst door het toevoegen van v aan D(G).
 	\begin{equation}
 	actualCoverage(v) = \vert \{w \in V(G) \mid w \in \{v \cup N_G(v)\} \land w \not\in D(G) \}\vert
 	\end{equation} 
 \end{definitie}
 \begin{opmerking}
-	De werkelijke coverage of werkelijke bedekking van een verzameling is de totale werkelijke coverage of totale werkelijke bedekking van elke top uit die verzameling. Hierbij moet rekening gehouden worden dat door het toevoegen van de ene top aan de dominante verzameling, de werkelijke bedekking kan wijzigen van de andere top. Met andere woorden is het dus het aantal toegevoegde element aan de dominante verzameling na het toevoegen van elke top uit de verzameling. 
+	De werkelijke coverage of werkelijke bedekking van een verzameling is de
+	som van van de werkelijke coverage of werkelijke bedekking van elke top uit die verzameling. Hierbij moet rekening gehouden worden dat door het toevoegen van de ene top aan de dominante verzameling, de werkelijke bedekking kan wijzigen van de andere top. Met andere woorden is het dus het aantal toegevoegde elementen aan de dominante verzameling na het toevoegen van elke top uit de verzameling. 
 \end{opmerking}
+\begin{definitie}
+	Twee bogen (e,e') zijn een \textbf{paar} als ze \'{e}\'{e}n gemeenschappelijke top delen. Elk paar met de bogen e, e' maakt deel uit van juist \'{e}\'{e}n vlak $f_G(e,e')$. 
+\end{definitie}
+\begin{opmerking}
+	Het midden of het centrum van een paar met de bogen e, e'  gemeenschappelijke top van twee verbonden bogen. De eindpunten zijn de overige twee toppen van dit paar. De vlakken waartoe een top v behoort, zijn de vlakken van de paren waarvan v het centrum is. De paren van een vlak V zijn alle paren zodat $f_G(e,e')=V$.
+\end{opmerking}
+\begin{opmerking}
+	Twee vlakken zijn aanliggend als deze vlakken \'{e}\'{e}n boog gemeenschappelijk hebben. Deze vlakken zijn buren. 
+\end{opmerking}
+\begin{definitie}
+	De twee toppenverzamelingen $D_1$ en $D_2$ van een graaf zijn \textbf{onafhankelijk} als en slechts $D_1 \cap D_2 = \emptyset$
+\end{definitie}
 \section{Theoretische vragen}
 \begin{opgave}
 	Indien er 2 naburige toppen v en w een grote bedekking leveren, zal de top v met de hoogste graad worden toegevoegd aan de dominante verzameling en de buren zullen worden verwijderd. Het zou echter beter zijn om zowel v en w toe te voegen aan de dominante verzameling, want w zorgt ook voor een hoge toename van de bedekking van de dominante verzameling. 
@@ -118,8 +133,61 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 	\end{figure}
 \end{opgave}
 \begin{opgave}
+	Beschouw de duale graaf DG(V(DG), E(DG)) verkregen door de vlakke triangulatie G. 
+	\begin{stelling}
+		\label{stelling1}
+		Voor een vlakke triangulatie liggen er binnen en buiten de hamiltoniaanse cykel evenveel vlakken. 
+	\end{stelling}
+	Merk eerst op dat de ge\"{i}nduceerde deelgrafen samenhangend moeten zijn aangezien de vlakken vermeld in stelling \ref{stelling1} gescheiden zijn door een hamiltoniaanse cykel. Alle vlakken uit \'{e}\'{e}n vlakkenverzameling moeten dus samen ofwel binnen ofwel buiten de cykel liggen. 
+	\begin{opmerking}
+		\label{opmerking1}
+		Alle toppen op de gemeenschappelijke bogen van vlakken uit de twee verschillende vlakkenverzamelingen zullen deel uitmaken van de hamiltoniaanse cykel. 
+	\end{opmerking}
+	De reden hiervoor is eenvoudig, aangezien er juist 2 vlakkenverzamelingen zijn, en alle vlakken van een vlakkenverzameling ofwel binnen ofwel buiten de cykel ligt, wordt de cykel gedefinieerd door elk gemeenschappelijk boog van alle paren van vlakken zodat de beide vlakken tot een verschillende vlakkenverzameling behoren. Voor het bewijs van stelling \ref{stelling1} hebben we eerst volgende lemma's nodig. 
+
+	\begin{lemma}	
+		\label{lemma1}
+		Beschouw een vlakke	triangulatie G en zijn duale graaf DG. 
+		Beschouw verder de ge\"{i}nduceerde deelgrafen van de twee onafhankelijke toppenverzamelingen $D_1$ en $D_2$ zodat $D_1, D_2 \in V(DG) , D_1 \cup D_2 = V(DG)$.  Als $D_1$ en $D_2$ de vlakken resp. binnen en buiten de hamiltoniaanse cykel voorstellen, dan zijn $DG_1$ en $DG_2$ een boom.   
+		
+	\end{lemma}
+	
+	\begin{proof}
+		Beschouw twee onafhankelijke toppenverzamelingen $D_1$ en $D_2$ in de duale graaf DG van de vlakke triangulatie G zodat $D_1 \cup D_2 = V(DG)$. Stel dat eender van de toppenverzamelingen $D_1$ een deelgraaf met \'{e}\'{e}n cykel induceert. Aangezien de duale graaf een 3-reguliere graaf is, moet elke top uit de cykel minstens 2 buren hebben in de gekozen toppenverzameling. Als dit niet zo is, vormen de toppen geen cykel. Beschouw nu de ge\"{i}nduceerde deelgrafen $DG_1$ en $DG_2$ van respectievelijk $D_1$ en $D_2$. De deelgraaf $DG_2$ (en dus $D_2$) moet volledig binnen ofwel volledig buiten de cykel liggen aangezien de toppenverzamelingen samenhangend moeten zijn. 
+		\\\\Stel eerst dat $DG_2$ binnenin de cykel ligt. Neem de vlakkenverzamelingen $V_1$ en $V_2$ van de vlakke triangulatie G  gegeven door resp. de toppen van $D_1$ en $D_2$. E\'{e}n of meerdere vlakken in G verkregen met de toppen van de cykel van $DG_1$ zullen een gemeenschappelijke boog hebben met een vlak uit $V_2$. Dergelijk vlak uit $V_1$ heeft dus twee buren in $V_1$ en 1 buur in $V_2$, wat betekent dat beide vlakken juist twee toppen gemeenschappelijk hebben. De overige derde top uit de vlakke triangulatie maakt echter deel uit van de twee gemeenschappelijke bogen met de vlakken uit de cykel van $DG_1$.  Nu wegens opmerking \ref{opmerking1} geldt dat deze top niet deel uitmaakt van de cykel van de vlakke triangulatie, zodat de cykel in dit geval geen hamiltoniaanse cykel is.
+		\\\\Stel vervolgens dat $DG_2$ buiten de cykel ligt. Elk vlak heeft opnieuw 2 bogen gemeenschappelijk met aanliggende vlakken uit de cykel. Deze bogen zullen aan \'{e}\'{e}n eindpunt t snijden, het andere eindpunt van beide bogen zullen opnieuw een boog vormen. Deze boog is een een gemeenschappelijk boog met een vlak buiten de cykel. Aangezien er binnenin de cykel geen vlakken liggen van $DG_2$, zal t nooit deel uitmaken van een boog van $DG_2$, en zal dus geen deel uitmaken van een gemeenschappelijk boog van 2 vlakken uit een verschillende vlakkenverzameling. Vanwege opmerking \ref{opmerking1} geldt dat deze top niet deel uitmaakt van de cykel van de vlakke triangulatie, zodat de cykel in dit geval geen hamiltoniaanse cykel is. 
+		\\\\Aangezien enkel vorige twee gevallen mogelijk zijn (zoals besproken voor de individuele bespreking van de gevallen), zal er altijd minstens \'{e}\'{e}n top geen deel uitmaken van de cykel van de vlakke triangulatie, waardoor de cykel geen hamiltoniaanse cykel is. Hieruit kunnen we besluiten dat de deelgrafen $DG_1$ en $DG_2$ geen cykel mogen bevatten en dus een boom moeten zijn.
+	\end{proof}
+	Volgend lemma en zijn bewijs werd ge\"{i}nspireerd door het artikel "To be or not to be Yutsis". 
+	\begin{lemma} 
+		\label{lemma2}
+		Beschouw de duale graaf DG(V(DG), E(DG)) van de vlakke triangulatie G met 2 onafhankelijke toppenverzamelingen $D_1$ en $D_2$ waarvan de deelgraaf van $D_1$ een boom induceert en zodat $D_2 = V(DG) \setminus D_1$. Neem een top v uit $D_2$ met 1 buur in $D_1$ en 2 buren $v'$ en $v''$ in $D_2$ zodat $e = \{v, v'\}$ en $e' = \{v, v''\}$. Het verwijderen van v uit $D_2$ zorgt ervoor dat de deelgraaf ge\"{i}nduceerd door $D_2$ niet meer samenhangend is als en slechts als het vlak (van de duale graaf) $f_G(e,e')$ een top bevat uit de boom $D_1$.
+	\end{lemma}
+	\begin{opmerking}
+		Een dergelijke top v wordt ook wel een cutvertex genoemd. Een cutvertex heeft graad 2 en maakt geen deel uit van een cykel. 
+	\end{opmerking}
+	Hier volgt het bewijs van lemma \ref{lemma2}. 
+	\begin{proof}
+		Stel dat $f_G(e,e')$ geen cutvertex bevat. Dan zijn de toppen van $f_G(e,e')$ een cykel waartoe onder andere v behoort. 
+		Stel dat $f_G(e,e')$ wel een top t bevat, en beschouw t' de buur in $D_1$ van v. Nu is er een pad van t naar t' in $D_1$ aangezien beide toppen tot dezelfde verzameling behoren. Voegen we het pad \{t', v\} hieraan toe, dan is er een pad tussen 2 toppen v en t uit het vlak $f_G(e,e')$. Indien deze toppen binnenin het vlak verbonden worden, dan verkrijgen we een Jordaan-curve met 2 toppen t en t' uit $D_2$ die elk tot een verschillend component behoren. Neem de deelgraaf $DG_2$ ge\"{i}nduceerd door $D_2$. Dan maken de beide toppen deel uit van een verschillend component van $DG_2 \setminus \{v\}$ terwijl ze deel uitmaken van hetzelfde component van $DG_2$. De top v verstoort dus de samenhangendheid van de graaf en is een cutvertex. 
+	\end{proof}
+	Nu volgt het bewijs van stelling \ref{stelling1}.
+	\begin{proof}
+		Beschouw 2 verzamelingen $D_1$ en $D_2$ met respectievelijk de vlakken binnen en buiten de hamiltoniaanse cykel en zodat $|D_1| = |D_2|$. 
+		\\Stel we verwijderen een vlak v uit $D_2$ en voegen deze toe aan $|D_1|$ zodat $|D_1| \neq |D_2|$. 
+		Nu bestaan de volgende gevallen: 
+		\\\\Als v geen buur heeft in $|D_1|$, dan zijn de vlakken niet meer samenhangend na het toevoegen van v, m.a.w. de ge\"{i}nduceerde deelgraaf van de toppenverzameling in de duale graaf van de vlakke triangulatie is niet samenhangend. Aangezien de vlakkenverzameling moet samenhangend zijn (anders ligt het vlak niet aan dezelfde kant van de hamiltoniaanse cykel), is het in dit geval niet mogelijk om een vlak te verwijderen uit een verzameling en toe te voegen aan de andere. 
+		\\\\Stel v heeft juist een buur in $D_1$ en dus 2 buren in $D_2$. Beschouw de buren $v', v'' \in D_2$, en de bogen $e=\{v,v'\} en e'=\{v,v''\}$. Nu zijn er 2 mogelijkheden. 
+		\begin{enumerate}
+			\item $f_G(e,e')$ bevat geen top uit $D_1$. Dan vormt $f_G(e,e')$ een cykel en dus is de cykel van de vlakke triangulatie geen hamiltoniaanse cykel vanwege lemma \ref{lemma1}. 
+			\item $f_G(e,e')$ bevat een top uit $D_1$. Dan geldt vanwege lemma \ref{lemma2} dat de top v een cutvertex is. Het verwijderen van deze top zorgt er dus voor dat $D_2$ niet meer samenhangend is. Aangezien de verzameling van vlakken samenhangend moet zijn zoals besproken initieel in dit bewijs, is het ook hier niet mogelijk om deze top te verwijderen. Dit zou er namelijk voor zorgen dat de cykel geen hamiltoniaanse cykel is. 
+		\end{enumerate}
+		Als v 2 buren heeft in $D_1$ dan leidt het toevoegen van v aan de duale graaf van de vlakke triangulatie tot een cykel in de duale graaf. De reden hiervoor is dat de 2 buren van v in $D_1$ reeds verbonden moesten zijn door een pad aangezien de deelgraaf ge\"{i}nduceerd door deze vlakke verzameling samenhangend is. Het toevoegen van deze top zorgt ervoor dat de 2 buren verbonden zijn via 2 paden, wat zorgt voor een cykel. Aangezien de duale graaf nu een cykel bevat geldt vanwege lemma \ref{lemma1} dat de cykel nu geen hamiltoniaanse cykel is. 
+		\\\\Aangezien het verwijderen van een willekeurige top uit de ene verzameling van de 2 verzamelingen met initieel gelijke grootte ervoor zorgt dat er geen hamiltoniaanse cykel meer is, kunnen we afleiden dat we nooit $|D_1|=|D_2|$ mogen verstoren, en dus moet gelden $|D_1|=|D_2|$.
+	\end{proof}
 \end{opgave}
-\begin{opgave}
+\begin{opgave}\mbox{}\\ 
+	\textbf{Dominantie in vlakke grafen}\\
 		Hier volgt een uitvoerige analyse van de complexiteit van beide algoritmes. 
 		\begin{tcolorbox}[blanker,float=tbp, grow to left by=2cm,grow to right by=2cm]
 		\begin{algoritme}
@@ -173,7 +241,7 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 		\end{algoritme}
 		\end{tcolorbox}
 
-		De pseudocode van het algoritme met betrekking tot dominante verzamelingen in vlakke grafen vindt je in algoritme \ref{alg:dominance}. Het algoritme loopt in lineaire tijd, dit zal ik verklaren door het overlopen van de verschillende delen van het algoritme. Indien een bepaald onderdeel niet besproken wordt betekent het dat dit deel triviaal is en constante tijd heeft. Indien een bepaalde stap lineair is met het aantal bogen, is het bijgevolg ook lineair met het aantal bogen begrensd is door het aantal toppen. Er zijn hoogstens 3n-6 bogen in een planaire graaf. 
+		De pseudocode van het algoritme met betrekking tot dominante verzamelingen in vlakke grafen vind je in algoritme \ref{alg:dominance}. Het algoritme loopt in lineaire tijd, dit zal ik verklaren door het overlopen van de verschillende delen van het algoritme. Indien een bepaald onderdeel niet besproken wordt, betekent het dat dit deel triviaal is en constante tijd heeft. Er zijn hoogstens 3n-6 bogen in een planaire graaf. Dus indien een bepaalde stap lineair is met het aantal bogen, is het bijgevolg ook lineair met het aantal bogen. 
 		\begin{itemize}
 			 \item Lijn \ref{sortoperation}: Hier wordt counting sort toegepast op de toppenverzameling om deze te ordenen op basis van hun graad. De complexiteit van counting sort is O(n+k). Hier is k (de graad) begrensd door n-1. De totale complexiteit is hier $O(2n-1)=O(n)$.
 			 \item Lijn \ref{startoptimalizationloop1} $\rightarrow$ \ref{endoptimalizationloop1}: Er wordt ge\"{i}tereerd over de toppen met graad 1. Dit zijn er hoogstens n-1. 
@@ -206,16 +274,93 @@ Eerst bespreek ik enkele termen die ik in het verslag zal gebruiken.
 			\item Een selectie functie: het lokaal zoeken naar de optimale top
 			\item Een haalbaarheidsfunctie het vergelijken van de eigenlijke bedekking van een top met 0. 
 			\item Een objectieve functie: het toevoegen van het maximum aan de verzameling D
-			\item Een oplossing functie: het vergelijken van de actualCoverage met |V(G)|
+			\item Een oplossing functie: het vergelijken van de actualCoverage met $|V(G)|$
 		\end{itemize} 
-	 Vooraf worden ook toppen toegevoegd die buur zijn van een top met graad 1. Hier wordt niet gekeken naar de bedekking van de top. Het is een optimalisatie en wordt voorafgaand aan het werkelijk gretig algoritme uitgevoerd. 
-
+	 Vooraf worden ook toppen toegevoegd die buur zijn van een top met graad 1. Dit is initieel de lokaal beste keuze aangezien deze buren zeker en vast toegevoegd moeten worden aan de dominante verzameling. 
+\\\\\textbf{Hamiltoniaanse cykels in vlakke triangulaties}
+Het algoritme gebruikt om hamiltoniaanse cykels in vlakke triangulaties wordt beschreven in pseudocode in algoritme \ref{alg:hamilton}. 
+Ik analyseer de verschillende stappen om de lineariteit te verduidelijken.
+\begin{tcolorbox}[blanker,float=tbp, grow to left by=2cm,grow to right by=2cm]
+	\begin{algoritme}
+		\caption{Hamiltoniaanse cykels in vlakke  triangulaties}
+		\label{alg:hamilton}
+		\begin{algorithmic}[1]
+			\Require Een vlakke triangulatie G(V(G),E(G))
+			\Ensure Een hamiltoniaanse cykel C in de vorm van een sequentie van toppen of $\emptyset$ als geen hamiltoniaanse cykel gevonden werd.
+			\State DG(V(DG), E(DG)) $\gets$ de duale graaf van G
+			\State L = \{\} \Comment{Begin Yutsis-decompositie berekening}\label{alg2:yutsis}
+			\State M = \{\}
+			\State V $\gets$ V(DG)
+			\State v $\gets$ een willekeurige top uit V 
+			\State $V \gets V \setminus \{v\}$
+			\State $M \gets M \cup \{v\}$
+			\State Markeer alle paren van de vlakken waartoe v behoort.\label{alg2:markplanes}
+			\ForAll{$w \in V \mid wv \in E(DG)$}\label{alg2:addLneighboursloop1}
+			\State $L \gets L \cup \{w\}$
+			\EndFor
+			\While{$|L|>0$}\label{alg2:startLloop}
+			\State v $\gets$ De top uit L met het meeste buren uit V\label{alg2:highestnode}
+			\State $L \gets L \setminus \{v\}$\label{alg2:removeLnode}
+			\If{$\vert w \in N_{DG}(v) \land w \in M \vert = 1$} \label{alg2:checkMneighbour}
+			\State (e, e') $\gets$ Het paar met v als centrum zodat de eindpunten niet tot M behoren\label{alg2:nonMpair}
+			\If{(e, e') niet gemarkeerd}
+			\State $M \gets M \cup \{v\}$
+			\State Markeer de paren van $f_{DG}(e,e')$\label{alg2:markplane}
+			\ForAll{$w \in V \mid wv \in E(DG)$}\label{alg2:addLneighboursloop2}
+			\State $L \gets L \cup \{w\}$
+			\EndFor
+			\EndIf
+			\EndIf
+			
+			\EndWhile\label{alg2:endyutsis}
+			\If{$\vert M \vert = \vert V(DG) \vert$}\Comment{De yutsis-decompositie werd gevonden.} 
+			\ForAll{$v \in M$} \label{alg2:Mloop}
+			\ForAll{$w \mid wv \in E(DG)$}
+			\If{$w \not\in M$} 
+			\State Neem v' het vlak voorgesteld door v
+			\State Neem w' het vlak voorgesteld door w
+			\State Neem e de gemeenschappelijke boog van v' en w'
+			\State Neem x en y de eindpunten van e
+			\State $C \gets C \cup \{x,y\}$
+			\EndIf 
+			\EndFor
+			\EndFor \label{alg2:endMloop}
+			\Else 
+			\State $C \gets \emptyset$
+			\EndIf
+		\end{algorithmic}
+	\end{algoritme}
+\end{tcolorbox}
+\\\\Het algoritme start met het maken van een duale graaf DG van de vlakke triangulatie G. Merk eerst en vooral op dat er juist $2n-4$ toppen zijn in de duale graaf, dit zijn het aantal vlakken in de vlakke triangulatie (n = $|V(G)|$). Indien een onderdeel lineair is met het aantal toppen in de duale graaf zal het bijgevolg ook lineair zijn met het aantal toppen van de vlakke triangulatie. Hiernaast is de duale graaf een 3-reguliere graaf. Dit betekent dat elke top juist 3 buren heeft. Hierdoor gebeurt het itereren over buren constant. In de duale graaf zijn de toppen, buren van toppen, paren van bogen en vlakken per paar nodig zodat het verdere algoritme in lineaire tijd kan presteren. Elk van deze elementen kan in lineaire tijd berekend worden:
+\begin{itemize}
+	\item Het berekenen van elke vlak in de vlakke triangulatie (de toppen in de duale graaf) en zijn buren: Elk vlak kan gevonden worden door het itereren over zijn bogen. Elke boog behoort tot juist 2 vlakken. Er zijn $3n-6$ bogen, dus elk vlak kan gevonden worden in $(2*(3n-6))$ stappen. Bij het opbouwen van deze vlakken kan snel bepaald worden welke adjecent zijn omdat 2 adjacente vlakken een gemeenschappelijke boog hebben. De complexiteit hier is dus $O(n)$.
+	\item Het berekenen van de paren van bogen van de duale graaf: Dit kan gedaan worden met een lus door de toppen van de duale graaf, een lus door de buren van die toppen, en nogmaals een lus door de buren van de buren van die toppen. Dit is een driedubbele lus. De buitenste lus itereert over over de toppen en de binnenste 2 lussen over buren. De binnenste 2 lussen werken dus constant, er zijn juist 9 iteraties. De buitenste lus werkt lineair. De totale complexiteit van deze berekening is dus $O(9n) = O(n)$.
+	\item Het berekenen van elk vlak in de duale graaf. Dit gebeurt door het itereren over de toppen van elk vlak. Elke top behoort tot een vlak V als hij het centrum is van een paar van bogen (e,e') zodat $f_{DG}(e,e')$ = V. Voor elke top van het vlak V zal er een paar zijn zodat die top het centrum is van het paar met als vlak V. Elke top zal dus tot juist 3 vlakken behoren. Elke top wordt dan ook 3 keer bekeken bij het maken van de vlakken. Het paar dat bij het huidig vlak hoort, kan eenvoudig gevonden worden door het zoeken tussen de 3 paren waarvan de huidige top het centrum is, en het volgende en vorige punt de eindpunten. Dit vlak wordt dan ook opgeslagen in het paar. De complexiteit van deze berekening is dus $O(3n)=O(n)$.
+\end{itemize}
+Eens de duale graaf berekend werd, kan de Yutsis-decompositie aanvangen op lijn \ref{alg2:yutsis}. Hier wordt gewerkt met de 3-reguliere duale graaf. Dit zorgt ervoor dat iteraties over buren van de toppen altijd constant kunnen gebeuren zoals besproken in het vorige deel van de complexiteitsanalyse.
+Ik zal elk niet-triviaal onderdeel apart bespreken. Merk op dat het toevoegen, verwijderen, nagaan van aanwezigheid, en opzoeken van elementen in een verzameling in constante tijd kan gebeuren. Aangezien aanwezigheid controleren en iteraties over buren constant gebeuren, gebeurt het tellen van buren uit een bepaalde verzameling ook in constante tijd, dit is belangrijk om in het achterhoofd te houden bij de bespreking van de complexiteit. De implementatie van dergelijke (eenvoudige) datastructuur wordt besproken onder sectie \ref{sec:yutsus}.
+De verschillende stappen bij de Yutsis-decompositie worden achtereenvolgens besproken. Hierbij is $n=|V(DG)|$. 
+\begin{itemize}
+	\item Op lijn \ref{alg2:addLneighboursloop1} worden juist 3 iteraties uitgevoerd omdat de eerst toegevoegde top v aan M juist 3 buren in V heeft. Deze verzameling bevat initieel alle toppen uit V(DG). De complexiteit hier is $O(1)$.
+	\item Op lijn \ref{alg2:startLloop} worden hoogstens n iteraties uitgevoerd. De lus wordt uitgevoerd tot $|L|=0$. Tijdens iteratie wordt op lijn \ref{alg2:removeLnode} juist \'{e}\'{e}n element uit L verwijderd. 
+	Elk element kan hoogstens eenmaal aan de L verzameling toegevoegd worden waardoor er maximaal n iteraties zijn. De complexiteit van deze lus is $O(n)$.
+	\item Op lijn \ref{alg2:highestnode} wordt de top uit L gekozen met het grootste aantal buren uit V. Een buur kan 0 t.e.m. 2 buren hebben in V. Hiervoor worden 3 verzamelingen gemaakt L[i] met $i \in [0,2]$. Initieel wordt een nieuwe top voor L telkens in de juiste L[i] geplaatst zodat i gelijk is aan het aantal buren van de top in V. Echter bij het verwijderen van toppen uit V is het mogelijk dat de buren van deze top in L[i] niet meer in de juiste L array zijn. Zodat altijd de hoogste top gekozen wordt, wordt ge\"{i}tereerd over de toppen van elke lijst tot een top gevonden wordt met een maximaal aantal buren in V (zodat geen enkel andere top een strikt hoger aantal toppen heeft in V). Indien bij het itereren een top gevonden wordt die zich bevindt in de verkeerde L[i] verzameling, waarvan dus het aantal buren in V kleiner is dan deze index i, wordt de top verplaatst naar de correcte L[i] verzameling. Zodra een top tegengekomen wordt met een correct aantal buren in V, wordt deze top genomen als v. Nu is het zo dat elke top hoogstens 3 keer verplaatst en genomen wordt in hoogstens n iteraties. De geamortiseerde kost van deze bewerking is dus $3n/n = 3$. De geamortiseerde complexiteit is dus $O(1)$. 
+	\item Op lijn \ref{alg2:checkMneighbour} wordt het aantal buren in M bepaald. De complexiteit hiervan is $O(1)$. (Zoals eerder in deze sectie besproken.)
+	\item Op lijn \ref{alg2:nonMpair} wordt ge\"{i}tereerd over de bogen met v als centrum. Dit zijn er 3, dus de complexiteit hier is $O(1)$. Het controleren of dit paar gemarkeerd is, is triviaal en gebeurt ook constant. 
+	\item Op lijn \ref{alg2:markplane} worden alle paren gemarkeerd van $f_{DG}(e,e')$. Dit wordt hoogstens eenmaal gedaan voor elk vlak. Aangezien elk paar juist \'{e}\'{e}n vlak heeft, wordt elk paar in deze iteratie hoogstens 1 keer gemarkeerd. Het aantal paren is begrensd door $3n$. De geamortiseerde kost van deze bewerking in hoogstens n iteraties is $3n/n = 3$. De geamortiseerde complexiteit is dus $O(1)$. 
+	\item Op lijn \ref{alg2:addLneighboursloop1} wordt over de buren w van v ge\"{i}tereerd. De complexiteit hiervan is $O(1)$. 
+\end{itemize}
+Aangezien elk operatie in de iteratie een (geamortiseerde) kost heeft van $O(1)$ en er hoogstens n iteraties zijn is, gebeurt de berekening van de Yutsis-decompositie in lineaire tijd. 
+\\\\Indien een Yutsis-decompositie gevonden werd, kan hieruit de cykel berekend worden. Op lijn \ref{alg2:Mloop} wordt ge\"{i}tereerd over de toppen van de Yutsis-decompositie. Dit zijn er juist $(2*n-4)/2$ met n het aantal toppen in de vlakke triangulatie. Binnen deze lus wordt ge\"{i}tereerd over de adjecente toppen van het huidige top. Dit zijn er juist 3. Elke operatie binnen deze for-lus is constant, en er zijn juist $3*(2*n--4)/2$ iteraties. De complexiteit hier is dus $O(n)$. 
+\\\\Aangezien het berekenen van de duale graaf, Yutsis-decompositie en cykel elk in lineaire tijd gebeurt, gebeurt het volledige algoritme in lineaire tijd. 
+\\\\Het algoritme is gretig omdat in elke stap tijdens de berekening van de Yutsis-decompositie de top gekozen wordt met het hoogste aantal buren in V. Dit zorgt ervoor dat de verzameling L in elke stap zo groot mogelijk gehouden wordt omdat de buren in V van de gekozen top (indien deze top aanvaard werd), zullen toegevoegd worden aan L. De verzameling L bevat alle kandidaten die mogelijks kunnen toegevoegd worden aan M. Een grote verzameling L betekent dus dat M het meest zal kunnen groeien, waardoor er een grotere kans is om de Yutsis-decompositie te vinden (zodra $|M| = |V(DG)|/2$).
+ 
 \end{opgave}
-\section{Implementatie}
+	\section{Implementatie}
 \subsection{Dominantie in vlakke grafen}
 \subsubsection{Algoritme en implementatie}
 \paragraph{Opslag van de graaf}
-Een graaf is een aparte klas en bevat de volgende 3 datastructen:
+Een graaf is een aparte klasse en bevat de volgende 3 datastructuren:
 \begin{itemize}
 	\item Een array met bogen
 	\item Een array met toppen
@@ -294,7 +439,6 @@ Al deze optimalisaties verhinderen dat slechte toppen zouden toegevoegd worden. 
 \paragraph{Optimalisaties}
 Bij de experimenten omtrent optimalisaties gebruik ik steeds de gegeven testsets om het nut van een optimalisatie te testen. Er wordt (onder andere) vergeleken tussen een uitvoering zonder de optimalisatie en met de optimalisatie. De tabellen zijn telkens als volgt geformatteerd:
 Bij de uitvoering van het algoritme onder de toestand beschreven in de bovenste kolommen heeft de graaf, gelezen uit graaf.sec, $x/y$\% toppen met x = $|D|$ (D = dominante lijst) en y = $|V(G)|$ Een cel is groen indien onder de huidige optie het algoritme de beste opties geeft voor graaf.sec. De exacte implementaties gebruik per algoritme kunnen gevonden worden in de Java-code.
-
 \subparagraph{Sorteren} De variabele is hier de ordening van de toppen V(G) gebaseerd op hun graad. Er zijn 3 mogelijkheden: stijgende volgorde, dalende volgorde of willekeurige volgorde.  In tabel \ref{tabel:ordening} kan je zien dat bij elke graaf een dalende volgorde de beste resultaten teruggeeft. Een dalende volgorde betekent: indien we de toppen overloppen van index 0, worden de graad van elke top telkens kleiner. Aangezien deze optie de beste resultaten teruggeeft, wordt dit ook gebruikt. 
 
 
@@ -326,7 +470,7 @@ Als laatste bekijk ik het effect van het gebruik van een bovengrens (benadering)
 		triang2.sec & 16,90\% & 16,77\% &  \cellcolor{LimeGreen}16,58\%		\\ \hline
 	\end{tabular}
 	\caption{Ordening van de toppen}
-	\label{table:ordening}
+	\label{tabel:ordening}
 \end{table}
 
 \begin{table}
@@ -570,5 +714,118 @@ Een dominante verzameling voor een schaakmatgraaf, zou dan kunnen verkregen word
 \paragraph{Conlusie}
 Desondanks het feit dat dit algoritme werkt met benaderingen voor de werkelijke bedekking, presteert het bijna even goed als een algoritme waarbij gewerkt wordt met werkelijke bedekkingen. Ook is het zeer moeilijk om een graaf te vinden waarbij het algoritme faalt. Ik denk dus dat het moeilijk is om een gretig lineair algoritme te vinden die veel beter presteert dan het huidige algoritme. 
 
+\subsection{Hamiltoniaanse cykels in vlakke triangulaties}
+\paragraph{Algemeen}
+Het algoritme dat ik gebruik om hamiltoniaanse cykels te bepalen wordt beschreven in algoritme \ref{alg:hamilton}. Eerst en vooral wil ik vermelden dat de berekening van de Yutsis-decompositie in dit algoritme gebaseerd werd op het onderdeel "Een voorbeeld: het Yutsis probleem"\ uit de cursus, en verder werd aangevuld met eigen inbreng en ook een aantal idee\"{e}n uit de paper "To be or not to be Yutsis". Mijn algoritme gaat uit van de eigenschap bewezen in theoretische vraag 2.  De eigenschap gaat als volgt: In de hamiltoniaanse cykel van een vlakke triangulatie zijn er evenveel vlakken binnen en buiten de cykel. Volgens deze eigenschap volstaat het om 2 verzamelingen met vlakken te zoeken zodat de ene verzameling alle vlakken bevat buiten de cykel en de overige verzameling alle vlakken bevat binnen de cykel. Om dergelijke verzameling te zoeken, maak ik een duale graaf van de vlakke triangulatie. In deze duale graaf zijn alle vlakken uit de triangulatie toppen. Twee toppen zijn verbonden met een boog als de vlakken voorgesteld door de toppen een gemeenschappelijke boog hebben en dus aanliggend zijn. Deze duale-graaf is een 3-reguliere graaf aangezien elk vlak in een vlakke triangulatie juist 3 aanliggende vlakken heeft aan zijn 3 bogen. Een belangrijke eigenschap van dergelijke verzameling van vlakken is dat deze vlakken een boom moeten vormen in de duale graaf zoals besproken in lemma \ref{lemma1}. Een dergelijke decompositie van een graaf in twee onafhankelijke bomen van gelijke grootte heet een Yutsis-decompositie. Eens de 2 onafhankelijke verzamelingen van vlakken gevonden werd is het eenvoudig om een cykel te vinden. Het volstaat om elke gemeenschappelijke boog van twee vlakken uit een verschillende verzameling toe te voegen aan de cykel. 
+Het algoritme bestaat dus uit 3 belangrijke delen:
+\begin{itemize}
+	\item Het maken van de duale graaf van de vlakke triangulatie. 
+	\item Het berekenen van een Yutsis-decompositie van deze duale graaf. 
+	\item Het berekenen van cykels m.b.v. de Yutsis-decompositie indien \'{e}\'{e}n gevonden werd. 
+\end{itemize}
+Nu zal ik op de implementatie van elk onderdeel dieper ingaan. 
+\paragraph{De duale graaf}
+De grootste moeilijkheid bij de duale graaf is om de vlakken van de vlakke triangulatie correct te bepalen en voor elk vlak zijn buren toe te voegen. 
+Initieel zou ik dit op een recursieve manier implementeren, maar al snel bleek dit niet te werken voor grote grafen omdat de recursie te ver ging. 
+\\\\Het opbouwen van de duale graaf begint door het nemen van een boog en zijn aanliggende vlakken van een boog toe te voegen aan een array. Vervolgens worden de vlakken van de array overlopen. Van elk vlak worden zijn aanliggende toppen toegevoegd. (De array wordt dus groter tijdens het itereren.) Eens elke vlak bekeken werd uit de array, inclusief de nieuwe vlakken, is de duale graaf compleet. Het toevoegen van de aanliggende vlakken van een vlak gaat als volgt. Itereer over de bogen van het huidige vlakken en bepaal het andere aanliggende vlak. Dit vlak voeg je toe in de lijst met alle vlakken en in de lijst van aanliggende vlakken van het huidige vlak. Hiernaast wordt ook het huidige vlak toegevoegd aan de lijst van aanliggende vlakken van het nieuwe vlak. Indien het vlak al bestond update je enkel de aanliggende buurlijsten van de beide vlakken (dit kan snel gecontroleerd worden door de aanliggende vlakken van een boog ook bij te houden). 
+\\\\Een aanliggend vlak aan een boog kan gevonden worden door het bekijken van zijn vorige en volgende boog ten opzichte van zijn eindpunten. De volgende en vorige boog van een boog t.o.v. van \'{e}\'{e}n van zijn toppen wordt op zijn beurt bepaald als volgt: voor het eindpunt van de boog wordt de index van deze boog in de lijst van bogen van het eindpunt opgeslagen. De volgende of vorige boog wordt dan gevonden op de index van die boog in het eindpunt resp. plus of min \'{e}\'{e}n. De reden hiervoor is dat de bogen op een circulaire manier worden opgeslagen in de toppen, dus de vorige en volgende boog in de lijst van adjecente bogen van de top wordt simpelweg bepaald door de boog op de volgende of vorige index te nemen t.o.v. de index van de gegeven boog.
+\\\\Eens alle toppen en de buren van elke top in de vlakke graaf bepaald werden (de vlakken in de vlakke triangulatie), worden de paren van bogen gemaakt in de duale graaf, omdat dit verder in het algoritme snel moet kunnen opgevraagd worden. Dit wordt gedaan door een 3-dubbele for-lus. In de buitenste lus wordt ge\"{i}tereerd over elke top v van de duale graaf. In de lus hierbinnen wordt ge\"{i}tereerd over elke buur w van v. In de lus hier nog eens binnen wordt ge\"{i}tereerd over elke buur u van w. Alle toppen zodat v $\neq$ u impliceren dan een paar van bogen waarbij v en w de eindpunten zijn en w het centrum. Merk op dat deze 3-dubbele for-lus lineair werkt. De buitenste for-lus itereert juist n keer, met n het aantal vlakken. De binnenste for-lussen itereren elk 3 keer omdat elke top in de 3-reguliere graaf juist 3 buren heeft. Dit zorgt dus voor een totaal van $3*3*n = 9*n$ iteraties. In elke top worden juist 3 paren opgeslagen, de paren waarvan de top het centrum is. 
+\\\\Als laatst worden alle vlakken van de duale graaf gemaakt. Deze vlakken zijn namelijk ook noodzakelijk om het eigenlijke algoritme goed te laten presteren. Opnieuw, net als bij het bepalen van vlakken in vlakke triangulaties, is er nood aan een circulaire volgorde van de buren van toppen in de duale graaf. De bogen van een vlak worden in circulaire opgeslagen in het vlak. Nu is het eenvoudig om ook deze volgorde aan te nemen voor de buren van een vlak (aangezien elke boog een naburig vlak impliceert). Hiernaast wordt in elk paar van de boog een richting opgeslagen. Dit vertelt of de index van het centrum met \'{e}\'{e}n verhoogd of verlaagd moet worden van de index van een eindpunt om het andere eindpunt te verkrijgen. Nemen we de twee vorige ide\"{e}en, is het mogelijk om te starten in een paar en alle toppen in een vlak te overlopen door steeds eenzelfde richting, namelijk de richting bepaald door het paar, te nemen.  We kiezen telkens de index van de vorige top plus of min \'{e}\'{e}n afhankelijk van de richting van het paar. Bij het bepalen van alle vlakken aan elk paar ook het juiste vlak toegekend, zodat een vlak snel vanuit een paar kan gevonden worden. 
+\paragraph{De Yutsis-decompositie}
+\label{sec:yutsus}
+Nu de duale graaf berekend is, kan het effectieve algoritme beginnen. Er moeten 2 onafhankelijke toppenverzamelingen gemaakt worden met gelijke lengte en waarvan de deelgrafen ge\"{i}mpliceerd door deze verzameling toppen zijn. 
+\\\\Voor dit algoritme heb ik mijn eigen datastructuur ge\"{i}mplenteerd die een toppenverzameling voorstelt. Deze datastructuur kan toevoegen, verwijderen, opzoeken en controleren van de aanwezigheid van een top in constante tijd. Het algoritme is mogelijk zonder dergelijke array, maar er zouden bepaalde optimalisaties niet mogelijk zijn. (Bijvoorbeeld het verwijderen van toppen uit V). Deze constante tijden worden mogelijk gemaakt door het bijhouden van de huidige array van een top (aangezien elke top zich maar in \'{e}\'{e}n verzameling kan bevinden op een moment in het algoritme). Hiernaast wordt ook de index bijgehouden voor constant verwijderen en opzoeken.
+Intern bevat de PlaneNodeArray een array van PlaneNodes, deze stellen op zich toppen voor in de duale graaf. Het algoritme simuleert een stack en probeert het laatst toegevoegde element terug te geven bij een pull operatie. Dit is echter niet altijd mogelijk aangezien de elementen veel van plaats verschuiven. Na het toevoegen van 1 element en het verwijderen van 2 elementen van deze lijst wordt slechts een benadering gegeven van het laatst toegevoegde element. Dit zou dan \'{e}\'{e}n van de laatst toegevoegde elementen zijn. Het algoritme presteert beter met de PlaneNodeArray dan bij het gebruik van een echte stack en/of arraylist omdat ook aanwezigheid controleren, opzoeking en verwijderen allemaal in constante tijd kan gebruiken, waardoor meer operaties mogelijk gemaakt worden die gebruikt kunnen worden in het algoritme.
+\\\\Het algoritme werkt nu als volgt. Er worden 6 verzamelingen gemaakt, L[0],L[1],L[2], V, M en nonVisitable. Elke verzameling heeft zijn eigen betekenis: 
+\begin{itemize}
+	\item V bevat initieel alle toppen. Tijdens het algoritme worden hieruit enkel toppen verwijderd. Deze verzameling bevat altijd het complement van alle toppen die niet tot V behoren. 
+	\item L[x] bevat alle toppen met x buren in V. Een top wordt toegevoegd tot een zekere L verzameling zodra een buur wordt toegevoegd aan M en deze top zich in de verzameling V bevindt. Het is mogelijk dat een top niet behoort tot de correcte verzameling als $x>0$ als zijn buren in V ge\"{u}pdatet worden waardoor ze niet meer tot V behoren. ($x \in [0,2]$)
+	\item M: deze verzameling van toppen induceert op elk moment een deelgraaf die een boom is. Dit is \'{e}\'{e}n van de twee verzamelingen van de Yutsis-decompositie zodra $|M|=n/2$ met n de grootte van de duale graaf. 
+	\item nonVisitable bevat alle toppen waarvan ondervonden is dat het nooit mogelijk is om deze top aan M toe te voegen. 
+\end{itemize} 
+	Het algoritme begint met het kiezen van een willekeurige top uit V en deze te wisselen (wisselen = verwijderen uit huidige en toevoegen aan nieuwe verzameling) naar de nieuwe verzameling. Zijn buren worden toegevoegd aan L[2] en alle paren uit de vlakken van de paren waarvan de toegevoegde top het centrum is, worden gemarkeerd. Nu wordt er ge\"{i}tereerd tot M volledig is ($|M| = n$) of L leeg is. 
+	\\\\Binnenin deze while-lus wordt eerst een goeie kandidaat bepaald om toe te voegen aan M met juist 1 buur in M die het laatst werd toegevoegd en een maximaal aantal buren in V heeft. Deze wordt bepaald door het itereren over de toppen in L[x] startend met $x=2$,  en x te verlagen indien een zekere L[x] leeg is. Dit doe je tot je een goeie top gevonden hebt of tot alle arrays leeg zijn. In het tweede geval eindigt het algoritme. Bij het itereren over de arrays zoekend naar een goeie top kijken we telkens als $x > 0$ of het aantal buren in V correct ingesteld is, indien dit niet het geval is wordt de top in de correcte L[x] geplaatst. De nieuwe index zal altijd lager zijn dan de huidige x aangezien er nooit toppen worden toegevoegd aan V. Zodra een top gevonden wordt, wordt zijn aantal buren in M gecontroleerd, indien dit groter dan 1 is, zorgt het toevoegen van deze top aan M voor een cykel. Als dit het geval is, wordt deze top gewisseld naar nonVisitable omdat het aantal M buren nooit zal verlagen (M groeit alleen maar). Vervolgens wordt verder ge\"{i}tereerd indien geen goeie kandidaat werd gevonden, echter als een goeie kandidaat werd gevonden, wordt gecontroleerd of het toevoegen van deze top aan M ervoor zou zorgen dat de deelgraaf ge\"{i}nduceerd door de toppen die niet behoren tot M nog samenhangend zou zijn. Als dit niet het geval is, zouden de deelgrafen ge\"{i}nduceerd door de verzamelingen van de verkregen Yutsis-decompositie geen bomen induceren wat er op zijn beurt voor zorgt dat geen cykel zou gevonden worden. 
+	\\\\Het controleren of een top de samenhangendheid verstoort gebeurt door het nemen van het paar (e,e') waarvan deze top het centrum is en zijn eindpunten niet tot M behoren. Juist 1 van de 3 paren waarvan de top het centrum is voldoet hieraan omdat deze top 1 naburige top in M heeft (zoals hiervoor bepaald) en 2 buren die niet tot M behoren. 
+	Indien (e,e') gemarkeerd is, zou deze top de samenhangendheid verstoren, en wordt toegevoegd aan nonVisitable. Indien (e,e') niet gemarkeerd is, kan de top toegevoegd worden aan de verzameling M. Nu worden ook de paren van het vlak $f_G(e,e')$ gemarkeerd en de verzameling van de buren die tot L[x] of V behoren worden toegevoegd aan de correct L[x] verzameling. Merk dus op dat de buren uit L[x] hier in de correct L[x] array geplaatst worden.
+	\\\\Zodra de while-lus voorbij is, wordt M teruggeven als het aantal toppen in M gelijk is aan de helft van de grootte van de graaf. De overige verzameling van de Yutsis-decompositie wordt ge\"{i}nduceerd door alle toppen die niet tot M behoren. 
+\paragraph{De hamiltoniaanse cykel}
+	Als laatste kan eenvoudigweg een cykel bepaald worden in de vlakke triangulatie door het itereren over de verkregen verzameling M met vlakken (de toppen in de duale graaf stelden vlakken voor in de vlakke triangulatie). Bij elk vlak wordt ge\"{i}tereerd over zijn 3 aanliggende vlakken. Indien een aanliggend vlak niet tot M behoort, moet de aanliggende boog toegevoegd worden aan de cykel. Ik werk echter niet met bogen maar met een array van CycleNodes waarbij elke CycleNode een referentie bijhoudt naar de top die hij voorstelt, en de vorige en volgende CycleNode. Bij het toevoegen van een boog aan een cykel wordt een nieuwe CycleNode aangemaakt voor elke top waarvan nog geen CycleNode bestaat. Vervolgens voegen de CycleNodes elkaar toe bij de array van lengte 2 met buren. Uiteindelijk zal een lijst met CycleNodes verkregen worden waarin elke CycleNode een correcte verwijzing heeft naar zijn volgende en vorige buur. De cykel kan dan geprint worden door het beginnen met een willekeurige top in de array en telkens de buur te kiezen die niet gelijk is aan de vorige. 
+	 
+\subsubsection{Optimalisaties en experimenten voor de Yutsis-decompositie}
+
+\paragraph{3 verzamelingen voor de toppen uit L}
+Hier zal ik de invloed nagaan van het gebruik van de 3 verzamelingen voor L om telkens de beste top te kiezen t.o.v. het kiezen van een willekeurige top in L. Bij het laatstgenoemde bestaat L weliswaar maar 1 uit array. De resultaten van dit experiment ziet u in tabel \ref{table:Lset}. Hier is een duidelijk verschil zichtbaar in het aantal cykels dat het gretige algoritme vindt t.o.v. het aantal cykels dat het willekeurige algoritme vindt. Dit algoritme werkt zoveel beter aangezien het kiezen van de top met het hoogst aantal buren in V ervoor zorgt dat het aantal kandidaten (de L verzameling) groter wordt, en dus M ook zal groter worden. De kans dat de Yutsis-decompositie gevonden wordt, stijgt dus enorm. Een uitgebreidere verklaring over het beter werken van een gretig algoritme t.o.v. het willekeurig algoritme vindt u onder de verklaring van het gretig van mijn algoritme onder theoretische opgave 3. 
+\begin{table}
+	\center
+	\csvautotabular[separator=semicolon]{experiments/LSetExperiment.csv}
+	\caption{Vergelijking van het algoritme waarbij de beste top telkens uit L wordt gekozen, of een willekeurige top. De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
+		\label{table:Lset}
+	} 
+\end{table}
+
+\paragraph{Meerdere pogingen}
+Indien het algoritme meerdere keren uitgevoerd wordt, telkens beginnend bij een andere vlak om de Yutsis-decompositie te berekenen, zou het logisch zijn moest het algoritme beter presteren. Hier zullen namelijk andere gretige beslissingen gemaakt worden zodat de kans groter wordt dat de juiste beslissingen genomen worden, en hierdoor een Yutsis-decompositie wordt gevonden.  Dit experiment wordt weergegeven in \ref{table:multipletrials}. 
+De kolomnaam is hier het maximale aantal pogingen gebruikt door het algoritme om een cykel te vinden. Vanaf \'{e}\'{e}n extra poging merk je al een zeer groot verschil bij de hoeveelheid gevonden cykels. Het aantal gevonden cykels stijgt bijvoorbeeld bij een graaf met 12 toppen met 5,2\%. Bij een nieuwe poging worden echter alle stappen van het algoritme tenietgedaan, waardoor het volledige algoritme niet meer gretig is. Aangezien ik echter een algoritme moest maken die wel gretig is, laat ik deze optimalisatie terzijde in mijn finale implementatie. 
+\begin{table}
+	\center
+	\csvautotabular[separator=semicolon]{experiments/MultipleTrialsExperiment.csv}
+	\caption{De variabele hier (kolomnaam) is het maximale aantal pogingen om een Yutsis-decompositie te vinden. De prestatie bij elk aantal wordt vergeleken. De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
+		\label{table:multipletrials}
+	} 
+\end{table}
+
+\subsubsection{Een tweede gretig lineair algoritme}
+Initieel had ik een ander algoritme om hamiltoniaanse cykels te berekenen. Dit presteerde echter niet goed genoeg waardoor ik het nieuwe en uiteindelijke algoritme heb gemaakt. Deze werd volledig ge\"{i}plementeerd, en zal ik hier kort bespreken en de prestatie vergelijken. 
+\\\\Het oude algoritme wordt weergegeven in algoritme \ref{alg:hamilton2}.
+\begin{tcolorbox}[blanker,float=tbp, grow to left by=2cm,grow to right by=2cm]
+	\begin{algoritme}
+		\caption{Hamiltoniaanse cykels in vlakke  triangulaties (oud)}
+		\label{alg:hamilton2}
+		\begin{algorithmic}[1]
+			\Require Een vlakke triangulatie G(V(G),E(G))
+			\Require Een initieel lege cykel C
+			\Ensure Een hamiltoniaanse cykel C in de vorm van een sequentie van bogen of $\emptyset$ als geen hamiltoniaanse cykel gevonden werd.
+			\State V $\gets$ een willekeurig vlak in G
+			\State Voeg de bogen van V toe aan de cykel
+			\State Bezoek de bogen in de cykel
+			\While{cykel is niet hamiltoniaans \& er zijn zichtbare bogen}
+				\ForAll{zichtbaar boog e}
+					\State V $\gets$ het aanliggende vlak van e die nog niet binnen de cykel is. 
+					\State e',e'' $\gets$ de overige 2 bogen van V
+					\State t $\gets$ het gemeenschappelijke eindpunt van e' en e''
+					\If{e' en e'' niet bezocht \& t niet in de cykel}
+						\State Voeg de e' en e'' toe aan de cykel
+						\Comment Nu is V binnenin de cykel. 
+						\State Bezoek e' en e''
+					\Else 
+						\State e is geen zichtbare boog meer
+					\EndIf 
+				\EndFor
+			\EndWhile
+		\end{algorithmic}
+	\end{algoritme}
+\end{tcolorbox}
+Het algemene idee hier is: begin met cykel die 1 vlak insluit en probeer hier zoveel mogelijk vlakken aan toe te voegen door telkens over de bogen van de cykel te itereren en indien mogelijk aanliggende vlakken die niet in de cykel zijn in te voegen in de cykel terwijl de cykel blijft voldoen aan de eigenschappen van een cykel. Er zijn in het effectieve algoritme enkele toevoegen om het algoritme lineair te houden. Er wordt gewerkt met zichtbare bogen zodat elke boog juist een keer wordt bekeken om een aanliggend vlak toe te voegen. Het nut van het bezoeken van bogen is om snel te kunnen bekijken of een boog kan toegevoegd worden aan de cykel aangezien een top uit de cykel maar het eindpunt mag zijn van 2 bogen in de cykel. 
+\\\\Dit algoritme presteert slechter dan het nieuwe algoritme. De resultaten van de kleine testgrafen kunnen bekeken worden in tabel \ref{table:oldhamilton}. Tot en met grafen met 8 toppen vinden beide algoritmes altijd een cykel. Echter het aantal cykels die niet gevonden worden vanaf grootte 8 stijgt veel sneller bij het oude algoritme in vergelijking met het nieuwe algoritme. Dit valt te verklaren door het feit dat het oude algoritme veel sneller kan vastlopen dan het nieuwe algoritme. Eens slechte bogen toegevoegd worden, is het zeer onwaarschijnlijk (behalve bij zeer kleine grafen), dat het algoritme nog een cykel vindt. Het nieuwe algoritme daarentegen heeft veel betere voorwaarden voor het toevoegen van vlakken, waardoor de kans op het vinden van een cykel veel groter is dan het oude algoritme. 
+\newline
+\begin{table}
+	\center
+	\csvautotabular[separator=semicolon]{experiments/oldHamiltonExperiment.csv}
+	\caption{Vergelijking van algoritme \ref{alg:hamilton} (nieuw algoritme) en algoritme \ref{alg:hamilton2}  (oud algoritme). De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
+	\label{table:oldhamilton}
+	} 
+\end{table}
+\subsubsection{Testgrafen}
+Als laatste zal ik de prestatie bespreken van algoritme \ref{alg:hamilton} bij grote grafen. Aangezien een hamiltoniaanse cykel altijd gevonden kan worden eens de Yutsis-decompositie gevonden wordt, bespreek ik enkel de prestatie van de Yutsis-decompositie. De Yutsis-decompositie eindigt als $|M| = |V(DG)|/2$ met M de toppenverzameling uit het algoritme en DG de duale graaf uit dit algoritme. Een goeie maatstaf voor de prestatie van het algoritme is dus hoe groot M wordt voor het algoritme eindigt. De resultaten kan je vinden in tabel \ref{table:analysis}. Bij triang1.sec tot en met triang10.sec vindt het algoritme nooit een Yutsis-decompositie. De grootte van $|M|$ wordt slechts ongeveer 80 \% van de maximale grootte. Een verklaring hiervoor is dat de grafen slecht gekozen zijn. Ik baseer me hier op wat een assistent van Algoritmen en Datastructuren 2 mij hieromtrent vertelde. Bij de grafen uit het bestand triang11.sec en triang13.sec tot en met triang16.sec vindt het algoritme telkens een Yutsis-decompositie. Als laatste vindt het algoritme bij triang12.sec geen Yutsis-decompositie. Merkwaardig hier is dat mijn oude algoritme, algoritme \ref{alg:hamilton2}, hier wel een hamiltoniaanse cykel vindt, terwijl het oude algoritme nagenoeg altijd slechter presteert. 
+\subsubsection{Conclusie}
+Ik denk dat ik uit de voorgaande resultaten kan besluiten dat het algoritme goed presteert. Bij kleine grafen vindt het algoritme nagenoeg altijd een hamiltoniaanse cykel, alsook bij grote grafen vindt het algoritme vaak een hamiltoniaanse cykel. Een bredere analyse omtrent grote testgrafen zou echter meerdere testgevallen vergen. Indien het mogelijk zou zijn om meerdere malen het algoritme uit te voeren beginnend met verschillende vlakken, zou het algoritme nog veel beter presteren. In een niet-gretige opgave, zou dit zeker een mooie toevoeging zijn. 
+\begin{table}
+	\center
+	\csvautotabular[separator=semicolon]{experiments/analysis.csv}
+	\caption{Prestatie per graaf van de testset.}
+	\label{table:analysis}
+
+\end{table}
+ 
 
 \end{document}

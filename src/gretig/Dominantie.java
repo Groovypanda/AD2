@@ -28,9 +28,9 @@ public class Dominantie {
             for(Graph graph: graphs){
                 //Create an object which can compute the dominant set.
                 DominatingSetCalculator setCalculator = new DominatingSetCalculator(graph);
-                //Computes an approximation of the dominant list of the given elements.
+                //Computes an approximation of the dominant list of the given graph.
                 List<Node> dominantList = setCalculator.getDominantList();
-                //int nodesSize = elements.getNodes().length;
+                //int nodesSize = graph.getEndPoints().length;
                 //int dominantlistSize = dominantList.planeAmount();
                 //System.out.print(dominantlistSize + "/" + nodesSize + " (" + ((double)dominantlistSize/(double)nodesSize)*100 + "%): ");
                 for(Node node: dominantList){ //Print nodes to stdout

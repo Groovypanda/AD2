@@ -2,6 +2,7 @@ package cycle;
 
 import graph.Edge;
 import graph.Node;
+import gretig.HamiltonianCycleCalculator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -150,6 +151,47 @@ public class Cycle implements Iterator<CycleEdge> {
             Node currentNode = edge.getCommonNode(nextEdge);
             System.out.print(currentNode.getNumber() + " ");
         }
+    }
+
+    /**
+     * Creates an array of cycleNodes which represents the cycle
+     * @return The array of cycleNodes, null if not hamiltonian.
+     */
+    public CycleNode[] cycleToCycleNodes(){
+        if(size!=maxSize){
+            return null;
+        }
+        List<Edge> edges = getEdges();
+        CycleNode[] nodes = new CycleNode[maxSize];
+        int i = 0;
+        Edge edge = edges.get(0);
+        Edge nextEdge = edges.get(1);
+        Node next = edge.getCommonNode(nextEdge);
+        Node current = edge.getNeighbour(next);
+        CycleNode currentCycleNode = new CycleNode(current);
+        CycleNode nextCycleNode = new CycleNode(next);
+        currentCycleNode.addNeighbour(nextCycleNode);
+        nextCycleNode.addNeighbour(currentCycleNode);
+        nodes[i++] = currentCycleNode;
+        nodes[i++] = nextCycleNode;
+        for(int j=1; j<edges.size()-1;j++){
+            edge = edges.get(j);
+            if(j+1==edges.size()){
+                nextEdge = edges.get(0);
+            }
+            else {
+                nextEdge = edges.get(j+1);
+            }
+            currentCycleNode = nextCycleNode;
+            next = edge.getCommonNode(nextEdge);
+            nextCycleNode = new CycleNode(next);
+            currentCycleNode.addNeighbour(nextCycleNode);
+            nextCycleNode.addNeighbour(currentCycleNode);
+            nodes[i++] = nextCycleNode;
+        }
+        nodes[0].addNeighbour(nodes[i-1]);
+        nodes[i-1].addNeighbour(nodes[0]);
+        return nodes;
     }
 
     /**

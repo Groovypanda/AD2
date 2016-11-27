@@ -13,15 +13,15 @@ import dualgraph.PlaneNode;
    decision problem" written by D. Van Dyck, G. Brinkmann and V. Fack.
  */
 public class YutsisDecomposer {
-    private DualGraph graph;
-    private PlaneNodeArray V; //Contains all nodes which aren't in M or L[]. Initially all nodes.
-    private PlaneNodeArray M; //Contains all nodes of the current tree in the graph.
+    protected DualGraph graph;
+    protected PlaneNodeArray V; //Contains all nodes which aren't in M or L[]. Initially all nodes.
+    protected PlaneNodeArray M; //Contains all nodes of the current tree in the graph.
     /**
      * There are 3 L arrays: L[0], L[1] and L[2]. When adding a node to M, all neighbours of this node which are in V are added to
      * the correct L array. The index in the array of L arrays equals the amount of neighbours in V.
      */
-    private PlaneNodeArray[] L;
-    private PlaneNodeArray nonVisitable; //Contains all nodes which have been removed from L as they'll never become an addable node.
+    protected PlaneNodeArray[] L;
+    protected PlaneNodeArray nonVisitable; //Contains all nodes which have been removed from L as they'll never become an addable node.
     /**
      * Initializes a new YutsisDecomposer object which is used for decomposing the given 2-connected cubic graph in 2 trees.
      * @param graph
@@ -94,7 +94,6 @@ public class YutsisDecomposer {
             return M;
         }
         else { //Algorithm didn't find a decomposition.
-            //System.out.println(M.length() + "/" + n/2);
             return null;
         }
     }
@@ -138,7 +137,7 @@ public class YutsisDecomposer {
      * Updates the neighbours of the newly added node to M
      * @param node The newly added node to M
      */
-    private void update(PlaneNode node) {
+    protected void update(PlaneNode node) {
         for(PlaneNode neighbour: node.getNeighbours()){
             int index = neighbour.neighbourAmount(V);
             if(!neighbour.isPresent(M) && !neighbour.isPresent(nonVisitable)){
@@ -158,7 +157,7 @@ public class YutsisDecomposer {
     /**
      * Initializes all of the PlaneNodeArrays this algorithm uses.
      */
-    private void initializeYutsisArrays() {
+    protected void initializeYutsisArrays() {
         V = new PlaneNodeArray("V", graph.getSize());
         M = new PlaneNodeArray("M", graph.getSize()/2);
         L = new PlaneNodeArray[3];

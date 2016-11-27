@@ -136,7 +136,7 @@ public class Plane {
         int nodeAmount = 0;
         for(Edge edge: edges){
             if(nodeAmount<3){
-                for(Node node1: edge.getNodes()){
+                for(Node node1: edge.getEndPoints()){
                     boolean add = true;
                     for(Node node2: nodes){
                         if(node1.equals(node2)){
