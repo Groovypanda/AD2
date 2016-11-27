@@ -1,7 +1,8 @@
 package gretig;
 
-import graph.Graph;
-import input.BinaryInputReader;
+import gretig.graph.Graph;
+import gretig.calculators.HamiltonianCycleCalculator;
+import gretig.input.BinaryInputReader;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Hamilton {
                 calculator.printCycle(calculator.calculateCycle());
             }
         } catch (IOException e) {
-            System.err.println("Couldn't read the given input.");
+            System.err.println("Couldn't read the given gretig.input.");
         }
     }
 }

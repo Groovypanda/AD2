@@ -1,9 +1,10 @@
 package gretig;
 
-import graph.Graph;
-import graph.Node;
+import gretig.graph.Graph;
+import gretig.graph.Node;
 
-import input.BinaryInputReader;
+import gretig.calculators.DominatingSetCalculator;
+import gretig.input.BinaryInputReader;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,13 +23,13 @@ public class Dominantie {
      * @param args Specifies the program arguments, however these aren't used.
      */
     public static void main(String[] args) {
-        BinaryInputReader reader = new BinaryInputReader(); //An object for processing the standard input.
+        BinaryInputReader reader = new BinaryInputReader(); //An object for processing the standard 1
         try {
             List<Graph> graphs = reader.readByteArray(); //The SEC is read and transformed into a list of graphs.
             for(Graph graph: graphs){
                 //Create an object which can compute the dominant set.
                 DominatingSetCalculator setCalculator = new DominatingSetCalculator(graph);
-                //Computes an approximation of the dominant list of the given graph.
+                //Computes an approximation of the dominant list of the given 1
                 List<Node> dominantList = setCalculator.getDominantList();
                 //int nodesSize = graph.getEndPoints().length;
                 //int dominantlistSize = dominantList.planeAmount();
@@ -40,7 +41,7 @@ public class Dominantie {
                 System.out.println();
             }
         } catch (IOException e) {
-            System.err.println("Couldn't read the given input.");
+            System.err.println("Couldn't read the given gretig.input.");
         }
     }
 
