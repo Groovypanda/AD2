@@ -59,13 +59,13 @@ public class ExperimentRunner {
                 String inputFileName = entry.getKey();
                 List<CycleNode[][]> inputFileResult = entry.getValue();
                 int[] total = new int[columnTitles.length];
-                int[] succesful = new int[columnTitles.length];
+                int[] successful = new int[columnTitles.length];
                 for(CycleNode[][] cycleNodesArray: inputFileResult){
                     int i = 0;
                     for(CycleNode[] cycleNodes: cycleNodesArray){
                         total[i]++;
                         if(cycleNodes!=null){
-                            succesful[i]++;
+                            successful[i]++;
                         }
                         i++;
                     }
@@ -73,7 +73,7 @@ public class ExperimentRunner {
                 String[] results = new String[total.length+1];
                 results[0] = inputFileName.replace("_", "\\_");
                 for(int j=0; j<total.length; j++){
-                    results[j+1] = String.format("%.1f", ((double) succesful[j]/total[j])*100);
+                    results[j+1] = String.format("%.1f", ((double) successful[j]/total[j])*100);
                 }
                 writer.append(generateCSVRow(results));
             }

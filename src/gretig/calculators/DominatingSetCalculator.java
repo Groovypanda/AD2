@@ -67,12 +67,12 @@ public class DominatingSetCalculator {
          */
         graph.sort(true); //O(n+k)
         /**
-         *  This is an optimization: it immediatly adds the neighbours of every node with degree 1.
+         *  This is an optimization: it immediately adds the neighbours of every node with degree 1.
          *  These neighbours have to be in the set as this is the only way to reach the nodes with degree 1.
          */
         prepareDominantList(); //O(n)
         /**
-         *  If the optimization level is 6, the approximation of the minimal dominanting set will be the best possible
+         *  If the optimization level is 6, the approximation of the minimal dominating set will be the best possible
          *  (in comparison with other optimization levels).
          *  The method adds nodes to the set which have a degree higher than 'i'.
          *  By ensuring nodes with actual degree i are added before nodes with degree lower than i the dominant set
@@ -110,7 +110,7 @@ public class DominatingSetCalculator {
                 totalCoverage += w.visitNeighbours(); //Adds total coverage which can be added by visiting the neighbours.
                 w.clearCoverage(); //Clear the coverage as w is added and can't increase the totalCoverage anymore.
             }
-            v.clearCoverage(); //v only had one neighbour, so its safe to clear the coverage of v aswell.
+            v.clearCoverage(); //v only had one neighbour, so its safe to clear the coverage of v as well.
             v = nodes[index++];
         }
     }
@@ -140,7 +140,7 @@ public class DominatingSetCalculator {
      *          coverage++
      *      decrement coverage of neighbour
      *
-     * The optimalizations used are adressed in the report and in the notes of the code in the method.
+     * The optimisations used are addressed in the report and in the notes of the code in the method.
      *
      *
      * @param minimumNodeCoverage if minimumNodeCoverage is 0 all nodes can be added, this will ensure the dominant list
@@ -231,7 +231,7 @@ public class DominatingSetCalculator {
                 coverage.add(edge.getNeighbour(node));
             }
         }
-        //if coverage contains the same amount of nodes as the graph, the dominantlist is dominant.
+        //if coverage contains the same amount of nodes as the graph, the dominant list is dominant.
         return graphNodes.length == coverage.size();
     }
 

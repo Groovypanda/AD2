@@ -74,7 +74,7 @@ public class SortExperiment extends DominanceExperiment {
                         totalCoverage += w.visitNeighbours(); //Adds total coverage which can be added by visiting the neighbours.
                         w.clearCoverage(); //Clear the coverage as w is added and can't increase the totalCoverage anymore.
                     }
-                    v.clearCoverage(); //v only had one neighbour, so its safe to clear the coverage of v aswell.
+                    v.clearCoverage(); //v only had one neighbour, so its safe to clear the coverage of v as well.
                 }
             }
         }

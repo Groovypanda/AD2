@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /**
- * A class which is extendable with experiments for the dominance algorithm.
+ * A class which is expendable with experiments for the dominance algorithm.
  */
 public abstract class DominanceExperiment {
     protected String title;

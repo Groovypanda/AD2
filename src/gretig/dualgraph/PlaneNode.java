@@ -35,7 +35,7 @@ public class PlaneNode {
      * @return True if the node is in the given array.
      */
     public boolean isPresent(PlaneNodeArray array){
-        return current == null ? false : array.number == current.number;
+        return current != null && array.number == current.number;
     }
 
     /**

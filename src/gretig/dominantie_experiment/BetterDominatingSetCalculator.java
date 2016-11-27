@@ -5,7 +5,7 @@ import gretig.graph.Graph;
 import gretig.graph.Node;
 
 /**
- * This is a DominatingSetCalculator used for making better minimal domating set approximations.
+ * This is a DominatingSetCalculator used for making better minimal dominating set approximations.
  * It doesn't use a variable coverage anymore, but just calculates the actual coverage for every node in every step.
  * This calculator doesn't run in linear time anymore.
  */

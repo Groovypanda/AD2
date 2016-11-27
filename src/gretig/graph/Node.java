@@ -31,7 +31,7 @@ public class Node {
     public Node(int number){
         edges = new ArrayList<>();
         this.number = number;
-        coverage = 1; //Every node covers itself, so the cover has to be atleast one.
+        coverage = 1; //Every node covers itself, so the cover has to be at least one.
     }
 
     /**
@@ -49,7 +49,7 @@ public class Node {
      */
     public int getCoverage(){
         return coverage;
-    };
+    }
 
     /**
      * Returns the actual coverage for a certain node.
@@ -165,7 +165,7 @@ public class Node {
     }
 
     /**
-     * Resets a node to initialconditions.
+     * Resets a node to initial conditions.
      */
     public void reset(){
         visited = false;
@@ -173,7 +173,7 @@ public class Node {
     }
 
     /**
-     * Sets the visted status of this node
+     * Sets the visited status of this node
      * @param visited
      */
     public void setVisited(boolean visited) {

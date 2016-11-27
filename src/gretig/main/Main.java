@@ -32,7 +32,7 @@ public class Main {
             HamiltonianCycleCalculatorOld calculatorOld = new HamiltonianCycleCalculatorOld(g);
             calculatorOld.printCycle(calculatorOld.calculateCycle());
         }
-        System.out.println("New: " + (double)HamiltonianCycleCalculator.succesful/HamiltonianCycleCalculator.total);
-        System.out.println("Old: " + (double)HamiltonianCycleCalculatorOld.succesful/HamiltonianCycleCalculatorOld.total);
+        System.out.println("New: " + (double)HamiltonianCycleCalculator.successful /HamiltonianCycleCalculator.total);
+        System.out.println("Old: " + (double)HamiltonianCycleCalculatorOld.successful /HamiltonianCycleCalculatorOld.total);
     }
 }

@@ -12,8 +12,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
