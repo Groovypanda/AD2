@@ -755,7 +755,7 @@ Intern bevat de PlaneNodeArray een array van PlaneNodes, deze stellen op zich to
 
 \paragraph{3 verzamelingen voor de toppen uit L}
 Hier zal ik de invloed nagaan van het gebruik van de 3 verzamelingen voor L om telkens de beste top te kiezen t.o.v. het kiezen van een willekeurige top in L. Bij het laatstgenoemde bestaat L weliswaar maar 1 uit array. De resultaten van dit experiment ziet u in tabel \ref{table:Lset}. Hier is een duidelijk verschil zichtbaar in het aantal cykels dat het gretige algoritme vindt t.o.v. het aantal cykels dat het willekeurige algoritme vindt. Dit algoritme werkt zoveel beter aangezien het kiezen van de top met het hoogst aantal buren in V ervoor zorgt dat het aantal kandidaten (de L verzameling) groter wordt, en dus M ook zal groter worden. De kans dat de Yutsis-decompositie gevonden wordt, stijgt dus enorm. Een uitgebreidere verklaring over het beter werken van een gretig algoritme t.o.v. het willekeurig algoritme vindt u onder de verklaring van het gretig van mijn algoritme onder theoretische opgave 3. 
-\begin{table}
+\begin{table}[bh]
 	\center
 	\csvautotabular[separator=semicolon]{experiments/LSetExperiment.csv}
 	\caption{Vergelijking van het algoritme waarbij de beste top telkens uit L wordt gekozen, of een willekeurige top. De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
@@ -766,18 +766,7 @@ Hier zal ik de invloed nagaan van het gebruik van de 3 verzamelingen voor L om t
 \paragraph{Meerdere pogingen}
 Indien het algoritme meerdere keren uitgevoerd wordt, telkens beginnend bij een andere vlak om de Yutsis-decompositie te berekenen, zou het logisch zijn moest het algoritme beter presteren. Hier zullen namelijk andere gretige beslissingen gemaakt worden zodat de kans groter wordt dat de juiste beslissingen genomen worden, en hierdoor een Yutsis-decompositie wordt gevonden.  Dit experiment wordt weergegeven in \ref{table:multipletrials}. 
 De kolomnaam is hier het maximale aantal pogingen gebruikt door het algoritme om een cykel te vinden. Vanaf \'{e}\'{e}n extra poging merk je al een zeer groot verschil bij de hoeveelheid gevonden cykels. Het aantal gevonden cykels stijgt bijvoorbeeld bij een graaf met 12 toppen met 5,2\%. Bij een nieuwe poging worden echter alle stappen van het algoritme tenietgedaan, waardoor het volledige algoritme niet meer gretig is. Aangezien ik echter een algoritme moest maken die wel gretig is, laat ik deze optimalisatie terzijde in mijn finale implementatie. 
-\begin{table}
-	\center
-	\csvautotabular[separator=semicolon]{experiments/MultipleTrialsExperiment.csv}
-	\caption{De variabele hier (kolomnaam) is het maximale aantal pogingen om een Yutsis-decompositie te vinden. De prestatie bij elk aantal wordt vergeleken. De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
-		\label{table:multipletrials}
-	} 
-\end{table}
-
-\subsubsection{Een tweede gretig lineair algoritme}
-Initieel had ik een ander algoritme om hamiltoniaanse cykels te berekenen. Dit presteerde echter niet goed genoeg waardoor ik het nieuwe en uiteindelijke algoritme heb gemaakt. Deze werd volledig ge\"{i}plementeerd, en zal ik hier kort bespreken en de prestatie vergelijken. 
-\\\\Het oude algoritme wordt weergegeven in algoritme \ref{alg:hamilton2}.
-\begin{tcolorbox}[blanker,float=tbp, grow to left by=2cm,grow to right by=2cm]
+\begin{tcolorbox}[blanker,float=b, grow to left by=2cm,grow to right by=2cm]
 	\begin{algoritme}
 		\caption{Hamiltoniaanse cykels in vlakke  triangulaties (oud)}
 		\label{alg:hamilton2}
@@ -789,22 +778,34 @@ Initieel had ik een ander algoritme om hamiltoniaanse cykels te berekenen. Dit p
 			\State Voeg de bogen van V toe aan de cykel
 			\State Bezoek de bogen in de cykel
 			\While{cykel is niet hamiltoniaans \& er zijn zichtbare bogen}
-				\ForAll{zichtbaar boog e}
-					\State V $\gets$ het aanliggende vlak van e die nog niet binnen de cykel is. 
-					\State e',e'' $\gets$ de overige 2 bogen van V
-					\State t $\gets$ het gemeenschappelijke eindpunt van e' en e''
-					\If{e' en e'' niet bezocht \& t niet in de cykel}
-						\State Voeg de e' en e'' toe aan de cykel
-						\Comment Nu is V binnenin de cykel. 
-						\State Bezoek e' en e''
-					\Else 
-						\State e is geen zichtbare boog meer
-					\EndIf 
-				\EndFor
+			\ForAll{zichtbaar boog e}
+			\State V $\gets$ het aanliggende vlak van e die nog niet binnen de cykel is. 
+			\State e',e'' $\gets$ de overige 2 bogen van V
+			\State t $\gets$ het gemeenschappelijke eindpunt van e' en e''
+			\If{e' en e'' niet bezocht \& t niet in de cykel}
+			\State Voeg de e' en e'' toe aan de cykel
+			\Comment Nu is V binnenin de cykel. 
+			\State Bezoek e' en e''
+			\Else 
+			\State e is geen zichtbare boog meer
+			\EndIf 
+			\EndFor
 			\EndWhile
 		\end{algorithmic}
 	\end{algoritme}
 \end{tcolorbox}
+
+\begin{table}[bh]
+	\center
+	\csvautotabular[separator=semicolon]{experiments/MultipleTrialsExperiment.csv}
+	\caption{De variabele hier (kolomnaam) is het maximale aantal pogingen om een Yutsis-decompositie te vinden. De prestatie bij elk aantal wordt vergeleken. De getallen stellen het procent cykels gevonden ten opzichte van het aantal grafen in het gegeven bestand.
+		\label{table:multipletrials}
+	} 
+\end{table}
+
+\subsubsection{Een tweede gretig lineair algoritme}
+Initieel had ik een ander algoritme om hamiltoniaanse cykels te berekenen. Dit presteerde echter niet goed genoeg waardoor ik het nieuwe en uiteindelijke algoritme heb gemaakt. Deze werd volledig ge\"{i}plementeerd, en zal ik hier kort bespreken en de prestatie vergelijken. 
+\\\\Het oude algoritme wordt weergegeven in algoritme \ref{alg:hamilton2}.
 Het algemene idee hier is: begin met cykel die 1 vlak insluit en probeer hier zoveel mogelijk vlakken aan toe te voegen door telkens over de bogen van de cykel te itereren en indien mogelijk aanliggende vlakken die niet in de cykel zijn in te voegen in de cykel terwijl de cykel blijft voldoen aan de eigenschappen van een cykel. Er zijn in het effectieve algoritme enkele toevoegen om het algoritme lineair te houden. Er wordt gewerkt met zichtbare bogen zodat elke boog juist een keer wordt bekeken om een aanliggend vlak toe te voegen. Het nut van het bezoeken van bogen is om snel te kunnen bekijken of een boog kan toegevoegd worden aan de cykel aangezien een top uit de cykel maar het eindpunt mag zijn van 2 bogen in de cykel. 
 \\\\Dit algoritme presteert slechter dan het nieuwe algoritme. De resultaten van de kleine testgrafen kunnen bekeken worden in tabel \ref{table:oldhamilton}. Tot en met grafen met 8 toppen vinden beide algoritmes altijd een cykel. Echter het aantal cykels die niet gevonden worden vanaf grootte 8 stijgt veel sneller bij het oude algoritme in vergelijking met het nieuwe algoritme. Dit valt te verklaren door het feit dat het oude algoritme veel sneller kan vastlopen dan het nieuwe algoritme. Eens slechte bogen toegevoegd worden, is het zeer onwaarschijnlijk (behalve bij zeer kleine grafen), dat het algoritme nog een cykel vindt. Het nieuwe algoritme daarentegen heeft veel betere voorwaarden voor het toevoegen van vlakken, waardoor de kans op het vinden van een cykel veel groter is dan het oude algoritme. 
 \newline
@@ -816,16 +817,16 @@ Het algemene idee hier is: begin met cykel die 1 vlak insluit en probeer hier zo
 	} 
 \end{table}
 \subsubsection{Testgrafen}
-Als laatste zal ik de prestatie bespreken van algoritme \ref{alg:hamilton} bij grote grafen. Aangezien een hamiltoniaanse cykel altijd gevonden kan worden eens de Yutsis-decompositie gevonden wordt, bespreek ik enkel de prestatie van de Yutsis-decompositie. De Yutsis-decompositie eindigt als $|M| = |V(DG)|/2$ met M de toppenverzameling uit het algoritme en DG de duale graaf uit dit algoritme. Een goeie maatstaf voor de prestatie van het algoritme is dus hoe groot M wordt voor het algoritme eindigt. De resultaten kan je vinden in tabel \ref{table:analysis}. Bij triang1.sec tot en met triang10.sec vindt het algoritme nooit een Yutsis-decompositie. De grootte van $|M|$ wordt slechts ongeveer 80 \% van de maximale grootte. Een verklaring hiervoor is dat de grafen slecht gekozen zijn. Ik baseer me hier op wat een assistent van Algoritmen en Datastructuren 2 mij hieromtrent vertelde. Bij de grafen uit het bestand triang11.sec en triang13.sec tot en met triang16.sec vindt het algoritme telkens een Yutsis-decompositie. Als laatste vindt het algoritme bij triang12.sec geen Yutsis-decompositie. Merkwaardig hier is dat mijn oude algoritme, algoritme \ref{alg:hamilton2}, hier wel een hamiltoniaanse cykel vindt, terwijl het oude algoritme nagenoeg altijd slechter presteert. 
-\subsubsection{Conclusie}
-Ik denk dat ik uit de voorgaande resultaten kan besluiten dat het algoritme goed presteert. Bij kleine grafen vindt het algoritme nagenoeg altijd een hamiltoniaanse cykel, alsook bij grote grafen vindt het algoritme vaak een hamiltoniaanse cykel. Een bredere analyse omtrent grote testgrafen zou echter meerdere testgevallen vergen. Indien het mogelijk zou zijn om meerdere malen het algoritme uit te voeren beginnend met verschillende vlakken, zou het algoritme nog veel beter presteren. In een niet-gretige opgave, zou dit zeker een mooie toevoeging zijn. 
+Als laatste zal ik de prestatie bespreken van algoritme \ref{alg:hamilton} bij grote grafen. Aangezien een hamiltoniaanse cykel altijd gevonden kan worden eens de Yutsis-decompositie gevonden wordt, bespreek ik enkel de prestatie van de Yutsis-decompositie. De Yutsis-decompositie eindigt als $|M| = |V(DG)|/2$ met M de toppenverzameling uit het algoritme en DG de duale graaf uit dit algoritme. Een goeie maatstaf voor de prestatie van het algoritme is dus hoe groot M wordt voor het algoritme eindigt. De resultaten kan je vinden in tabel \ref{table:analysis}. Bij triang1.sec tot en met triang10.sec vindt het algoritme nooit een Yutsis-decompositie. De grootte van $|M|$ wordt slechts ongeveer 80 \% van de maximale grootte. Bij deze grafen presteert het algoritme niet zeer goed, het is echter niet abnormaal dat een gretig algoritme bij bepaalde grafen niet heel goed presteert. Bij de grafen uit het bestand triang11.sec en triang13.sec tot en met triang16.sec vindt het algoritme telkens een Yutsis-decompositie. Als laatste vindt het algoritme bij triang12.sec geen Yutsis-decompositie. Merkwaardig hier is dat mijn oude algoritme, algoritme \ref{alg:hamilton2}, hier wel een hamiltoniaanse cykel vindt, terwijl het oude algoritme nagenoeg altijd slechter presteert. 
 \begin{table}
 	\center
 	\csvautotabular[separator=semicolon]{experiments/analysis.csv}
 	\caption{Prestatie per graaf van de testset.}
 	\label{table:analysis}
-
 \end{table}
- 
+
+\subsubsection{Conclusie}
+Ik denk dat ik uit de voorgaande resultaten kan besluiten dat het algoritme goed presteert. Bij kleine grafen vindt het algoritme nagenoeg altijd een hamiltoniaanse cykel. Bij grote grafen vindt het algoritme af en toe een hamiltoniaanse cykel. Een bredere en duidelijkere analyse omtrent grote testgrafen zou echter meerdere testgevallen vergen. Indien het mogelijk zou zijn om meerdere malen het algoritme uit te voeren beginnend met verschillende vlakken, zou het algoritme nog veel beter presteren. In een niet-gretige opgave, zou dit zeker een mooie toevoeging zijn. 
+
 
 \end{document}

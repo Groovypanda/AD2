@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  27 NOV 2016 18:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.29)  27 NOV 2016 18:46
 entering extended mode
 **./verslag.tex
 (verslag.tex
@@ -1203,18 +1203,18 @@ sitie
  []
 
 [27]
-Overfull \hbox (10.42146pt too wide) in paragraph at lines 767--776
+Overfull \hbox (10.42146pt too wide) in paragraph at lines 767--797
  \OT1/cmr/bx/n/10.95 Meer-dere po-gin-gen[] \OT1/cmr/m/n/10.95 In-dien het al-g
 o-ritme meer-dere ke-ren uit-ge-voerd wordt,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 778--818
+Underfull \hbox (badness 10000) in paragraph at lines 807--819
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 778--818
+Underfull \hbox (badness 10000) in paragraph at lines 807--819
 
  []
 
@@ -1241,7 +1241,7 @@ ic/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/ams
 fonts/cm/cmsy8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmti10.pfb>
-Output written on verslag.pdf (33 pages, 253523 bytes).
+Output written on verslag.pdf (33 pages, 253565 bytes).
 PDF statistics:
  164 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
