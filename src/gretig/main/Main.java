@@ -3,7 +3,7 @@ package gretig.main;
 import gretig.graph.Graph;
 import gretig.calculators.HamiltonianCycleCalculator;
 import gretig.input.BinaryFileReader;
-import gretig.hamilton_experiment.calculators.HamiltonianCycleCalculatorOld;
+import gretig.calculators.HamiltonianCycleCalculatorOld;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

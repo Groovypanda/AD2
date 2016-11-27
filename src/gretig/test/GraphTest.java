@@ -131,9 +131,7 @@ public class GraphTest {
 
     public void testSort(boolean backwards){
         for(Graph graph: graphs){
-            assertNull(graph.getSortedNodes()); //The sorted node array should be null when sort hasn't been called upon.
             graph.sort(backwards); //The sorting will be performed by lowest degree first.
-            assertNotNull(graph.getSortedNodes());
             int previousDegree;
             if(backwards){
                 previousDegree = 1; //The minimum possible degree.

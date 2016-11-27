@@ -46,9 +46,5 @@ public class OneNodeExperiment extends DominanceExperiment {
             reset(); //Return to initial conditions. In order to use this calculator again for the same graph.
             return list;
         }
-
-        /**
-         * Experimental prepareDominantList method, which runs trough all nodes. So this doesn't affect the results of the ordering.
-         */
     }
 }

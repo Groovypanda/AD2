@@ -3,7 +3,7 @@ package gretig.hamilton_experiment.experiments;
 import gretig.cycle.CycleNode;
 import gretig.graph.Graph;
 import gretig.calculators.HamiltonianCycleCalculator;
-import gretig.hamilton_experiment.calculators.HamiltonianCycleCalculatorOld;
+import gretig.calculators.HamiltonianCycleCalculatorOld;
 
 /**
  * This experiment compares the 2 algorithms

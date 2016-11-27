@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  */
 public class LatexGenerator {
     /**
-     * Runs an dominantie_experiment and displays a resume of the statistics.
-     * @param experiment The dominantie_experiment which needs to be run.
+     * Runs an experiment and displays a resume of the statistics.
+     * @param experiment The experiment which needs to be run.
      */
     public void printTotalStastics(DominanceExperiment experiment){
         BinaryFileReader reader = new BinaryFileReader();
@@ -52,9 +52,9 @@ public class LatexGenerator {
     }
 
     /*
-     * Run an dominantie_experiment and get the statistics as a LaTeXtable.
-     * @param dominantie_experiment The dominantie_experiment which needs to be run.
-     * @return A string contain a latex table with the output of the dominantie_experiment.
+     * Run an experiment and get the statistics as a LaTeXtable.
+     * @param experiment The experiment which needs to be run.
+     * @return A string contain a latex table with the output of the experiment.
      */
     public String getLatexTable(DominanceExperiment experiment){
         BinaryFileReader reader = new BinaryFileReader();
@@ -84,7 +84,7 @@ public class LatexGenerator {
         }
         tableString+="}\n";
         tableString+="\\hline\n";
-        //tableString+="& \\multicolumn{" + 2*dominantie_experiment.getColumnNames().length + "}{c|}{" + dominantie_experiment.getTitle() + "}" + getLineEnd();
+        //tableString+="& \\multicolumn{" + 2*experiment.getColumnNames().length + "}{c|}{" + experiment.getTitle() + "}" + getLineEnd();
         tableString+="& \\multicolumn{" + experiment.getColumnNames().length + "}{c|}{" + experiment.getTitle() + "}" + getLineEnd();
         tableString+="Graaf";
         for(String columnName: experiment.getColumnNames()){

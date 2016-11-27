@@ -1,4 +1,4 @@
-package gretig.hamilton_experiment.calculators;
+package gretig.calculators;
 
 import gretig.cycle.Cycle;
 import gretig.cycle.CycleEdge;
